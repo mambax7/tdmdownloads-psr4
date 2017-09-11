@@ -41,7 +41,7 @@ class Field extends \XoopsObject
      * @param null $db
      * @return mixed
      */
-    public function get_new_enreg($db = null)
+    public function getNewEnreg($db = null)
     {
         /** @var \XoopsMySQLDatabase $db */
         $new_enreg = $db->getInsertId();

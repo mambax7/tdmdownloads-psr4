@@ -186,7 +186,7 @@ switch ($op) {
             }
 
             if ($downloadsmodHandler->insert($obj)) {
-                $lid_dowwnloads = $obj->get_new_enreg($db);
+                $lid_dowwnloads = $obj->getNewEnreg($db);
                 // Récupération des champs supplémentaires:
                 $criteria = new CriteriaCompo();
                 $criteria->setSort('weight ASC, title');

@@ -62,8 +62,8 @@ switch ($op) {
         }
         $criteria = new CriteriaCompo();
         // affiche uniquement les téléchargements activés
-        if ('' !== Request::getInt('statut_display', '', 'GET')) {
-            if (0 === Request::getInt('statut_display', '', 'GET')) {
+        if (Request::hasVar('statut_display', 'GET')) {
+            if (0 === Request::getInt('statut_display', 0, 'GET')) {
                 $criteria->add(new Criteria('status', 0));
                 $statut_display = 0;
             } else {
@@ -76,36 +76,36 @@ switch ($op) {
         }
         $document_tri   = 1;
         $document_order = 1;
-        if (isset($_REQUEST['document_tri'])) {
-            if (1 == $_REQUEST['document_tri']) {
+        if (Request::hasVar('document_tri')) {
+            if (1 == Request::getInt('document_tri')) {
                 $criteria->setSort('date');
                 $document_tri = 1;
             }
-            if (2 == $_REQUEST['document_tri']) {
+            if (2 == Request::getInt('document_tri')) {
                 $criteria->setSort('title');
                 $document_tri = 2;
             }
-            if (3 == $_REQUEST['document_tri']) {
+            if (3 == Request::getInt('document_tri')) {
                 $criteria->setSort('hits');
                 $document_tri = 3;
             }
-            if (4 == $_REQUEST['document_tri']) {
+            if (4 == Request::getInt('document_tri')) {
                 $criteria->setSort('rating');
                 $document_tri = 4;
             }
-            if (5 == $_REQUEST['document_tri']) {
+            if (5 == Request::getInt('document_tri')) {
                 $criteria->setSort('cid');
                 $document_tri = 5;
             }
         } else {
             $criteria->setSort('date');
         }
-        if (isset($_REQUEST['document_order'])) {
-            if (1 == $_REQUEST['document_order']) {
+        if (Request::hasVar('document_order')) {
+            if (1 == Request::getInt('document_order')) {
                 $criteria->setOrder('DESC');
                 $document_order = 1;
             }
-            if (2 == $_REQUEST['document_order']) {
+            if (2 == Request::getInt('document_order')) {
                 $criteria->setOrder('ASC');
                 $document_order = 2;
             }
@@ -251,7 +251,7 @@ switch ($op) {
         global $xoopsModule;
         $downloads_lid = $utilities->cleanVars($_REQUEST, 'downloads_lid', 0, 'int');
         $obj           = $downloadsHandler->get($downloads_lid);
-        if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
+        if (Request::hasVar('ok') && 1 == Request::getInt('ok')) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header('downloads.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
             }
@@ -570,18 +570,18 @@ switch ($op) {
 
     // permet de suprimmer un vote et de recalculer la note
     case 'del_vote':
-        $objvotedata = $downloadsvotedataHandler->get($_REQUEST['rid']);
+        $objvotedata = $downloadsvotedataHandler->get(Request::getInt('rid'));
         if ($downloadsvotedataHandler->delete($objvotedata)) {
             $criteria = new CriteriaCompo();
-            $criteria->add(new Criteria('lid', $_REQUEST['lid']));
+            $criteria->add(new Criteria('lid', Request::getInt('lid')));
             $downloadsvotedata_arr = $downloadsvotedataHandler->getAll($criteria);
             $total_vote            = $downloadsvotedataHandler->getCount($criteria);
-            $obj                   = $downloadsHandler->get($_REQUEST['lid']);
+            $obj                   = $downloadsHandler->get(Request::getInt('lid'));
             if (0 === $total_vote) {
                 $obj->setVar('rating', number_format(0, 1));
                 $obj->setVar('votes', 0);
                 if ($downloadsHandler->insert($obj)) {
-                    redirect_header('downloads.php?op=view_downloads&downloads_lid=' . $_REQUEST['lid'], 1, _AM_TDMDOWNLOADS_REDIRECT_DELOK);
+                    redirect_header('downloads.php?op=view_downloads&downloads_lid=' . Request::getInt('lid'), 1, _AM_TDMDOWNLOADS_REDIRECT_DELOK);
                 }
             } else {
                 $total_rating = 0;
@@ -592,7 +592,7 @@ switch ($op) {
                 $obj->setVar('rating', number_format($rating, 1));
                 $obj->setVar('votes', $total_vote);
                 if ($downloadsHandler->insert($obj)) {
-                    redirect_header('downloads.php?op=view_downloads&downloads_lid=' . $_REQUEST['lid'], 1, _AM_TDMDOWNLOADS_REDIRECT_DELOK);
+                    redirect_header('downloads.php?op=view_downloads&downloads_lid=' . Request::getInt('lid'), 1, _AM_TDMDOWNLOADS_REDIRECT_DELOK);
                 }
             }
             echo $obj->getHtmlErrors();
@@ -607,8 +607,8 @@ switch ($op) {
         if (!$GLOBALS['xoopsSecurity']->check()) {
             redirect_header('downloads.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
         }
-        if (isset($_REQUEST['lid'])) {
-            $obj = $downloadsHandler->get($_REQUEST['lid']);
+        if (Request::hasVar('lid')) {
+            $obj = $downloadsHandler->get(Request::getInt('lid'));
         } else {
             $obj = $downloadsHandler->create();
         }
@@ -634,7 +634,7 @@ switch ($op) {
             $obj->setVar('submitter', !empty($xoopsUser) ? $xoopsUser->getVar('uid') : 0);
             $donnee['submitter'] = !empty($xoopsUser) ? $xoopsUser->getVar('uid') : 0;
         }
-        if (!isset($_REQUEST['downloads_modified'])) {
+        if (Request::hasVar('downloads_modified')) {
             $obj->setVar('date', time());
             if (isset($_POST['status'])) {
                 $obj->setVar('status', 1);
@@ -665,8 +665,8 @@ switch ($op) {
             $donnee['date_update'] = $_POST['date_update'];
         }
         // erreur si la taille du fichier n'est pas un nombre
-        if (0 === (int)$_REQUEST['size']) {
-            if ('0' == $_REQUEST['size'] || '' === $_REQUEST['size']) {
+        if (0 === (int)Request::getInt('size')) {
+            if (0 == Request::getInt('size') || '' === Request::getString('size')) {
                 $erreur = false;
             } else {
                 $erreur         = true;
@@ -681,8 +681,8 @@ switch ($op) {
             }
         }
         // erreur si la catégorie est vide
-        if (isset($_REQUEST['cid'])) {
-            if (0 == $_REQUEST['cid']) {
+        if (Request::hasVar('cid')) {
+            if (0 == Request::getInt('cid')) {
                 $erreur         = true;
                 $message_erreur .= _AM_TDMDOWNLOADS_ERREUR_NOCAT . '<br>';
             }
@@ -750,10 +750,10 @@ switch ($op) {
             }
             // enregistrement
             if ($downloadsHandler->insert($obj)) {
-                if (!isset($_REQUEST['downloads_modified'])) {
-                    $lid_dowwnloads = $obj->get_new_enreg($db);
+                if (!(Request::hasVar('downloads_modified'))) {
+                    $lid_dowwnloads = $obj->getNewEnreg($db);
                 } else {
-                    $lid_dowwnloads = $_REQUEST['lid'];
+                    $lid_dowwnloads = Request::getInt('lid');
                 }
                 //tags
                 if ((1 == $xoopsModuleConfig['usetag']) and is_dir('../../tag')) {
@@ -799,7 +799,7 @@ switch ($op) {
                     }
                 }
                 // pour les notifications uniquement lors d'un nouveau téléchargement
-                if (!isset($_REQUEST['downloads_modified'])) {
+                if (Request::hasVar('downloads_modified')) {
                     $tags                  = [];
                     $tags['FILE_NAME']     = $_POST['title'];
                     $tags['FILE_URL']      = XOOPS_URL . '/modules/' . $moduleDirName . '/singlefile.php?cid=' . $_POST['cid'] . '&amp;lid=' . $lid_dowwnloads;
@@ -820,7 +820,7 @@ switch ($op) {
 
     // permet de valider un téléchargement proposé
     case 'update_status':
-        $obj = $downloadsHandler->get($_REQUEST['downloads_lid']);
+        $obj = $downloadsHandler->get(Request::getInt('downloads_lid'));
         $obj->setVar('status', 1);
         if ($downloadsHandler->insert($obj)) {
             redirect_header('downloads.php', 1, _AM_TDMDOWNLOADS_REDIRECT_SAVE);
@@ -830,7 +830,7 @@ switch ($op) {
 
     // permet de valider un téléchargement proposé
     case 'lock_status':
-        $obj = $downloadsHandler->get($_REQUEST['downloads_lid']);
+        $obj = $downloadsHandler->get(Request::getInt('downloads_lid'));
         $obj->setVar('status', 0);
         if ($downloadsHandler->insert($obj)) {
             redirect_header('downloads.php', 1, _AM_TDMDOWNLOADS_REDIRECT_DEACTIVATED);

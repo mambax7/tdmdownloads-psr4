@@ -353,7 +353,7 @@ switch ($op) {
             echo '<div class="errorMsg" style="text-align: left;">' . $message_erreur . '</div>';
         } else {
             if ($categoryHandler->insert($obj)) {
-                $newcat_cid = $obj->get_new_enreg($db);
+                $newcat_cid = $obj->getNewEnreg($db);
                 //permission pour voir
                 $perm_id      = isset($_REQUEST['cat_cid']) ? $cat_cid : $newcat_cid;
                 $gpermHandler = xoops_getHandler('groupperm');

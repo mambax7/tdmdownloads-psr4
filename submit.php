@@ -179,7 +179,7 @@ switch ($op) {
             }
 
             if ($downloadsHandler->insert($obj)) {
-                $lid_dowwnloads = $obj->get_new_enreg($db);
+                $lid_dowwnloads = $obj->getNewEnreg($db);
                 //tags
                 if ((1 === $xoopsModuleConfig['usetag']) and is_dir('../tag')) {
                     $tagHandler = xoops_getModuleHandler('tag', 'tag');

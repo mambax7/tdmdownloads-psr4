@@ -50,7 +50,7 @@ class Thumbnails
         $image = $photopath . '/' . $filename; // erm, filenname
         if (!file_exists($image) || !is_readable($image)) {
             // send error and stuff (code, other data, in this case, file)
-            $error = $this->show_errors('Unable to read input image.');
+            $error = $this->showErrors('Unable to read input image.');
 
             return false;
         }
@@ -116,7 +116,7 @@ class Thumbnails
                 imagejpeg($newimage, $thumbfile, 75);
             }
         } else {
-            $this->show_errors('Unable to write thumbnail.');
+            $this->showErrors('Unable to write thumbnail.');
 
             return false;
         }
@@ -137,7 +137,7 @@ class Thumbnails
      * @param $error
      * @return bool
      */
-    public function show_errors($error)
+    public function showErrors($error)
     {
         echo '<span style="color: red;">Thumbnail class error: ' . $error . '</span>';
 
