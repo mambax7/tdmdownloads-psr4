@@ -1,0 +1,22 @@
+<div class="tdmdownloads">
+
+    <!-- Download logo-->
+    <div class="tdmdownloads-logo center marg10">
+        <a title="<{$smarty.const._MD_TDMDOWNLOADS_DOWNLOAD}>"
+           href="<{$xoops_url}>/modules/<{$mydirname}>/index.php"><img
+                    src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/logo-en.gif"
+                    alt="<{$smarty.const._MD_TDMDOWNLOADS_DOWNLOAD}>"/></a>
+    </div>
+
+    <!-- Category path -->
+    <div class="bold marg1 pad1"><{$navigation}></div>
+
+    <{if $message_erreur != ''}>
+        <!-- Error message-->
+        <div class="errorMsg"><{$message_erreur}></div>
+    <{/if}>
+
+    <!-- Submit form -->
+    <div class="tdmdownloads-submitform"><{$themeForm}></div>
+
+</div>

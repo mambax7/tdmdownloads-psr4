@@ -1,0 +1,160 @@
+<h5>2.0 Alpha 1         [NOT RELEASED, WORK IN PROGRESS]</h5>
+<hr>
+- moved functions to Utilities class (mamba)
+- started with conversion to XoopsRequest (mamba)
+- made check for upload folders easier (mamba)
+- some cosmetic changes related to PSR-2 (mamba)
+- experimenting with PSR-4 Autoloading (mamba)
+- shorten class names (mamba)
+
+
+
+<h5>1.63 Beta 3         [NOT RELEASED]</h5>
+<hr>
+- some cosmetic changes related to PSR-2 (mamba)
+- changed: size of logo in category (mamba)
+- changed: button for files for approval only visible if there are actual files to approve (mamba)
+- moved all images, CSS, and JS files to /assets (mamba)
+- renamed .html Smarty templates to .tpl (mamba)
+- replaced all hard-coded directory names with dynamic variables (mamba)
+- recoded xoops_version.php variables into one array (mamba)
+
+TODO:
+- add test data
+- do more testing
+- update "update.php" file
+- convert to use XoopsRequest
+
+
+<h5>1.63 Beta 2             [2013/08/24]</h5>
+<hr>
+- fix: Typos (cesagonchu)
+- Correcting English language files (cesagonchu)
+- removing obsolete bookmarks : Google Reader, Simpy, Spurl (cesagonchu)
+- Standardization of syntax in the language folder (cesagonchu)
+
+
+<h5>1.63 Beta 1           [2012/12/23]</h5>
+<hr>
+- fix: no need anymore for trans_size in showing file size in search.php (hipoonios/mamba)
+- fix: clearing "download" Smarty variable before appending values to it in search.php (hipoonios/mamba)
+
+
+<h5>1.62 Final          [2012/06/30]</h5>
+<hr>
+
+- replaced Google Buzz with Google Plus
+- Showing Latest files is optional (DCrussader/Mamba)
+- other minor improvements
+
+
+<h5>1.61                [2011/08/14]</h5>
+<hr>
+
+List of bugs:
+
+ - bug in field.php (class moduleadmin not found) (Mage).
+
+List of improvements:
+
+ - Using Frameworks "ModuleClasses" 1.1 (Mage).
+
+
+<h5>1.6                 [2011/06/19]</h5>
+<hr>
+
+List of bugs:
+
+ - It was impossible to choose categories to show in the block admin (nothing is shown) (Mage).
+ - In the modification request, if the logo doesn't exist, the default value wasn't "blank.gif" (Mage).
+ - In the editing form of a download file, the date wasn't the current date (Mage).
+ - Permissions by files don't run well (Mage).
+ - In visit.php the url of download can cause a problem (Fabrice59).
+ - Call of inexistent file in class tree.php (Mage).
+ - the category title isn't informed in the notification message "category_newfile_notify.tpl" (Mage).
+ - missing view.tag.php and list.tag.php added (voltan)
+List of improvements:
+
+ - Admission area has be recoded to be 100% compatible with xoops 2.5 (Mage).
+ - Organization of preferences by sections (Mage).
+ - We can now choose the number of columns to show the categories (Mage).
+ - We can now choose the number of columns to show the downloads (Mage).
+ - Add of RSS Feeds to the module (Mage).
+ - Categories descriptions are now shown in viewcat.php (Mage).
+ - We can now show the logo (or a screenshot) of the download and its description in all blocks (Mage).
+ - System of limitation of downloading (Voltan, Mage).
+ - The images 'new', 'updated' et 'popular' are now specific to each language (Mage, Mariane)
+ - Adding a search block (Mage, Mariane)
+ - Add bookmark and Social Networks (voltan)
+
+Informations
+
+ - See the file "lang_diff.txt" for changes in language.
+
+Installation:
+
+ 1 - You have to delete the existent folder "TDMDownloads" in "modules".
+ 2 - Upload the new folder  "TDMDownloads"   to your server in the "modules" folder.
+ 3 - Update the module.
+ 4 - Go to each block, then edit the options (important to insure the function  of the blocks).
+ 5 - If you overloaded your templates, it will be necessary to update them.
+
+
+<h5>1.5                 [02.04.2010]</h5>
+<hr>
+
+List of bugs:
+
+ - The display sub-categories in "viewcat.php" does not work.
+ - Loss of many language definitions for the file : ratefile.php.
+ - Fixed import system.
+ - You could get downloads awaiting validation with their ids in "singlefile.php.
+ - The categories were not viewed as a tree in the file "search.php".
+ - Fixed file "search.php".
+ - Pages's title were not working when we were in sub-categories.
+ - When editing a download or a file, if the logo was no longer exists, the logo : "blank.gif" doesn't become the default".
+ - Errors in language files.
+ - In the preferences, if you set '0 ' as the number of new downloads on the homepage, all downloads were displayed
+   Bug on display mode while redirections in the admin section.
+
+List of improvements:
+
+ - Performance Module (the number of request has decreased by 5).
+ - The pages titles has been modified to improve the ranking.
+ - Adding a permissions to download files. (2 types).
+ - Adding permissions to auto-approve the proposals for download.
+ - The display of categories in admin has been reviewed.
+ - Permissions can be set creating a category.
+ - You can now set manually the date of update, (allowed in the edit mode and for only administrators).
+ - When creating or editing, you can choose whether the download is approved (only administrators).
+ - The display of downloads page is modifiable only by admin side.
+ - Empty fields are not displayed.
+ - The file "search.php" has been completely redesigned to improve its speed.
+ - Ability to protect downloads (impossible to download with a direct link). See the tab 'About' in the administration module.
+ - Added a stylesheet for templates.
+ - Added a "Donation Button" working only with Paypal.
+
+Informations:
+
+ - Adding the suffix "cat_" in all fields of the table "tdmdownloads_cat.
+ - See the file "lang_diff.txt" for changes in language.
+
+
+<h5>1.10                [11.11.2009]</h5>
+<hr>
+
+- The module supports the tagging system module 'TAG'.
+- 2 options added in the preferences, the first to rename or not the uploaded file and the second to enter the prefix when the file is renamed.
+- Added option "number of downloads per page in the administration."
+- Fix a bug with the default editor of xoops (html display when editing).
+- Fix a bug when deleting a category.
+- Change management platforms (multi-menu selection) with the values defined in the preferences of the module.
+- Added ability to rename the post and put the date of submission to date or not.
+- Bug in the details of the votes in the admin, all votes were visible in all downloads.
+- Fixed a bug in the admin for the download management when making a selection in the "waiting for validation", the filter brought on normal downloads.
+- Added system information the last version
+- Fixed French language files in uft-8
+- Fixed script import Mydownloasd 1.6
+- Fixed script import WF-Downloads 3.2 RC2
+
+Voir le fichier lang_diff.txt pour les nouveaux define de langue.
