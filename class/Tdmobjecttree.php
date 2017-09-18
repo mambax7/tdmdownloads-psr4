@@ -15,7 +15,7 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-include_once $GLOBALS['xoops']->path('www/class/tree.php');
+require_once $GLOBALS['xoops']->path('www/class/tree.php');
 
 /**
  * Class Tdmobjecttree

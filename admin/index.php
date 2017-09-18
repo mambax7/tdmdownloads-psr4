@@ -14,10 +14,10 @@
  * @author      Gregory Mage (Aka Mage)
  */
 //require dirname(__DIR__) . '/include/setup.php';
-include_once __DIR__ . '/../autoloader.php';
-include_once __DIR__ . '/admin_header.php';
+require_once __DIR__ . '/../autoloader.php';
+require_once __DIR__ . '/admin_header.php';
 
-//include_once dirname(__DIR__) . '/include/functions.folders.php';
+//require_once dirname(__DIR__) . '/include/functions.folders.php';
 
 xoops_cp_header();
 
@@ -128,4 +128,4 @@ $adminObject->displayIndex();
 
 echo $utility::getServerStats();
 
-include_once __DIR__ . '/admin_footer.php';
+require_once __DIR__ . '/admin_footer.php';

@@ -143,7 +143,7 @@ $modversion = [
         'callbackFile' => 'include/comment_functions.php',
         'callback'     => [
             'approve' => 'tdmdownloads_com_approve',
-            'update'  => 'tdmdownloads_com_update'
+            'update'  => 'tdmdownloads_com_update',
         ]
     ],
     // ------------------- Templates -------------------

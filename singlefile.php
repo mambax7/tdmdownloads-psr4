@@ -24,7 +24,7 @@ use Xoopsmodules\tdmdownloads\Tdmobjecttree;
 //use Xoops\Tdmdownloads;
 //use bingo\Tdmdownloads as Bingo;
 
-include_once __DIR__ . '/header.php';
+require_once __DIR__ . '/header.php';
 $moduleDirName = basename(__DIR__);
 //file has to be loaded, either directly, via "xoops_load", or via Autoload.
 //xoops_load("constants", $moduleDirName );
@@ -63,7 +63,7 @@ $mydirname4 = $tt::$mydirname2; //set in constructor
 
 // template d'affichage
 $GLOBALS['xoopsOption']['template_main'] = 'tdmdownloads_singlefile.tpl';
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 $xoTheme->addStylesheet(XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/styles.css', null);
 $xoopsTpl->assign('mydirname', $mydirname4);
 $lid = $utilities->cleanVars($_REQUEST, 'lid', 0, 'int');
@@ -264,7 +264,7 @@ if (1 == $xoopsModuleConfig['permission_download']) {
 }
 
 // pour utiliser tellafriend.
-if ((1 == $xoopsModuleConfig['usetellafriend']) and is_dir('../tellafriend')) {
+if ((1 == $xoopsModuleConfig['usetellafriend']) && is_dir('../tellafriend')) {
     $string  = sprintf(_MD_TDMDOWNLOADS_SINGLEFILE_INTFILEFOUND, $xoopsConfig['sitename'] . ':  ' . XOOPS_URL . '/modules/' . $moduleDirName . '/singlefile.php?lid=' . $_REQUEST['lid']);
     $subject = sprintf(_MD_TDMDOWNLOADS_SINGLEFILE_INTFILEFOUND, $xoopsConfig['sitename']);
     if (false !== stripos($subject, '%')) {
@@ -292,7 +292,7 @@ $xoopsTpl->assign('tellafriend_texte', $tellafriend_texte);
 
 // r�f�rencement
 // tags
-if ((1 == $xoopsModuleConfig['usetag']) and is_dir('../tag')) {
+if ((1 == $xoopsModuleConfig['usetag']) && is_dir('../tag')) {
     require_once XOOPS_ROOT_PATH . '/modules/tag/include/tagbar.php';
     $xoopsTpl->assign('tags', true);
     $xoopsTpl->assign('tagbar', tagBar($_REQUEST['lid'], 0));

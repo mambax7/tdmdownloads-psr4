@@ -113,7 +113,7 @@ class Utility extends \XoopsObject
 
         $sql = 'SELECT rating FROM ' . $xoopsDB->prefix('wflinks_votedata');
         if (0 != $sel_id) {
-            ' WHERE lid = ' . $sel_id;
+            $sql .= ' WHERE lid = ' . $sel_id;
         }
         if (!$result = $xoopsDB->query($sql)) {
             return false;
@@ -267,8 +267,8 @@ class Utility extends \XoopsObject
     public static function updateRating($sel_id)
     {
         global $xoopsDB;
-        $query       = 'SELECT rating FROM ' . $xoopsDB->prefix('wflinks_votedata') . ' WHERE lid=' . $sel_id;
-        $voteresult  = $xoopsDB->query($query);
+        $sql       = 'SELECT rating FROM ' . $xoopsDB->prefix('wflinks_votedata') . ' WHERE lid=' . $sel_id;
+        $voteresult  = $xoopsDB->query($sql);
         $votesDB     = $xoopsDB->getRowsNum($voteresult);
         $totalrating = 0;
         while (list($rating) = $xoopsDB->fetchRow($voteresult)) {

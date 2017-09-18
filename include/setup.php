@@ -9,7 +9,7 @@
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
-//use Xoopsmodules\tdmdownloads;
+use Xoopsmodules\tdmdownloads;
 
 /**
  * Review module for xoops
@@ -78,9 +78,9 @@ if (!defined('TDMDOWNLOADS_DIRNAME')) {
 define('TDMDOWNLOADS_UPLOAD_URL', XOOPS_UPLOAD_URL . '/' . TDMDOWNLOADS_DIRNAME); // WITHOUT Trailing slash
 define('TDMDOWNLOADS_UPLOAD_PATH', XOOPS_UPLOAD_PATH . '/' . TDMDOWNLOADS_DIRNAME); // WITHOUT Trailing slash
 
-//include_once dirname(__DIR__) . '/class/helper.php';
+//require_once dirname(__DIR__) . '/class/helper.php';
 
-$helper = new Xoopsmodules\tdmdownloads\Helper();
+$helper = tdmdownloads\Helper::getInstance(false);
 //$helper      = & Helper::getInstance();
 $utilities   = new Xoopsmodules\tdmdownloads\Utilities($db, $helper);
 $mainLang    = '_MD_' . strtoupper($helper->moduleDirName);

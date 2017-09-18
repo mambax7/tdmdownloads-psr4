@@ -14,18 +14,18 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-//include_once __DIR__ . '/include/setup.php';
+//require_once __DIR__ . '/include/setup.php';
 require_once dirname(dirname(__DIR__)) . '/mainfile.php';
 require_once __DIR__ . '/include/common.php';
 
 $moduleDirName = basename(__DIR__);
 
-include_once XOOPS_ROOT_PATH . '/class/pagenav.php';
-include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-include_once XOOPS_ROOT_PATH . '/class/tree.php';
-include_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
-//include_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar("dirname") . '/include/functions.php';
-//include_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName  . '/include/functions.php';
+require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
+require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+require_once XOOPS_ROOT_PATH . '/class/tree.php';
+require_once XOOPS_ROOT_PATH . '/class/xoopsform/grouppermform.php';
+//require_once XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar("dirname") . '/include/functions.php';
+//require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName  . '/include/functions.php';
 
 //permission
 $gpermHandler = xoops_getHandler('groupperm');

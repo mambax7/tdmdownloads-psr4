@@ -18,7 +18,7 @@ use Xmf\Request;
 use Xoopsmodules\tdmdownloads\Tdmobjecttree;
 
 //require dirname(__DIR__) . '/include/setup.php';
-include_once __DIR__ . '/admin_header.php';
+require_once __DIR__ . '/admin_header.php';
 
 //On recupere la valeur de l'argument op dans l'URL$
 $op = $utilities->cleanVars($_REQUEST, 'op', 'list', 'string');
@@ -59,7 +59,7 @@ switch ($op) {
             echo '<th align="center" width="8%">' . _AM_TDMDOWNLOADS_FORMACTION . '</th>';
             echo '</tr>';
             $class = 'odd';
-            //            include_once XOOPS_ROOT_PATH . "/modules/$moduleDirName/class/tree.php";
+            //            require_once XOOPS_ROOT_PATH . "/modules/$moduleDirName/class/tree.php";
             $mytree             = new TDMObjectTree($downloads_cat, 'cat_cid', 'cat_pid');
             $category_ArrayTree = $mytree->makeArrayTree('cat_title', '<img src="../assets/images/deco/arrow.gif">');
             foreach (array_keys($category_ArrayTree) as $i) {
@@ -156,7 +156,7 @@ switch ($op) {
                     xoops_comment_delete($xoopsModule->getVar('mid'), $downloads_arr[$i]->getVar('lid'));
                 }
                 //supression des tags
-                if ((1 == $xoopsModuleConfig['usetag']) and is_dir(dirname(dirname(__DIR__)) . '/tag')) {
+                if ((1 == $xoopsModuleConfig['usetag']) && is_dir(dirname(dirname(__DIR__)) . '/tag')) {
                     $tagHandler = xoops_getModuleHandler('link', 'tag');
                     $criteria   = new CriteriaCompo();
                     $criteria->add(new Criteria('tag_itemid', $downloads_arr[$i]->getVar('lid')));
@@ -223,7 +223,7 @@ switch ($op) {
                         xoops_comment_delete($xoopsModule->getVar('mid'), $downloads_arr[$j]->getVar('lid'));
                     }
                     //supression des tags
-                    if ((1 == $xoopsModuleConfig['usetag']) and is_dir('../../tag')) {
+                    if ((1 == $xoopsModuleConfig['usetag']) && is_dir('../../tag')) {
                         $tagHandler = xoops_getModuleHandler('link', 'tag');
                         $criteria   = new CriteriaCompo();
                         $criteria->add(new Criteria('tag_itemid', $downloads_arr[$j]->getVar('lid')));
@@ -314,7 +314,7 @@ switch ($op) {
         $message_erreur = '';
         // Récupération des variables:
         // Pour l'image
-        include_once XOOPS_ROOT_PATH . '/class/uploader.php';
+        require_once XOOPS_ROOT_PATH . '/class/uploader.php';
         $uploader = new XoopsMediaUploader($uploaddir, [
             'image/gif',
             'image/jpeg',
@@ -412,4 +412,4 @@ switch ($op) {
         break;
 }
 //Affichage de la partie basse de l'administration de Xoops
-include_once __DIR__ . '/admin_footer.php';
+require_once __DIR__ . '/admin_footer.php';

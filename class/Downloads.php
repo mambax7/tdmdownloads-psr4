@@ -121,7 +121,7 @@ class Downloads extends \XoopsObject
 
         //cat�gorie
         $categoryHandler = new CategoryHandler(null); //xoops_getModuleHandler('Category', $moduleDirName);
-        //        include_once dirname(__DIR__) . '/include/setup.php';
+        //        require_once dirname(__DIR__) . '/include/setup.php';
         $utilities  = new Utilities($db, $helper);
         $categories = $utilities->getItemIds('tdmdownloads_submit', $moduleDirName);
         $criteria   = new \CriteriaCompo();

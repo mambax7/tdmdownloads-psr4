@@ -14,12 +14,12 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-include_once __DIR__ . '/header.php';
+require_once __DIR__ . '/header.php';
 $moduleDirName = basename(__DIR__);
 
 // template d'affichage
 $GLOBALS['xoopsOption']['template_main'] = 'tdmdownloads_submit.tpl';
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 $xoTheme->addStylesheet(XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/styles.css', null);
 $xoopsTpl->assign('mydirname', $moduleDirName);
 //On recupere la valeur de l'argument op dans l'URL$
@@ -52,7 +52,7 @@ switch ($op) {
         break;
     // save
     case 'save_downloads':
-        include_once XOOPS_ROOT_PATH . '/class/uploader.php';
+        require_once XOOPS_ROOT_PATH . '/class/uploader.php';
         $obj            = $downloadsHandler->create();
         $erreur         = false;
         $message_erreur = '';
@@ -130,7 +130,7 @@ switch ($op) {
             }
         }
         // enregistrement temporaire des tags
-        if ((1 === $xoopsModuleConfig['usetag']) and is_dir('../tag')) {
+        if ((1 === $xoopsModuleConfig['usetag']) && is_dir('../tag')) {
             $donnee['TAG'] = $_POST['tag'];
         }
         if (true === $erreur) {
@@ -179,11 +179,11 @@ switch ($op) {
             }
 
             if ($downloadsHandler->insert($obj)) {
-                $lid_dowwnloads = $obj->getNewEnreg($db);
+                $lidDownloads = $obj->getNewEnreg($db);
                 //tags
-                if ((1 === $xoopsModuleConfig['usetag']) and is_dir('../tag')) {
+                if ((1 === $xoopsModuleConfig['usetag']) && is_dir('../tag')) {
                     $tagHandler = xoops_getModuleHandler('tag', 'tag');
-                    $tagHandler->updateByItem($_POST['tag'], $lid_dowwnloads, $moduleDirName, 0);
+                    $tagHandler->updateByItem($_POST['tag'], $lidDownloads, $moduleDirName, 0);
                 }
                 // R�cup�ration des champs suppl�mentaires:
                 $criteria = new CriteriaCompo();
@@ -195,7 +195,7 @@ switch ($op) {
                         $objdata   = $downloadsfielddataHandler->create();
                         $nom_champ = 'champ' . $downloads_field[$i]->getVar('fid');
                         $objdata->setVar('data', $_POST[$nom_champ]);
-                        $objdata->setVar('lid', $lid_dowwnloads);
+                        $objdata->setVar('lid', $lidDownloads);
                         $objdata->setVar('fid', $downloads_field[$i]->getVar('fid'));
                         $downloadsfielddataHandler->insert($objdata) || $objdata->getHtmlErrors();
                     }
@@ -206,13 +206,13 @@ switch ($op) {
                         if (1 == $xoopsModuleConfig['permission_download']) {
                             $gpermHandler = xoops_getHandler('groupperm');
                             $criteria     = new CriteriaCompo();
-                            $criteria->add(new Criteria('gperm_itemid', $lid_dowwnloads, '='));
+                            $criteria->add(new Criteria('gperm_itemid', $lidDownloads, '='));
                             $criteria->add(new Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
                             $criteria->add(new Criteria('gperm_name', 'tdmdownloads_download_item', '='));
                             $gpermHandler->deleteAll($criteria);
                             if (isset($_POST['item_download'])) {
                                 foreach ($_POST['item_download'] as $onegroup_id) {
-                                    $gpermHandler->addRight('tdmdownloads_download_item', $lid_dowwnloads, $onegroup_id, $xoopsModule->getVar('mid'));
+                                    $gpermHandler->addRight('tdmdownloads_download_item', $lidDownloads, $onegroup_id, $xoopsModule->getVar('mid'));
                                 }
                             }
                         }
@@ -221,7 +221,7 @@ switch ($op) {
                 $notificationHandler   = xoops_getHandler('notification');
                 $tags                  = [];
                 $tags['FILE_NAME']     = $donnee['title'];
-                $tags['FILE_URL']      = XOOPS_URL . '/modules/' . $moduleDirName . '/singlefile.php?cid=' . $donnee['cid'] . '&lid=' . $lid_dowwnloads;
+                $tags['FILE_URL']      = XOOPS_URL . '/modules/' . $moduleDirName . '/singlefile.php?cid=' . $donnee['cid'] . '&lid=' . $lidDownloads;
                 $downloadscat_cat      = $categoryHandler->get($donnee['cid']);
                 $tags['CATEGORY_NAME'] = $downloadscat_cat->getVar('cat_title');
                 $tags['CATEGORY_URL']  = XOOPS_URL . "/modules/$moduleDirName/viewcat.php?cid=" . $donnee['cid'];

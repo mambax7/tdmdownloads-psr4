@@ -76,7 +76,7 @@ class Modified extends \XoopsObject
         $downloadsHandler = new DownloadsHandler(null);// xoops_getModuleHandler('tdmdownloads_downloads', $moduleDirName);
         $categoryHandler  = new CategoryHandler(null);// xoops_getModuleHandler('Category', $moduleDirName);
         $view_downloads   = $downloadsHandler->get($lid);
-        include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+        require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 
         // affectation des variables
         if (true === $erreur) {

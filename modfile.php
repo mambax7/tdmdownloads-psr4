@@ -16,10 +16,10 @@
 
 use Xmf\Request;
 
-include_once __DIR__ . '/header.php';
+require_once __DIR__ . '/header.php';
 // template d'affichage
 $GLOBALS['xoopsOption']['template_main'] = 'tdmdownloads_modfile.tpl';
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 $moduleDirName = basename(__DIR__);
 
 $xoTheme->addStylesheet(XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/styles.css', null);
@@ -79,7 +79,7 @@ switch ($op) {
         break;
     // save
     case 'save':
-        include_once XOOPS_ROOT_PATH . '/class/uploader.php';
+        require_once XOOPS_ROOT_PATH . '/class/uploader.php';
         $obj            = $downloadsmodHandler->create();
         $erreur         = false;
         $message_erreur = '';
@@ -107,7 +107,7 @@ switch ($op) {
         $obj->setVar('modifysubmitter', !empty($xoopsUser) ? $xoopsUser->getVar('uid') : 0);
 
         // erreur si la taille du fichier n'est pas un nombre
-        if (0 == (int)Request::getString('size', '', 'POST')) {
+        if (0 == Request::getString('size', '', 'POST')) {
             if ('0' == Request::getString('size', '', 'POST')
                 || '' === Request::getString('size', '', 'POST')) {
                 $erreur = false;
@@ -186,7 +186,7 @@ switch ($op) {
             }
 
             if ($downloadsmodHandler->insert($obj)) {
-                $lid_dowwnloads = $obj->getNewEnreg($db);
+                $lidDownloads = $obj->getNewEnreg($db);
                 // Récupération des champs supplémentaires:
                 $criteria = new CriteriaCompo();
                 $criteria->setSort('weight ASC, title');
@@ -197,7 +197,7 @@ switch ($op) {
                         $objdata   = $downloadsfieldmoddataHandler->create();
                         $nom_champ = 'champ' . $downloads_field[$i]->getVar('fid');
                         $objdata->setVar('moddata', $_POST[$nom_champ]);
-                        $objdata->setVar('lid', $lid_dowwnloads);
+                        $objdata->setVar('lid', $lidDownloads);
                         $objdata->setVar('fid', $downloads_field[$i]->getVar('fid'));
                         $downloadsfieldmoddataHandler->insert($objdata) || $objdata->getHtmlErrors();
                     }

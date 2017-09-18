@@ -14,10 +14,10 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-include_once __DIR__ . '/admin_header.php';
+require_once __DIR__ . '/admin_header.php';
 
 xoops_cp_header();
-include_once $GLOBALS['xoops']->path('www/class/xoopsform/grouppermform.php');
+require_once $GLOBALS['xoops']->path('www/class/xoopsform/grouppermform.php');
 
 $adminObject = \Xmf\Module\Admin::getInstance();
 $adminObject->displayNavigation(basename(__FILE__));
@@ -116,4 +116,4 @@ if ($categoryHandler->getCount()) {
 echo "<br><br><br><br>\n";
 unset($permissionsForm);
 
-include_once __DIR__ . '/admin_footer.php';
+require_once __DIR__ . '/admin_footer.php';

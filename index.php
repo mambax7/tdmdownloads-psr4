@@ -17,7 +17,7 @@
 use Xoopsmodules\tdmdownloads\Tdmobjecttree;
 
 //require __DIR__ . '/include/setup.php';
-include_once __DIR__ . '/header.php';
+require_once __DIR__ . '/header.php';
 // template d'affichage
 $moduleDirName = basename(__DIR__);
 //$downloadsHandler             = new Xoopsmodules\tdmdownloads\DownloadsHandler($db);
@@ -25,7 +25,7 @@ $moduleDirName = basename(__DIR__);
 //$downloadsvotedataHandler     = new Xoopsmodules\tdmdownloads\RatingHandler($db);
 
 $GLOBALS['xoopsOption']['template_main'] = 'tdmdownloads_index.tpl';
-include_once XOOPS_ROOT_PATH . '/header.php';
+require_once XOOPS_ROOT_PATH . '/header.php';
 $xoTheme->addStylesheet(XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/styles.css', null);
 // pour les permissions
 $categories = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);

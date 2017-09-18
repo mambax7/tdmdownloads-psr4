@@ -17,10 +17,10 @@
 //use Xoopsmodules\tdmdownloads;
 //use Xoopsmodules\tdmdownloads\Tdmobjecttree;
 
-//include_once dirname(__DIR__) . '/include/setup.php';
+//require_once dirname(__DIR__) . '/include/setup.php';
 
 require_once __DIR__ . '/../../../include/cp_header.php';
-include_once $GLOBALS['xoops']->path('www/class/xoopsformloader.php');
+require_once $GLOBALS['xoops']->path('www/class/xoopsformloader.php');
 
 //require_once __DIR__ . '/../../../class/xoopsformloader.php';
 //require_once __DIR__ . '/../class/utility.php';

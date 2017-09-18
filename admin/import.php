@@ -14,7 +14,7 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-include_once __DIR__ . '/admin_header.php';
+require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();
 $import_admin = \Xmf\Module\Admin::getInstance();
 echo $import_admin->displayNavigation(basename(__FILE__));
@@ -37,12 +37,12 @@ function Import_mydownloads($path = '', $imgurl = '')
     global $xoopsDB;
     if (1 === $ok) {
         //Vider les tables
-        //        $query = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_broken'));
-        //        $query = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_cat'));
-        //        $query = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_downloads'));
-        //        $query = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_fielddata'));
-        //        $query = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_modfielddata'));
-        //        $query = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_votedata'));
+        //        $sql = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_broken'));
+        //        $sql = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_cat'));
+        //        $sql = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_downloads'));
+        //        $sql = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_fielddata'));
+        //        $sql = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_modfielddata'));
+        //        $sql = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_votedata'));
 
         $myTables = ['tdmdownloads_broken', 'tdmdownloads_cat', 'tdmdownloads_downloads', 'tdmdownloads_fielddata', 'tdmdownloads_modfielddata', 'tdmdownloads_votedata'];
         $table    = new \Xmf\Database\TableLoad();
@@ -165,12 +165,12 @@ function Import_wfdownloads($shots = '', $catimg = '')
     global $xoopsDB;
     if (1 === $ok) {
         //Vider les tables
-        //        $query = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_broken'));
-        //        $query = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_cat'));
-        //        $query = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_downloads'));
-        //        $query = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_fielddata'));
-        //        $query = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_modfielddata'));
-        //        $query = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_votedata'));
+        //        $sql = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_broken'));
+        //        $sql = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_cat'));
+        //        $sql = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_downloads'));
+        //        $sql = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_fielddata'));
+        //        $sql = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_modfielddata'));
+        //        $sql = $xoopsDB->queryF('truncate table ' . $xoopsDB->prefix('tdmdownloads_votedata'));
 
         $myTables = ['tdmdownloads_broken', 'tdmdownloads_cat', 'tdmdownloads_downloads', 'tdmdownloads_fielddata', 'tdmdownloads_modfielddata', 'tdmdownloads_votedata'];
         $table    = new \Xmf\Database\TableLoad();
@@ -326,15 +326,15 @@ switch ($op) {
         echo '<br><br>';
         echo "<fieldset><legend style='font-weight: bold; color: #900;'>" . _AM_TDMDOWNLOADS_IMPORT_NUMBER . '</legend>';
         global $xoopsDB;
-        $query = $xoopsDB->query('SELECT COUNT(lid) AS count FROM ' . $xoopsDB->prefix('mydownloads_downloads'));
-        list($count_downloads) = $xoopsDB->fetchRow($query);
+        $sql = $xoopsDB->query('SELECT COUNT(lid) AS count FROM ' . $xoopsDB->prefix('mydownloads_downloads'));
+        list($count_downloads) = $xoopsDB->fetchRow($sql);
         if ($count_downloads < 1) {
             echo _AM_TDMDOWNLOADS_IMPORT_DONT_DOWNLOADS . '<br>';
         } else {
             echo sprintf(_AM_TDMDOWNLOADS_IMPORT_NB_DOWNLOADS, $count_downloads);
         }
-        $query = $xoopsDB->query('SELECT COUNT(cid) AS count FROM ' . $xoopsDB->prefix('mydownloads_cat'));
-        list($count_topic) = $xoopsDB->fetchRow($query);
+        $sql = $xoopsDB->query('SELECT COUNT(cid) AS count FROM ' . $xoopsDB->prefix('mydownloads_cat'));
+        list($count_topic) = $xoopsDB->fetchRow($sql);
         if ($count_topic < 1) {
             echo '' . _AM_TDMDOWNLOADS_IMPORT_DONT_TOPIC . '<br>';
         } else {
@@ -373,15 +373,15 @@ switch ($op) {
         echo '<br><br>';
         echo "<fieldset><legend style='font-weight: bold; color: #900;'>" . _AM_TDMDOWNLOADS_IMPORT_NUMBER . '</legend>';
         global $xoopsDB;
-        $query = $xoopsDB->query('SELECT COUNT(lid) AS count FROM ' . $xoopsDB->prefix('wfdownloads_downloads'));
-        list($count_downloads) = $xoopsDB->fetchRow($query);
+        $sql = $xoopsDB->query('SELECT COUNT(lid) AS count FROM ' . $xoopsDB->prefix('wfdownloads_downloads'));
+        list($count_downloads) = $xoopsDB->fetchRow($sql);
         if ($count_downloads < 1) {
             echo _AM_TDMDOWNLOADS_IMPORT_DONT_DOWNLOADS . '<br>';
         } else {
             echo sprintf(_AM_TDMDOWNLOADS_IMPORT_NB_DOWNLOADS, $count_downloads);
         }
-        $query = $xoopsDB->query('SELECT COUNT(cid) AS count FROM ' . $xoopsDB->prefix('wfdownloads_cat'));
-        list($count_topic) = $xoopsDB->fetchRow($query);
+        $sql = $xoopsDB->query('SELECT COUNT(cid) AS count FROM ' . $xoopsDB->prefix('wfdownloads_cat'));
+        list($count_topic) = $xoopsDB->fetchRow($sql);
         if ($count_topic < 1) {
             echo '' . _AM_TDMDOWNLOADS_IMPORT_DONT_TOPIC . '<br>';
         } else {
@@ -408,4 +408,4 @@ switch ($op) {
         break;
 }
 
-include_once __DIR__ . '/admin_footer.php';
+require_once __DIR__ . '/admin_footer.php';

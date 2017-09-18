@@ -20,7 +20,7 @@
 
 //use Xoopsmodules\tdmdownloads;
 
-//include_once dirname(__DIR__) . '/include/setup.php';
+//require_once dirname(__DIR__) . '/include/setup.php';
 
 /**
  * @param $options
@@ -33,7 +33,7 @@ function b_tdmdownloads_top_show($options)
     //$mydir          = basename(dirname(__DIR__));
     $moduleDirName = basename(dirname(__DIR__));
     $mymodule      = $moduleHandler->getByDirname($moduleDirName);
-    //    include_once XOOPS_ROOT_PATH . '/modules/' . $mymodule->getInfo('dirname') . '/include/setup.php';
+    //    require_once XOOPS_ROOT_PATH . '/modules/' . $mymodule->getInfo('dirname') . '/include/setup.php';
     //    require_once XOOPS_ROOT_PATH . "/modules/$moduleDirName/include/functions.php";
     //appel de la class
     $downloadsHandler = new Xoopsmodules\tdmdownloads\DownloadsHandler(null);// xoops_getModuleHandler('Downloads', $moduleDirName);
@@ -60,7 +60,7 @@ function b_tdmdownloads_top_show($options)
     global $xoTheme;
     $db = $helper = null;
     $xoTheme->addStylesheet(XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/blocks.css', null);
-    //    include_once dirname(__DIR__) . '/include/setup.php';
+    //    require_once dirname(__DIR__) . '/include/setup.php';
     $utilities = new Xoopsmodules\tdmdownloads\Utilities($db, $helper);
 
     $categories = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);

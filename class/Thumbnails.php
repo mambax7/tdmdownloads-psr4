@@ -143,7 +143,6 @@ class Thumbnails
 
         //return(array('error' => '1', 'thumbnail' => ''));
         return false;
-        exit;
     } // end function
 
     // function to check GD version

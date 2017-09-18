@@ -76,3 +76,6 @@ $downloadsmodHandler          = new tdmdownloads\ModifiedHandler($db);
 $downloadsfieldmoddataHandler = new tdmdownloads\ModifiedfielddataHandler($db);
 
 $debug = false;
+
+$moduleDirName = basename(dirname(__DIR__));
+$xoopsTpl->assign('mod_url',  XOOPS_URL . '/modules/' . $moduleDirName);

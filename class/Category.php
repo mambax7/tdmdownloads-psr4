@@ -59,7 +59,7 @@ class Category extends \XoopsObject
             $action = $_SERVER['REQUEST_URI'];
         }
         $moduleDirName = basename(dirname(__DIR__));
-        include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+        require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
 
         //nom du formulaire selon l'action (editer ou ajouter):
         $title = $this->isNew() ? sprintf(_AM_TDMDOWNLOADS_FORMADD) : sprintf(_AM_TDMDOWNLOADS_FORMEDIT);

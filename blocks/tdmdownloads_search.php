@@ -29,11 +29,11 @@ function b_tdmdownloads_search_show()
     $moduleDirName = basename(dirname(__DIR__));
     $module        = $moduleHandler->getByDirname($moduleDirName);
     $db            = $helper = null;
-    //    include_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/setup.php';
+    //    require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/setup.php';
     //    require_once XOOPS_ROOT_PATH . "/modules/$moduleDirName/include/functions.php";
 
-    include_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
-    include_once XOOPS_ROOT_PATH . '/class/tree.php';
+    require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
+    require_once XOOPS_ROOT_PATH . '/class/tree.php';
     //appel des class
     //    $categoryHandler       = xoops_getModuleHandler('Category', $moduleDirName);
     //    $downloadsHandler          = xoops_getModuleHandler('tdmdownloads_downloads', $moduleDirName);

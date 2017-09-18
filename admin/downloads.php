@@ -17,7 +17,7 @@
 use Xmf\Request;
 use Xoopsmodules\tdmdownloads\Tdmobjecttree;
 
-include_once __DIR__ . '/admin_header.php';
+require_once __DIR__ . '/admin_header.php';
 
 $myts = MyTextSanitizer::getInstance();
 //$thumbnail         = new Xoopsmodules\tdmdownloads\DownloadsHandler();
@@ -212,8 +212,8 @@ switch ($op) {
         }
         echo $downloadsAdmin->displayButton('left');
 
-        //        include_once dirname(__DIR__) . '/include/setup.php';
-        //        include_once __DIR__ . '/admin_header.php';
+        //        require_once dirname(__DIR__) . '/include/setup.php';
+        //        require_once __DIR__ . '/admin_header.php';
 
         //        $downloadsHandler = new Xoopsmodules\tdmdownloads\DownloadsHandler($db);
 
@@ -292,7 +292,7 @@ switch ($op) {
                 // supression des commentaires
                 xoops_comment_delete($xoopsModule->getVar('mid'), $downloads_lid);
                 //supression des tags
-                if ((1 === $xoopsModuleConfig['usetag']) and is_dir('../../tag')) {
+                if ((1 === $xoopsModuleConfig['usetag']) && is_dir('../../tag')) {
                     $tagHandler = xoops_getModuleHandler('link', 'tag');
                     $criteria   = new CriteriaCompo();
                     $criteria->add(new Criteria('tag_itemid', $downloads_lid));
@@ -430,7 +430,7 @@ switch ($op) {
         echo '<td>' . $downloads_description . '</td>';
         echo '</tr>';
         // tags
-        if ((1 == $xoopsModuleConfig['usetag']) and is_dir('../../tag')) {
+        if ((1 == $xoopsModuleConfig['usetag']) && is_dir('../../tag')) {
             require_once XOOPS_ROOT_PATH . '/modules/tag/include/tagbar.php';
             $tags_array = tagBar($downloads_lid, 0);
             if (!empty($tags_array)) {
@@ -603,7 +603,7 @@ switch ($op) {
     // Pour sauver un téléchargement
     case 'save_downloads':
         global $xoopsDB;
-        include_once XOOPS_ROOT_PATH . '/class/uploader.php';
+        require_once XOOPS_ROOT_PATH . '/class/uploader.php';
         if (!$GLOBALS['xoopsSecurity']->check()) {
             redirect_header('downloads.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
         }
@@ -665,7 +665,7 @@ switch ($op) {
             $donnee['date_update'] = $_POST['date_update'];
         }
         // erreur si la taille du fichier n'est pas un nombre
-        if (0 === (int)Request::getInt('size')) {
+        if (0 === Request::getInt('size')) {
             if (0 == Request::getInt('size') || '' === Request::getString('size')) {
                 $erreur = false;
             } else {
@@ -699,7 +699,7 @@ switch ($op) {
             }
         }
         // enregistrement temporaire des tags
-        if ((1 == $xoopsModuleConfig['usetag']) and is_dir('../../tag')) {
+        if ((1 == $xoopsModuleConfig['usetag']) && is_dir('../../tag')) {
             $donnee['TAG'] = $_POST['tag'];
         }
 
@@ -751,14 +751,14 @@ switch ($op) {
             // enregistrement
             if ($downloadsHandler->insert($obj)) {
                 if (!(Request::hasVar('downloads_modified'))) {
-                    $lid_dowwnloads = $obj->getNewEnreg($db);
+                    $lidDownloads = $obj->getNewEnreg($db);
                 } else {
-                    $lid_dowwnloads = Request::getInt('lid');
+                    $lidDownloads = Request::getInt('lid');
                 }
                 //tags
-                if ((1 == $xoopsModuleConfig['usetag']) and is_dir('../../tag')) {
+                if ((1 == $xoopsModuleConfig['usetag']) && is_dir('../../tag')) {
                     $tagHandler = xoops_getModuleHandler('tag', 'tag');
-                    $tagHandler->updateByItem($_POST['tag'], $lid_dowwnloads, $moduleDirName, 0);
+                    $tagHandler->updateByItem($_POST['tag'], $lidDownloads, $moduleDirName, 0);
                 }
                 // Récupération des champs supplémentaires:
                 $criteria = new CriteriaCompo();
@@ -779,7 +779,7 @@ switch ($op) {
                         }
                         $nom_champ = 'champ' . $downloads_field[$i]->getVar('fid');
                         $objdata->setVar('data', $_POST[$nom_champ]);
-                        $objdata->setVar('lid', $lid_dowwnloads);
+                        $objdata->setVar('lid', $lidDownloads);
                         $objdata->setVar('fid', $downloads_field[$i]->getVar('fid'));
                         $downloadsfielddataHandler->insert($objdata) || $objdata->getHtmlErrors();
                     }
@@ -788,13 +788,13 @@ switch ($op) {
                 if (2 == $xoopsModuleConfig['permission_download']) {
                     $gpermHandler = xoops_getHandler('groupperm');
                     $criteria     = new CriteriaCompo();
-                    $criteria->add(new Criteria('gperm_itemid', $lid_dowwnloads, '='));
+                    $criteria->add(new Criteria('gperm_itemid', $lidDownloads, '='));
                     $criteria->add(new Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
                     $criteria->add(new Criteria('gperm_name', 'tdmdownloads_download_item', '='));
                     $gpermHandler->deleteAll($criteria);
                     if (isset($_POST['item_download'])) {
                         foreach ($_POST['item_download'] as $onegroup_id) {
-                            $gpermHandler->addRight('tdmdownloads_download_item', $lid_dowwnloads, $onegroup_id, $xoopsModule->getVar('mid'));
+                            $gpermHandler->addRight('tdmdownloads_download_item', $lidDownloads, $onegroup_id, $xoopsModule->getVar('mid'));
                         }
                     }
                 }
@@ -802,7 +802,7 @@ switch ($op) {
                 if (Request::hasVar('downloads_modified')) {
                     $tags                  = [];
                     $tags['FILE_NAME']     = $_POST['title'];
-                    $tags['FILE_URL']      = XOOPS_URL . '/modules/' . $moduleDirName . '/singlefile.php?cid=' . $_POST['cid'] . '&amp;lid=' . $lid_dowwnloads;
+                    $tags['FILE_URL']      = XOOPS_URL . '/modules/' . $moduleDirName . '/singlefile.php?cid=' . $_POST['cid'] . '&amp;lid=' . $lidDownloads;
                     $downloadscat_cat      = $categoryHandler->get($_POST['cid']);
                     $tags['CATEGORY_NAME'] = $downloadscat_cat->getVar('cat_title');
                     $tags['CATEGORY_URL']  = XOOPS_URL . '/modules/' . $moduleDirName . '/viewcat.php?cid=' . $_POST['cid'];
@@ -839,4 +839,4 @@ switch ($op) {
         break;
 }
 //Affichage de la partie basse de l'administration de Xoops
-include_once __DIR__ . '/admin_footer.php';
+require_once __DIR__ . '/admin_footer.php';

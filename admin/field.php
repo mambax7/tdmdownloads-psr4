@@ -15,7 +15,7 @@
  */
 
 //require dirname(__DIR__) . '/include/setup.php';
-include_once __DIR__ . '/admin_header.php';
+require_once __DIR__ . '/admin_header.php';
 
 //On recupere la valeur de l'argument op dans l'URL$
 $op = $utilities->cleanVars($_REQUEST, 'op', 'list', 'string');
@@ -187,7 +187,7 @@ switch ($op) {
         $message_erreur = '';
         // Récupération des variables:
         // Pour l'image
-        include_once XOOPS_ROOT_PATH . '/class/uploader.php';
+        require_once XOOPS_ROOT_PATH . '/class/uploader.php';
         $uploader = new XoopsMediaUploader($uploaddir_field, [
             'image/gif',
             'image/jpeg',
@@ -231,4 +231,4 @@ switch ($op) {
         break;
 }
 //Affichage de la partie basse de l'administration de Xoops
-include_once __DIR__ . '/admin_footer.php';
+require_once __DIR__ . '/admin_footer.php';
