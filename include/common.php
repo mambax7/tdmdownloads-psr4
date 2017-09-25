@@ -77,5 +77,10 @@ $downloadsfieldmoddataHandler = new tdmdownloads\ModifiedfielddataHandler($db);
 
 $debug = false;
 
+if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof XoopsTpl)) {
+    require_once $GLOBALS['xoops']->path('class/template.php');
+    $xoopsTpl = new XoopsTpl();
+}
+
 $moduleDirName = basename(dirname(__DIR__));
 $xoopsTpl->assign('mod_url',  XOOPS_URL . '/modules/' . $moduleDirName);

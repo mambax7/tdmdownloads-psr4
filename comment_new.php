@@ -46,7 +46,7 @@ if ($com_itemid > 0) {
 
     $conn = $xoopsDB->conn;
     $stmt = $conn->prepare($sql);
-    if($stmt === false) {
+    if(false === $stmt) {
         trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->errno . ' ' . $conn->error, E_USER_ERROR);
     }
 

@@ -31,7 +31,7 @@ if (isset($_REQUEST['op'])) {
  * @param string $path
  * @param string $imgurl
  */
-function Import_mydownloads($path = '', $imgurl = '')
+function importMydownloads($path = '', $imgurl = '')
 {
     $ok = isset($_POST['ok']) ? (int)$_POST['ok'] : 0;
     global $xoopsDB;
@@ -150,7 +150,7 @@ function Import_mydownloads($path = '', $imgurl = '')
         echo _AM_TDMDOWNLOADS_IMPORT_OK;
         echo '</div>';
     } else {
-        xoops_confirm(['op' => 'import_mydownloads', 'ok' => 1, 'path' => $path, 'imgurl' => $imgurl], 'import.php', _AM_TDMDOWNLOADS_IMPORT_CONF_MYDOWNLOADS . '<br>');
+        xoops_confirm(['op' => 'importMydownloads', 'ok' => 1, 'path' => $path, 'imgurl' => $imgurl], 'import.php', _AM_TDMDOWNLOADS_IMPORT_CONF_MYDOWNLOADS . '<br>');
     }
 }
 
@@ -159,7 +159,7 @@ function Import_mydownloads($path = '', $imgurl = '')
  * @param string $shots
  * @param string $catimg
  */
-function Import_wfdownloads($shots = '', $catimg = '')
+function importWfdownloads($shots = '', $catimg = '')
 {
     $ok = isset($_POST['ok']) ? (int)$_POST['ok'] : 0;
     global $xoopsDB;
@@ -295,7 +295,7 @@ function Import_wfdownloads($shots = '', $catimg = '')
         echo _AM_TDMDOWNLOADS_IMPORT_OK;
         echo '</div>';
     } else {
-        xoops_confirm(['op' => 'import_wfdownloads', 'ok' => 1, 'shots' => $shots, 'catimg' => $catimg], 'import.php', _AM_TDMDOWNLOADS_IMPORT_CONF_WFDOWNLOADS . '<br>');
+        xoops_confirm(['op' => 'importWfdownloads', 'ok' => 1, 'shots' => $shots, 'catimg' => $catimg], 'import.php', _AM_TDMDOWNLOADS_IMPORT_CONF_WFDOWNLOADS . '<br>');
     }
 }
 
@@ -314,11 +314,11 @@ switch ($op) {
         break;
 
     // import Mydownloads
-    case 'import_mydownloads':
+    case 'importMydownloads':
         if ('' === $_REQUEST['path'] || '' === $_REQUEST['imgurl']) {
             redirect_header('import.php?op=form_mydownloads', 3, _AM_TDMDOWNLOADS_IMPORT_ERREUR);
         } else {
-            Import_mydownloads($_REQUEST['path'], $_REQUEST['imgurl']);
+            importMydownloads($_REQUEST['path'], $_REQUEST['imgurl']);
         }
         break;
 
@@ -343,7 +343,7 @@ switch ($op) {
         echo '</fieldset>';
         echo '<br><br>';
         echo "<table width='100%' border='0'>
-                <form action='import.php?op=import_mydownloads' method=POST>
+                <form action='import.php?op=importMydownloads' method=POST>
                 <tr>
                     <td  class='even'>" . _AM_TDMDOWNLOADS_IMPORT_MYDOWNLOADS_PATH . "</td>
                     <td  class='odd'><input type='text' name='path' id='import_data' size='100' value='" . XOOPS_ROOT_PATH . "/modules/mydownloads/assets/images/shots/' /></td>
@@ -361,11 +361,11 @@ switch ($op) {
         break;
 
     // import WF-Downloads
-    case 'import_wfdownloads':
+    case 'importWfdownloads':
         if ('' === $_REQUEST['shots'] || '' === $_REQUEST['catimg']) {
             redirect_header('import.php?op=form_wfdownloads', 3, _AM_TDMDOWNLOADS_IMPORT_ERREUR);
         } else {
-            Import_wfdownloads($_REQUEST['shots'], $_REQUEST['catimg']);
+            importWfdownloads($_REQUEST['shots'], $_REQUEST['catimg']);
         }
         break;
 
@@ -390,7 +390,7 @@ switch ($op) {
         echo '</fieldset>';
         echo '<br><br>';
         echo "<table width='100%' border='0'>
-                <form action='import.php?op=import_wfdownloads' method=POST>
+                <form action='import.php?op=importWfdownloads' method=POST>
                 <tr>
                     <td  class='even'>" . _AM_TDMDOWNLOADS_IMPORT_WFDOWNLOADS_SHOTS . "</td>
                     <td  class='odd'><input type='text' name='shots' id='import_data' size='100' value='" . XOOPS_ROOT_PATH . "/modules/wfdownloads/assets/images/screenshots/' /></td>
