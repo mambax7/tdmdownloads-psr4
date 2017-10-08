@@ -6,6 +6,7 @@
 - some cosmetic changes related to PSR-2 (mamba)
 - experimenting with PSR-4 Autoloading (mamba)
 - shorten class names (mamba)
+- added Preloads with autoloader (geekwright/mamba)
 
 
 

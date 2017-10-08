@@ -35,11 +35,11 @@ define('_MI_TDMDOWNLOADS_SMNAME1', 'Suggest');
 define('_MI_TDMDOWNLOADS_SMNAME2', 'Files List');
 // Menu administration
 define('_MI_TDMDOWNLOADS_ADMENU1', 'Index');
-define('_MI_TDMDOWNLOADS_ADMENU2', 'Categories Management');
-define('_MI_TDMDOWNLOADS_ADMENU3', 'Downloads Management');
-define('_MI_TDMDOWNLOADS_ADMENU4', 'Broken Downloads');
-define('_MI_TDMDOWNLOADS_ADMENU5', 'Modified Downloads');
-define('_MI_TDMDOWNLOADS_ADMENU6', 'Extra Fields Management');
+define('_MI_TDMDOWNLOADS_ADMENU2', 'Categories');
+define('_MI_TDMDOWNLOADS_ADMENU3', 'Downloads');
+define('_MI_TDMDOWNLOADS_ADMENU4', 'Broken');
+define('_MI_TDMDOWNLOADS_ADMENU5', 'Modified');
+define('_MI_TDMDOWNLOADS_ADMENU6', 'Extra Fields');
 define('_MI_TDMDOWNLOADS_ADMENU7', 'Import');
 define('_MI_TDMDOWNLOADS_ADMENU8', 'Permissions');
 define('_MI_TDMDOWNLOADS_ADMENU9', 'About');
