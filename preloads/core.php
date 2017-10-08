@@ -9,13 +9,9 @@
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 /**
- *  userlog module
  *
  * @copyright       XOOPS Project (https://xoops.org)
  * @license         GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
- * @package         userlog preloads
- * @since           1
- * @author          irmtfan (irmtfan@yahoo.com)
  * @author          XOOPS Project <www.xoops.org> <www.xoops.ir>
  */
 
@@ -32,13 +28,6 @@ class TdmdownloadsCorePreload extends XoopsPreloadItem
      */
     public static function eventCoreIncludeCommonEnd($args)
     {
-//        include __DIR__ . '/../include/postlog.php';
-        include __DIR__ . '/../include/autoloader.php';
+        include __DIR__ . '/autoloader.php';
     }
-    // in XOOPS255/index.php (homepage) when no module is set for start page there is a bug in XOOPS255/header.php exit() should be commented
-    /*$xoopsPreload->triggerEvent('core.header.checkcache');
-    if ($xoTheme->checkCache()) {
-        $xoopsPreload->triggerEvent('core.header.cacheend');
-        //exit();
-    } */
 }
