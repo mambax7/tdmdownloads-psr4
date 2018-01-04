@@ -1,13 +1,10 @@
-<?php namespace Xoopsmodules\tdmdownloads;
+<?php namespace XoopsModules\Tdmdownloads;
 
-use Xoopsmodules\tdmdownloads\common;
+use XoopsModules\Tdmdownloads\Common;
 
-require_once __DIR__ . '/common/VersionChecks.php';
-require_once __DIR__ . '/common/ServerStats.php';
-require_once __DIR__ . '/common/FilesManagement.php';
 
 /**
- * Class WflinksUtility
+ * Class Utility
  */
 class Utility extends \XoopsObject
 {
@@ -267,7 +264,7 @@ class Utility extends \XoopsObject
     public static function updateRating($sel_id)
     {
         global $xoopsDB;
-        $sql       = 'SELECT rating FROM ' . $xoopsDB->prefix('wflinks_votedata') . ' WHERE lid=' . $sel_id;
+        $sql         = 'SELECT rating FROM ' . $xoopsDB->prefix('wflinks_votedata') . ' WHERE lid=' . $sel_id;
         $voteresult  = $xoopsDB->query($sql);
         $votesDB     = $xoopsDB->getRowsNum($voteresult);
         $totalrating = 0;
@@ -600,8 +597,8 @@ class Utility extends \XoopsObject
         $redirecturl = 'index.php',
         $num = 0,
         $redirect = 0,
-        $usertype = 1)
-    {
+        $usertype = 1
+    ) {
         global $FILES, $xoopsModuleConfig;
 
         $down = [];
@@ -616,7 +613,7 @@ class Utility extends \XoopsObject
         $maxfilewidth  = $xoopsModuleConfig['maximgwidth'];
         $maxfileheight = $xoopsModuleConfig['maximgheight'];
 
-        $uploader = new XoopsMediaUploader($upload_dir, $allowed_mimetypes, $maxfilesize, $maxfilewidth, $maxfileheight);
+        $uploader = new \XoopsMediaUploader($upload_dir, $allowed_mimetypes, $maxfilesize, $maxfilewidth, $maxfileheight);
         //        $uploader->noAdminSizeCheck(1);
         if ($uploader->fetchMedia($_POST['xoops_upload_file'][0])) {
             if (!$uploader->upload()) {
@@ -704,7 +701,7 @@ class Utility extends \XoopsObject
         $title     = "<a href='../singlelink.php?cid=" . $published['cid'] . '&amp;lid=' . $published['lid'] . "'>" . $wfmyts->htmlSpecialCharsStrip(trim($published['title'])) . '</a>';
         $maintitle = urlencode($wfmyts->htmlSpecialChars(trim($published['title'])));
         $cattitle  = static::getCategoryTitle($published['cid']);
-        $submitter = XoopsUserUtility::getUnameFromId($published['submitter']);
+        $submitter = \XoopsUserUtility::getUnameFromId($published['submitter']);
         $hwhoisurl = str_replace('http://', '', $published['url']);
         $submitted = formatTimestamp($published['date'], $xoopsModuleConfig['dateformat']);
         $publish   = ($published['published'] > 0) ? formatTimestamp($published['published'], $xoopsModuleConfig['dateformatadmin']) : 'Not Published';
@@ -781,7 +778,7 @@ class Utility extends \XoopsObject
         // Display Page Nav if published is > total display pages amount.
         require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
         //    $page = ( $pubrowamount > $xoopsModuleConfig['admin_perpage'] ) ? _AM_WFL_MINDEX_PAGE : '';
-        $pagenav = new XoopsPageNav($pubrowamount, $xoopsModuleConfig['admin_perpage'], $start, 'st' . $art, $_this);
+        $pagenav = new \XoopsPageNav($pubrowamount, $xoopsModuleConfig['admin_perpage'], $start, 'st' . $art, $_this);
         echo '<div align="right" style="padding: 8px;">' . $pagenav->renderNav() . '</div>';
 
         return null;
@@ -805,7 +802,7 @@ class Utility extends \XoopsObject
         // Display Page Nav if published is > total display pages amount.
         require_once XOOPS_ROOT_PATH . '/class/pagenav.php';
         //    $page = ( $pubrowamount > $xoopsModuleConfig['admin_perpage'] ) ? _AM_WFL_MINDEX_PAGE : '';
-        $pagenav = new XoopsPageNav($pubrowamount, $xoopsModuleConfig['admin_perpage'], $start, 'st' . $art, $_this);
+        $pagenav = new \XoopsPageNav($pubrowamount, $xoopsModuleConfig['admin_perpage'], $start, 'st' . $art, $_this);
         echo '<div align="left" style="padding: 8px;">' . $pagenav->renderNav() . '</div>';
 
         return null;
@@ -851,16 +848,16 @@ class Utility extends \XoopsObject
                 if (!$x22) {
                     if (is_readable(XOOPS_ROOT_PATH . '/class/xoopseditor/fckeditor/formfckeditor.php')) {
                         require_once XOOPS_ROOT_PATH . '/class/xoopseditor/fckeditor/formfckeditor.php';
-                        $editor = new XoopsFormFckeditor($editor_configs, true);
+                        $editor = new \XoopsFormFckeditor($editor_configs, true);
                     } else {
                         if ($dhtml) {
-                            $editor = new XoopsFormDhtmlTextArea($caption, $name, $value, 20, 60);
+                            $editor = new \XoopsFormDhtmlTextArea($caption, $name, $value, 20, 60);
                         } else {
-                            $editor = new XoopsFormTextArea($caption, $name, $value, 7, 60);
+                            $editor = new \XoopsFormTextArea($caption, $name, $value, 7, 60);
                         }
                     }
                 } else {
-                    $editor = new XoopsFormEditor($caption, 'fckeditor', $editor_configs);
+                    $editor = new \XoopsFormEditor($caption, 'fckeditor', $editor_configs);
                 }
                 break;
 
@@ -868,39 +865,39 @@ class Utility extends \XoopsObject
                 if (!$x22) {
                     if (is_readable(XOOPS_ROOT_PATH . '/class/htmlarea/formhtmlarea.php')) {
                         require_once XOOPS_ROOT_PATH . '/class/htmlarea/formhtmlarea.php';
-                        $editor = new XoopsFormHtmlarea($caption, $name, $value);
+                        $editor = new \XoopsFormHtmlarea($caption, $name, $value);
                     }
                 } else {
-                    $editor = new XoopsFormEditor($caption, 'htmlarea', $editor_configs);
+                    $editor = new \XoopsFormEditor($caption, 'htmlarea', $editor_configs);
                 }
                 break;
 
             case 'dhtml':
                 if (!$x22) {
-                    $editor = new XoopsFormDhtmlTextArea($caption, $name, $value, 20, 60);
+                    $editor = new \XoopsFormDhtmlTextArea($caption, $name, $value, 20, 60);
                 } else {
-                    $editor = new XoopsFormEditor($caption, 'dhtmltextarea', $editor_configs);
+                    $editor = new \XoopsFormEditor($caption, 'dhtmltextarea', $editor_configs);
                 }
                 break;
 
             case 'textarea':
-                $editor = new XoopsFormTextArea($caption, $name, $value);
+                $editor = new \XoopsFormTextArea($caption, $name, $value);
                 break;
 
             case 'koivi':
                 if (!$x22) {
                     if (is_readable(XOOPS_ROOT_PATH . '/class/xoopseditor/koivi/formwysiwygtextarea.php')) {
                         require_once XOOPS_ROOT_PATH . '/class/xoopseditor/koivi/formwysiwygtextarea.php';
-                        $editor = new XoopsFormWysiwygTextArea($caption, $name, $value, '100%', '400px');
+                        $editor = new \XoopsFormWysiwygTextArea($caption, $name, $value, '100%', '400px');
                     } else {
                         if ($dhtml) {
-                            $editor = new XoopsFormDhtmlTextArea($caption, $name, $value, 20, 60);
+                            $editor = new \XoopsFormDhtmlTextArea($caption, $name, $value, 20, 60);
                         } else {
-                            $editor = new XoopsFormTextArea($caption, $name, $value, 7, 60);
+                            $editor = new \XoopsFormTextArea($caption, $name, $value, 7, 60);
                         }
                     }
                 } else {
-                    $editor = new XoopsFormEditor($caption, 'koivi', $editor_configs);
+                    $editor = new \XoopsFormEditor($caption, 'koivi', $editor_configs);
                 }
                 break;
 
@@ -908,22 +905,22 @@ class Utility extends \XoopsObject
                 if (!$x22) {
                     if (is_readable(XOOPS_ROOT_PATH . '/class/xoopseditor/tinyeditor/formtinyeditortextarea.php')) {
                         require_once XOOPS_ROOT_PATH . '/class/xoopseditor/tinyeditor/formtinyeditortextarea.php';
-                        $editor = new XoopsFormTinyeditorTextArea([
-                                                                      'caption' => $caption,
-                                                                      'name'    => $name,
-                                                                      'value'   => $value,
-                                                                      'width'   => '100%',
-                                                                      'height'  => '400px'
-                                                                  ]);
+                        $editor = new \XoopsFormTinyeditorTextArea([
+                                                                       'caption' => $caption,
+                                                                       'name'    => $name,
+                                                                       'value'   => $value,
+                                                                       'width'   => '100%',
+                                                                       'height'  => '400px'
+                                                                   ]);
                     } else {
                         if ($dhtml) {
-                            $editor = new XoopsFormDhtmlTextArea($caption, $name, $value, 50, 60);
+                            $editor = new \XoopsFormDhtmlTextArea($caption, $name, $value, 50, 60);
                         } else {
-                            $editor = new XoopsFormTextArea($caption, $name, $value, 7, 60);
+                            $editor = new \XoopsFormTextArea($caption, $name, $value, 7, 60);
                         }
                     }
                 } else {
-                    $editor = new XoopsFormEditor($caption, 'tinyeditor', $editor_configs);
+                    $editor = new \XoopsFormEditor($caption, 'tinyeditor', $editor_configs);
                 }
                 break;
 
@@ -931,16 +928,16 @@ class Utility extends \XoopsObject
                 if (!$x22) {
                     if (is_readable(XOOPS_ROOT_PATH . '/class/xoopseditor/dhtmlext/dhtmlext.php')) {
                         require_once XOOPS_ROOT_PATH . '/class/xoopseditor/dhtmlext/dhtmlext.php';
-                        $editor = new XoopsFormDhtmlTextAreaExtended($caption, $name, $value, 10, 50);
+                        $editor = new \XoopsFormDhtmlTextAreaExtended($caption, $name, $value, 10, 50);
                     } else {
                         if ($dhtml) {
-                            $editor = new XoopsFormDhtmlTextArea($caption, $name, $value, 50, 60);
+                            $editor = new \XoopsFormDhtmlTextArea($caption, $name, $value, 50, 60);
                         } else {
-                            $editor = new XoopsFormTextArea($caption, $name, $value, 7, 60);
+                            $editor = new \XoopsFormTextArea($caption, $name, $value, 7, 60);
                         }
                     }
                 } else {
-                    $editor = new XoopsFormEditor($caption, 'dhtmlext', $editor_configs);
+                    $editor = new \XoopsFormEditor($caption, 'dhtmlext', $editor_configs);
                 }
                 break;
 
@@ -948,31 +945,31 @@ class Utility extends \XoopsObject
                 if (!$x22) {
                     if (is_readable(XOOPS_ROOT_PATH . '/class/xoopseditor/tinymce/formtinymce.php')) {
                         require_once XOOPS_ROOT_PATH . '/class/xoopseditor/tinymce/formtinymce.php';
-                        $editor = new XoopsFormTinymce([
-                                                           'caption' => $caption,
-                                                           'name'    => $name,
-                                                           'value'   => $value,
-                                                           'width'   => '100%',
-                                                           'height'  => '400px'
-                                                       ]);
+                        $editor = new \XoopsFormTinymce([
+                                                            'caption' => $caption,
+                                                            'name'    => $name,
+                                                            'value'   => $value,
+                                                            'width'   => '100%',
+                                                            'height'  => '400px'
+                                                        ]);
                     } elseif (is_readable(XOOPS_ROOT_PATH . '/editors/tinymce/formtinymce.php')) {
                         require_once XOOPS_ROOT_PATH . '/editors/tinymce/formtinymce.php';
-                        $editor = new XoopsFormTinymce([
-                                                           'caption' => $caption,
-                                                           'name'    => $name,
-                                                           'value'   => $value,
-                                                           'width'   => '100%',
-                                                           'height'  => '400px'
-                                                       ]);
+                        $editor = new \XoopsFormTinymce([
+                                                            'caption' => $caption,
+                                                            'name'    => $name,
+                                                            'value'   => $value,
+                                                            'width'   => '100%',
+                                                            'height'  => '400px'
+                                                        ]);
                     } else {
                         if ($dhtml) {
-                            $editor = new XoopsFormDhtmlTextArea($caption, $name, $value, 20, 60);
+                            $editor = new \XoopsFormDhtmlTextArea($caption, $name, $value, 20, 60);
                         } else {
-                            $editor = new XoopsFormTextArea($caption, $name, $value, 7, 60);
+                            $editor = new \XoopsFormTextArea($caption, $name, $value, 7, 60);
                         }
                     }
                 } else {
-                    $editor = new XoopsFormEditor($caption, 'tinymce', $editor_configs);
+                    $editor = new \XoopsFormEditor($caption, 'tinymce', $editor_configs);
                 }
                 break;
         }
@@ -1551,7 +1548,7 @@ class Utility extends \XoopsObject
     {
         ###### Hack by www.stefanosilvestrini.com ######
         global $xoopsConfig;
-        $db      = XoopsDatabaseFactory::getDatabaseConnection();
+        $db      = \XoopsDatabaseFactory::getDatabaseConnection();
         $bresult = $db->query('SELECT COUNT(*) FROM ' . $db->prefix('banner') . ' WHERE bid=' . $banner_id);
         list($numrows) = $db->fetchRow($bresult);
         if ($numrows > 1) {
@@ -1613,7 +1610,7 @@ class Utility extends \XoopsObject
     {
         ###### Hack by www.stefanosilvestrini.com ######
         global $xoopsConfig;
-        $db      = XoopsDatabaseFactory::getDatabaseConnection();
+        $db      = \XoopsDatabaseFactory::getDatabaseConnection();
         $bresult = $db->query('SELECT COUNT(*) FROM ' . $db->prefix('banner') . ' WHERE cid=' . $client_id);
         list($numrows) = $db->fetchRow($bresult);
         if ($numrows > 1) {
@@ -1722,24 +1719,23 @@ class Utility extends \XoopsObject
      */
     public static function getSubstring($str, $start, $length, $trimmarker = '...')
     {
-        $configHandler          = xoops_getHandler('config');
-        $im_multilanguageConfig = $configHandler->getConfigsByCat(IM_CONF_MULILANGUAGE);
-
-        if ($im_multilanguageConfig['ml_enable']) {
-            $tags  = explode(',', $im_multilanguageConfig['ml_tags']);
-            $strs  = [];
-            $hasML = false;
-            foreach ($tags as $tag) {
-                if (preg_match("/\[" . $tag . "](.*)\[\/" . $tag . "\]/sU", $str, $matches)) {
-                    if (count($matches) > 0) {
-                        $hasML  = true;
-                        $strs[] = $matches[1];
-                    }
-                }
-            }
-        } else {
-            $hasML = false;
-        }
+        $hasML = false;
+//        $configHandler          = xoops_getHandler('config');
+//        $im_multilanguageConfig = $configHandler->getConfigsByCat(IM_CONF_MULILANGUAGE);
+//
+//        if ($im_multilanguageConfig['ml_enable']) {
+//            $tags  = explode(',', $im_multilanguageConfig['ml_tags']);
+//            $strs  = [];
+//            $hasML = false;
+//            foreach ($tags as $tag) {
+//                if (preg_match("/\[" . $tag . "](.*)\[\/" . $tag . "\]/sU", $str, $matches)) {
+//                    if (count($matches) > 0) {
+//                        $hasML  = true;
+//                        $strs[] = $matches[1];
+//                    }
+//                }
+//            }
+//        }
 
         if (!$hasML) {
             $strs = [$str];

@@ -57,22 +57,22 @@ switch ($op) {
         $erreur         = false;
         $message_erreur = '';
         $donnee         = [];
-        $obj->setVar('title', $_POST['title']);
-        $donnee['title'] = $_POST['title'];
-        $obj->setVar('cid', $_POST['cid']);
-        $donnee['cid'] = $_POST['cid'];
-        $obj->setVar('homepage', formatURL($_POST['homepage']));
-        $obj->setVar('version', $_POST['version']);
-        $obj->setVar('size', $_POST['size']);
-        $donnee['type_size'] = $_POST['type_size'];
-        $obj->setVar('paypal', $_POST['paypal']);
+        $obj->setVar('title',  Request::getString('type_size','', 'POST')$_POST['title']);
+        $donnee['title'] =  Request::getString('type_size','', 'POST')$_POST['title'];
+        $obj->setVar('cid',  Request::getString('type_size','', 'POST')$_POST['cid']);
+        $donnee['cid'] =  Request::getString('type_size','', 'POST')$_POST['cid'];
+        $obj->setVar('homepage', formatURL( Request::getString('type_size','', 'POST')$_POST['homepage']));
+        $obj->setVar('version',  Request::getString('type_size','', 'POST')$_POST['version']);
+        $obj->setVar('size',  Request::getString('type_size','', 'POST')$_POST['size']);
+        $donnee['type_size'] =  Request::getString('type_size','', 'POST')$_POST['type_size'];
+        $obj->setVar('paypal',  Request::getString('type_size','', 'POST')$_POST['paypal']);
         if (isset($_POST['platform'])) {
-            $obj->setVar('platform', implode('|', $_POST['platform']));
+            $obj->setVar('platform', implode('|',  Request::getString('type_size','', 'POST')$_POST['platform']));
         }
-        $obj->setVar('description', $_POST['description']);
+        $obj->setVar('description',  Request::getString('type_size','', 'POST')$_POST['description']);
         if (isset($_POST['submitter'])) {
-            $obj->setVar('submitter', $_POST['submitter']);
-            $donnee['submitter'] = $_POST['submitter'];
+            $obj->setVar('submitter',  Request::getString('type_size','', 'POST')$_POST['submitter']);
+            $donnee['submitter'] =  Request::getString('type_size','', 'POST')$_POST['submitter'];
         } else {
             $obj->setVar('submitter', !empty($xoopsUser) ? $xoopsUser->getVar('uid') : 0);
             $donnee['submitter'] = !empty($xoopsUser) ? $xoopsUser->getVar('uid') : 0;
@@ -113,7 +113,7 @@ switch ($op) {
         }
         // erreur si le captcha est faux
         xoops_load('captcha');
-        $xoopsCaptcha = XoopsCaptcha::getInstance();
+        $xoopsCaptcha = \XoopsCaptcha::getInstance();
         if (!$xoopsCaptcha->verify()) {
             $message_erreur .= $xoopsCaptcha->getMessage() . '<br>';
             $erreur         = true;
@@ -122,7 +122,7 @@ switch ($op) {
         $criteria = new CriteriaCompo();
         $criteria->setSort('weight ASC, title');
         $criteria->setOrder('ASC');
-        $downloads_field = $downloadsfieldHandler->getAll($criteria);
+        $downloads_field = $fieldHandler->getAll($criteria);
         foreach (array_keys($downloads_field) as $i) {
             if (0 === $downloads_field[$i]->getVar('status_def')) {
                 $nom_champ          = 'champ' . $downloads_field[$i]->getVar('fid');
@@ -139,7 +139,7 @@ switch ($op) {
             $obj->setVar('size', $_POST['size'] . ' ' . $_POST['type_size']);
             // Pour le fichier
             if (isset($_POST['xoops_upload_file'][0])) {
-                $uploader = new XoopsMediaUploader($uploaddir_downloads, explode('|', $xoopsModuleConfig['mimetype']), $xoopsModuleConfig['maxuploadsize'], null, null);
+                $uploader = new \XoopsMediaUploader($uploaddir_downloads, explode('|', $xoopsModuleConfig['mimetype']), $xoopsModuleConfig['maxuploadsize'], null, null);
                 if ($uploader->fetchMedia($_POST['xoops_upload_file'][0])) {
                     if ($xoopsModuleConfig['newnamedownload']) {
                         $uploader->setPrefix($xoopsModuleConfig['prefixdownloads']);
@@ -157,7 +157,7 @@ switch ($op) {
             }
             // Pour l'image
             if (isset($_POST['xoops_upload_file'][1])) {
-                $uploader_2 = new XoopsMediaUploader($uploaddir_shots, [
+                $uploader_2 = new \XoopsMediaUploader($uploaddir_shots, [
                     'image/gif',
                     'image/jpeg',
                     'image/pjpeg',
@@ -189,15 +189,15 @@ switch ($op) {
                 $criteria = new CriteriaCompo();
                 $criteria->setSort('weight ASC, title');
                 $criteria->setOrder('ASC');
-                $downloads_field = $downloadsfieldHandler->getAll($criteria);
+                $downloads_field = $fieldHandler->getAll($criteria);
                 foreach (array_keys($downloads_field) as $i) {
                     if (0 === $downloads_field[$i]->getVar('status_def')) {
-                        $objdata   = $downloadsfielddataHandler->create();
+                        $objdata   = $fielddataHandler->create();
                         $nom_champ = 'champ' . $downloads_field[$i]->getVar('fid');
                         $objdata->setVar('data', $_POST[$nom_champ]);
                         $objdata->setVar('lid', $lidDownloads);
                         $objdata->setVar('fid', $downloads_field[$i]->getVar('fid'));
-                        $downloadsfielddataHandler->insert($objdata) || $objdata->getHtmlErrors();
+                        $fielddataHandler->insert($objdata) || $objdata->getHtmlErrors();
                     }
                 }
                 if ($xoopsUser) {

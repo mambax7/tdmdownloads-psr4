@@ -14,17 +14,20 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+
+require_once __DIR__ . '/preloads/autoloader.php';
+
 $moduleDirName = basename(__DIR__);
 xoops_load('xoopseditorhandler');
-$editorHandler = XoopsEditorHandler::getInstance();
+$editorHandler = \XoopsEditorHandler::getInstance();
 $xoops_url     = parse_url(XOOPS_URL);
 
 $modversion = [
     'name'                => _MI_TDMDOWNLOADS_NAME,
     'version'             => '2.0',
     'module_status'       => 'Alpha 1',
-    'release_date'        => '2015/09/14',
+    'release_date'        => '2017/10/10',
     'description'         => _MI_TDMDOWNLOADS_DESC,
     'credits'             => 'G. Mage, Mamba',
     'author'              => 'G. Mage',
@@ -149,46 +152,16 @@ $modversion = [
     // ------------------- Templates -------------------
 
     'templates' => [
-        [
-            'file'        => $moduleDirName . '_brokenfile.tpl',
-            'description' => ''
-        ],
-        [
-            'file'        => $moduleDirName . '_download.tpl',
-            'description' => ''
-        ],
-        [
-            'file'        => $moduleDirName . '_index.tpl',
-            'description' => ''
-        ],
-        [
-            'file'        => $moduleDirName . '_modfile.tpl',
-            'description' => ''
-        ],
-        [
-            'file'        => $moduleDirName . '_ratefile.tpl',
-            'description' => ''
-        ],
-        [
-            'file'        => $moduleDirName . '_singlefile.tpl',
-            'description' => ''
-        ],
-        [
-            'file'        => $moduleDirName . '_submit.tpl',
-            'description' => ''
-        ],
-        [
-            'file'        => $moduleDirName . '_viewcat.tpl',
-            'description' => ''
-        ],
-        [
-            'file'        => $moduleDirName . '_liste.tpl',
-            'description' => ''
-        ],
-        [
-            'file'        => $moduleDirName . '_rss.tpl',
-            'description' => ''
-        ]
+        ['file' => $moduleDirName . '_brokenfile.tpl', 'description' => ''],
+        ['file' => $moduleDirName . '_download.tpl', 'description' => ''],
+        ['file' => $moduleDirName . '_index.tpl', 'description' => ''],
+        ['file' => $moduleDirName . '_modfile.tpl', 'description' => ''],
+        ['file' => $moduleDirName . '_ratefile.tpl', 'description' => ''],
+        ['file' => $moduleDirName . '_singlefile.tpl', 'description' => ''],
+        ['file' => $moduleDirName . '_submit.tpl', 'description' => ''],
+        ['file' => $moduleDirName . '_viewcat.tpl', 'description' => ''],
+        ['file' => $moduleDirName . '_liste.tpl', 'description' => ''],
+        ['file' => $moduleDirName . '_rss.tpl', 'description' => '']
     ],
     // ------------------- Preferences -------------------
 

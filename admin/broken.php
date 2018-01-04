@@ -45,14 +45,14 @@ switch ($op) {
         $criteria->setSort('reportid');
         $criteria->setOrder('ASC');
         //pour faire une jointure de table
-        //        $downloadsbrokenHandler       = new Xoopsmodules\tdmdownloads\BrokenHandler($db);
-        $downloadsbrokenHandler->table_link   = $downloadsbrokenHandler->db->prefix('tdmdownloads_downloads'); // Nom de la table en jointure
-        $downloadsbrokenHandler->field_link   = 'lid'; // champ de la table en jointure
-        $downloadsbrokenHandler->field_object = 'lid'; // champ de la table courante
-        $downloadsbroken_arr                  = $downloadsbrokenHandler->getByLink($criteria);
-        $numrows                              = $downloadsbrokenHandler->getCount($criteria);
+        //        $brokenHandler       = new XoopsModules\Tdmdownloads\BrokenHandler($db);
+        $brokenHandler->table_link   = $brokenHandler->db->prefix('tdmdownloads_downloads'); // Nom de la table en jointure
+        $brokenHandler->field_link   = 'lid'; // champ de la table en jointure
+        $brokenHandler->field_object = 'lid'; // champ de la table courante
+        $downloadsbroken_arr         = $brokenHandler->getByLink($criteria);
+        $numrows                     = $brokenHandler->getCount($criteria);
         if ($numrows > $limit) {
-            $pagenav = new XoopsPageNav($numrows, $limit, $start, 'start', 'op=list&limit=' . $limit);
+            $pagenav = new \XoopsPageNav($numrows, $limit, $start, 'start', 'op=list&limit=' . $limit);
             $pagenav = $pagenav->renderNav(4);
         } else {
             $pagenav = '';
@@ -96,12 +96,12 @@ switch ($op) {
 
     // permet de suprimmer le rapport de téléchargment brisé
     case 'del_brokendownloads':
-        $obj = $downloadsbrokenHandler->get($_REQUEST['broken_id']);
+        $obj = $brokenHandler->get($_REQUEST['broken_id']);
         if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header('downloads.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
             }
-            if ($downloadsbrokenHandler->delete($obj)) {
+            if ($brokenHandler->delete($obj)) {
                 redirect_header('broken.php', 1, _AM_TDMDOWNLOADS_REDIRECT_DELOK);
             }
             echo $objvotedata->getHtmlErrors();

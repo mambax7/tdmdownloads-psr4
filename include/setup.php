@@ -9,7 +9,7 @@
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
-use Xoopsmodules\tdmdownloads;
+use XoopsModules\Tdmdownloads;
 
 /**
  * Review module for xoops
@@ -18,17 +18,17 @@ use Xoopsmodules\tdmdownloads;
  * @copyright       {@link http://sourceforge.net/projects/xoops/ The XOOPS Project}
  * @license         GPL 2.0 or later
  * @package         tdmdownloads
- * @author          XOOPS Module Dev Team (http://xoops.org)
+ * @author          XOOPS Module Dev Team (https://xoops.org)
  */
 
 require_once dirname(__DIR__) . '/class/Autoloader.php';
 // true param for auto-registration in spl_autoload_register() function.
-$loaderPsr4 = new Xoopsmodules\tdmdownloads\Autoloader(true);
+$loaderPsr4 = new XoopsModules\Tdmdownloads\Autoloader(true);
 
 // Register a namespace
 //$loaderPsr4->registerNamespace('org\\example\\libraries', './org/example/libraries');
 //new org\example\libraries\DatabaseLibrary();
-$loaderPsr4->registerNamespace('Xoopsmodules\\tdmdownloads', dirname(__DIR__) . '/class/');
+$loaderPsr4->registerNamespace('XoopsModules\\Tdmdownloads', dirname(__DIR__) . '/class/');
 
 // Register a new file that has no namespace
 //$loaderPsr4->registerFile('NoNamespaceClass', 'org/NoNamespaceClass.php');
@@ -80,12 +80,12 @@ define('TDMDOWNLOADS_UPLOAD_PATH', XOOPS_UPLOAD_PATH . '/' . TDMDOWNLOADS_DIRNAM
 
 //require_once dirname(__DIR__) . '/class/helper.php';
 
-$helper = tdmdownloads\Helper::getInstance(false);
+$helper = Tdmdownloads\Helper::getInstance(false);
 //$helper      = & Helper::getInstance();
-$utilities   = new Xoopsmodules\tdmdownloads\Utilities($db, $helper);
-$mainLang    = '_MD_' . strtoupper($helper->moduleDirName);
-$modinfoLang = '_MI_' . strtoupper($helper->moduleDirName);
-$adminLang   = '_AM_' . strtoupper($helper->moduleDirName);
+$utilities   = new XoopsModules\Tdmdownloads\Utilities($db, $helper);
+$mainLang    = '_MD_' . strtoupper($helper->getDirname());
+$modinfoLang = '_MI_' . strtoupper($helper->getDirname());
+$adminLang   = '_AM_' . strtoupper($helper->getDirname());
 //define('MODINFO_LANG', 'MI');
 //define('ADMIN_LANG', 'AM');
 //define('MAIN_LANG', 'MD');
@@ -104,14 +104,14 @@ $uploadFolders = [
 //$xoopsTpl->assign('uploadFolders', $uploadFolders);
 
 // module information
-$mod_copyright = "<a href='http://xoops.org' title='XOOPS Project' target='_blank'>
+$mod_copyright = "<a href='https://xoops.org' title='XOOPS Project' target='_blank'>
                      <img src='" . TDMDOWNLOADS_AUTHOR_LOGOIMG . " alt='XOOPS Project' /></a>";
 
-$categoryHandler              = new Xoopsmodules\tdmdownloads\CategoryHandler($db);
-$downloadsHandler             = new Xoopsmodules\tdmdownloads\DownloadsHandler($db);
-$downloadsvotedataHandler     = new Xoopsmodules\tdmdownloads\RatingHandler($db);
-$downloadsfieldHandler        = new Xoopsmodules\tdmdownloads\FieldHandler($db);
-$downloadsfielddataHandler    = new Xoopsmodules\tdmdownloads\FielddataHandler($db);
-$downloadsbrokenHandler       = new Xoopsmodules\tdmdownloads\BrokenHandler($db);
-$downloadsmodHandler          = new Xoopsmodules\tdmdownloads\ModifiedHandler($db);
-$downloadsfieldmoddataHandler = new Xoopsmodules\tdmdownloads\ModifiedfielddataHandler($db);
+//$categoryHandler              = new XoopsModules\Tdmdownloads\CategoryHandler($db);
+//$downloadsHandler             = new XoopsModules\Tdmdownloads\DownloadsHandler($db);
+//$ratingHandler     = new XoopsModules\Tdmdownloads\RatingHandler($db);
+//$fieldHandler        = new XoopsModules\Tdmdownloads\FieldHandler($db);
+//$fielddataHandler    = new XoopsModules\Tdmdownloads\FielddataHandler($db);
+//$brokenHandler       = new XoopsModules\Tdmdownloads\BrokenHandler($db);
+//$modifiedHandler          = new XoopsModules\Tdmdownloads\ModifiedHandler($db);
+//$modifiedfielddataHandler = new XoopsModules\Tdmdownloads\ModifiedfielddataHandler($db);

@@ -1,4 +1,4 @@
-<?php namespace Xoopsmodules\tdmdownloads;
+<?php namespace XoopsModules\Tdmdownloads;
 
 /**
  * Created by PhpStorm.
@@ -239,8 +239,8 @@ class Utilities
         $prefix = '',
         $link = false,
         $order = 'ASC',
-        $lasturl = false)
-    {
+        $lasturl = false
+    ) {
         global $xoopsModule;
         $category_parent = $mytree->getAllParent($key);
         if ('ASC' === $order) {
@@ -291,6 +291,7 @@ class Utilities
      * @param int  $mode
      * @param      $fileSource
      * @param null $fileTarget
+     * @throws \RuntimeException
      */
     public function createFolder($path, $mode = 0777, $fileSource, $fileTarget = null)
     {
@@ -309,12 +310,13 @@ class Utilities
     /**
      * @param $pathSource
      * @param $pathTarget
+     * @throws \RuntimeException
      */
     public static function cloneFolder($pathSource, $pathTarget)
     {
         if (is_dir($pathSource)) {
             // Create new dir
-            if (!@mkdir($pathTarget)) {
+            if (!mkdir($pathTarget) && !is_dir($pathTarget)) {
                 throw new \RuntimeException(sprintf('Unable to create the %s directory', $pathTarget));
             }
             // check all files in dir, and process it
@@ -337,6 +339,7 @@ class Utilities
      * @param string $folder Le chemin complet du répertoire à vérifier
      *
      * @return void
+     * @throws \RuntimeException
      */
     public function prepareFolder($folder)
     {

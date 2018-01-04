@@ -1,4 +1,4 @@
-<?php namespace Xoopsmodules\tdmdownloads;
+<?php namespace XoopsModules\Tdmdownloads;
 
 /**
  * TDMDownload
@@ -15,7 +15,7 @@
  * @author      Gregory Mage (Aka Mage) and Hossein Azizabadi (Aka voltan)
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 class Downlimit extends \XoopsObject
 {

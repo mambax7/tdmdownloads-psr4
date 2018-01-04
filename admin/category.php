@@ -15,21 +15,21 @@
  */
 
 use Xmf\Request;
-use Xoopsmodules\tdmdownloads\Tdmobjecttree;
+use XoopsModules\Tdmdownloads\TdmObjectTree;
 
 //require dirname(__DIR__) . '/include/setup.php';
 require_once __DIR__ . '/admin_header.php';
 
 //On recupere la valeur de l'argument op dans l'URL$
 $op = $utilities->cleanVars($_REQUEST, 'op', 'list', 'string');
-//$categoryHandler          = new Xoopsmodules\tdmdownloads\CategoryHandler($db);
-//$downloadsmodHandler          = new Xoopsmodules\tdmdownloads\ModifiedHandler($db);
-//$downloadsbrokenHandler       = new Xoopsmodules\tdmdownloads\BrokenHandler($db);
-//$downloadsHandler             = new Xoopsmodules\tdmdownloads\DownloadsHandler($db);
-//$downloadsvotedataHandler     = new Xoopsmodules\tdmdownloads\RatingHandler($db);
-//$downloadsfieldHandler        = new Xoopsmodules\tdmdownloads\FieldHandler($db);
-//$downloadsfielddataHandler    = new Xoopsmodules\tdmdownloads\FielddataHandler($db);
-//$downloadsfieldmoddataHandler = new Xoopsmodules\tdmdownloads\TDMDownloads_modfielddataHandler($db);
+//$categoryHandler          = new XoopsModules\Tdmdownloads\CategoryHandler($db);
+//$modifiedHandler          = new XoopsModules\Tdmdownloads\ModifiedHandler($db);
+//$brokenHandler       = new XoopsModules\Tdmdownloads\BrokenHandler($db);
+//$downloadsHandler             = new XoopsModules\Tdmdownloads\DownloadsHandler($db);
+//$ratingHandler     = new XoopsModules\Tdmdownloads\RatingHandler($db);
+//$fieldHandler        = new XoopsModules\Tdmdownloads\FieldHandler($db);
+//$fielddataHandler    = new XoopsModules\Tdmdownloads\FielddataHandler($db);
+//$modifiedfielddataHandler = new XoopsModules\Tdmdownloads\TDMDownloads_modfielddataHandler($db);
 
 //Les valeurs de op qui vont permettre d'aller dans les differentes parties de la page
 switch ($op) {
@@ -60,7 +60,7 @@ switch ($op) {
             echo '</tr>';
             $class = 'odd';
             //            require_once XOOPS_ROOT_PATH . "/modules/$moduleDirName/class/tree.php";
-            $mytree             = new TDMObjectTree($downloads_cat, 'cat_cid', 'cat_pid');
+            $mytree             = new TdmObjectTree($downloads_cat, 'cat_cid', 'cat_pid');
             $category_ArrayTree = $mytree->makeArrayTree('cat_title', '<img src="../assets/images/deco/arrow.gif">');
             foreach (array_keys($category_ArrayTree) as $i) {
                 echo '<tr class="' . $class . '">';
@@ -128,27 +128,27 @@ switch ($op) {
                 // supression des votes
                 $criteria_1 = new CriteriaCompo();
                 $criteria_1->add(new Criteria('lid', $downloads_arr[$i]->getVar('lid')));
-                $downloads_votedata = $downloadsvotedataHandler->getAll($criteria_1);
+                $downloads_votedata = $ratingHandler->getAll($criteria_1);
                 foreach (array_keys($downloads_votedata) as $j) {
-                    $objvotedata = $downloadsvotedataHandler->get($downloads_votedata[$j]->getVar('ratingid'));
-                    $downloadsvotedataHandler->delete($objvotedata) || $objvotedata->getHtmlErrors();
+                    $objvotedata = $ratingHandler->get($downloads_votedata[$j]->getVar('ratingid'));
+                    $ratingHandler->delete($objvotedata) || $objvotedata->getHtmlErrors();
                 }
                 // supression des rapports de fichier brisé
                 $criteria_2 = new CriteriaCompo();
                 $criteria_2->add(new Criteria('lid', $downloads_arr[$i]->getVar('lid')));
-                $downloads_broken = $downloadsbrokenHandler->getAll($criteria_2);
+                $downloads_broken = $brokenHandler->getAll($criteria_2);
                 foreach (array_keys($downloads_broken) as $j) {
-                    $objbroken = $downloadsbrokenHandler->get($downloads_broken[$j]->getVar('reportid'));
-                    $downloadsbrokenHandler->delete($objbroken) || $objbroken->getHtmlErrors();
+                    $objbroken = $brokenHandler->get($downloads_broken[$j]->getVar('reportid'));
+                    $brokenHandler->delete($objbroken) || $objbroken->getHtmlErrors();
                 }
                 // supression des data des champs sup.
                 $criteria_3 = new CriteriaCompo();
                 $criteria_3->add(new Criteria('lid', $downloads_arr[$i]->getVar('lid')));
-                $downloads_fielddata = $downloadsfielddataHandler->getAll($criteria_3);
-                if ($downloadsfielddataHandler->getCount($criteria_3) > 0) {
+                $downloads_fielddata = $fielddataHandler->getAll($criteria_3);
+                if ($fielddataHandler->getCount($criteria_3) > 0) {
                     foreach (array_keys($downloads_fielddata) as $j) {
-                        $objfielddata = $downloadsfielddataHandler->get($downloads_fielddata[$j]->getVar('iddata'));
-                        $downloadsfielddataHandler->delete($objfielddata) || $objvfielddata->getHtmlErrors();
+                        $objfielddata = $fielddataHandler->get($downloads_fielddata[$j]->getVar('iddata'));
+                        $fielddataHandler->delete($objfielddata) || $objvfielddata->getHtmlErrors();
                     }
                 }
                 // supression des commentaires
@@ -182,8 +182,8 @@ switch ($op) {
                 $downloadsHandler->delete($objdownloads) || $objdownloads->getHtmlErrors();
             }
             // supression des sous catégories avec leurs téléchargements
-            $downloadscat_arr   = $categoryHandler->getAll();
-            $mytree             = new Tdmobjecttree($downloadscat_arr, 'cat_cid', 'cat_pid');
+            $downloadscatArray   = $categoryHandler->getAll();
+            $mytree             = new TdmObjectTree($downloadscatArray, 'cat_cid', 'cat_pid');
             $downloads_childcat = $mytree->getAllChild($downloadscat_cid);
             foreach (array_keys($downloads_childcat) as $i) {
                 // supression de la catégorie
@@ -197,26 +197,26 @@ switch ($op) {
                     // supression des votes
                     $criteria = new CriteriaCompo();
                     $criteria->add(new Criteria('lid', $downloads_arr[$j]->getVar('lid')));
-                    $downloads_votedata = $downloadsvotedataHandler->getAll($criteria);
+                    $downloads_votedata = $ratingHandler->getAll($criteria);
                     foreach (array_keys($downloads_votedata) as $k) {
-                        $objvotedata = $downloadsvotedataHandler->get($downloads_votedata[$k]->getVar('ratingid'));
-                        $downloadsvotedataHandler->delete($objvotedata) || $objvotedata->getHtmlErrors();
+                        $objvotedata = $ratingHandler->get($downloads_votedata[$k]->getVar('ratingid'));
+                        $ratingHandler->delete($objvotedata) || $objvotedata->getHtmlErrors();
                     }
                     // supression des rapports de fichier brisé
                     $criteria = new CriteriaCompo();
                     $criteria->add(new Criteria('lid', $downloads_arr[$j]->getVar('lid')));
-                    $downloads_broken = $downloadsbrokenHandler->getAll($criteria);
+                    $downloads_broken = $brokenHandler->getAll($criteria);
                     foreach (array_keys($downloads_broken) as $k) {
-                        $objbroken = $downloadsbrokenHandler->get($downloads_broken[$k]->getVar('reportid'));
-                        $downloadsbrokenHandler->delete($objbroken) || $objbroken->getHtmlErrors();
+                        $objbroken = $brokenHandler->get($downloads_broken[$k]->getVar('reportid'));
+                        $brokenHandler->delete($objbroken) || $objbroken->getHtmlErrors();
                     }
                     // supression des data des champs sup.
                     $criteria = new CriteriaCompo();
                     $criteria->add(new Criteria('lid', $downloads_arr[$j]->getVar('lid')));
-                    $downloads_fielddata = $downloadsfielddataHandler->getAll($criteria);
+                    $downloads_fielddata = $fielddataHandler->getAll($criteria);
                     foreach (array_keys($downloads_fielddata) as $k) {
-                        $objfielddata = $downloadsfielddataHandler->get($downloads_fielddata[$k]->getVar('iddata'));
-                        $downloadsfielddataHandler->delete($objfielddata) || $objvfielddata->getHtmlErrors();
+                        $objfielddata = $fielddataHandler->get($downloads_fielddata[$k]->getVar('iddata'));
+                        $fielddataHandler->delete($objfielddata) || $objvfielddata->getHtmlErrors();
                     }
                     // supression des commentaires
                     if ($downloads_arr[$j]->getVar('comments') > 0) {
@@ -263,8 +263,8 @@ switch ($op) {
                     $message .= '<span style="color: Red;">' . $downloads_arr[$i]->getVar('title') . '</span><br>';
                 }
             }
-            $downloadscat_arr   = $categoryHandler->getAll();
-            $mytree             = new Tdmobjecttree($downloadscat_arr, 'cat_cid', 'cat_pid');
+            $downloadscatArray   = $categoryHandler->getAll();
+            $mytree             = new TdmObjectTree($downloadscatArray, 'cat_cid', 'cat_pid');
             $downloads_childcat = $mytree->getAllChild($downloadscat_cid);
             if (count($downloads_childcat) > 0) {
                 $message .= _AM_TDMDOWNLOADS_DELSOUSCAT . ' <br><br>';
@@ -315,7 +315,7 @@ switch ($op) {
         // Récupération des variables:
         // Pour l'image
         require_once XOOPS_ROOT_PATH . '/class/uploader.php';
-        $uploader = new XoopsMediaUploader($uploaddir, [
+        $uploader = new \XoopsMediaUploader($uploaddir, [
             'image/gif',
             'image/jpeg',
             'image/pjpeg',

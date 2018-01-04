@@ -1,4 +1,4 @@
-<?php namespace Xoopsmodules\tdmdownloads;
+<?php namespace XoopsModules\Tdmdownloads;
 
 /**
  * TDMDownload
@@ -15,7 +15,7 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * Class FielddataHandler
@@ -27,6 +27,6 @@ class FielddataHandler extends \XoopsPersistableObjectHandler
      */
     public function __construct(\XoopsDatabase $db = null)
     {
-        parent::__construct($db, 'tdmdownloads_fielddata', 'Xoopsmodules\tdmdownloads\Fielddata', 'iddata', 'data');
+        parent::__construct($db, 'tdmdownloads_fielddata', Fielddata::class, 'iddata', 'data');
     }
 }

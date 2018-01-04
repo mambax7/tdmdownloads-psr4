@@ -1,4 +1,4 @@
-<?php namespace Xoopsmodules\tdmdownloads;
+<?php namespace XoopsModules\Tdmdownloads;
 
 /**
  * TDMDownload
@@ -18,13 +18,13 @@
 require_once $GLOBALS['xoops']->path('www/class/tree.php');
 
 /**
- * Class Tdmobjecttree
- * @package Xoopsmodules\tdmdownloads
+ * Class TdmObjectTree
+ * @package XoopsModules\Tdmdownloads
  */
-class Tdmobjecttree extends \XoopsObjectTree
+class TdmObjectTree extends \XoopsObjectTree
 {
     /**
-     * TDMObjectTree constructor.
+     * TdmObjectTree constructor.
      * @param      $objectArr
      * @param      $myId
      * @param      $parentId

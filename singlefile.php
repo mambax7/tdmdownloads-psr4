@@ -14,7 +14,7 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-use Xoopsmodules\tdmdownloads\Tdmobjecttree;
+use XoopsModules\Tdmdownloads\TdmObjectTree;
 
 //spl_autoload_extensions(".php");
 //spl_autoload_register();
@@ -38,13 +38,13 @@ $moduleDirName = basename(__DIR__);
 
 //$mydirname3b = xoopsObj::mydirname();
 
-//$broken = new Xoopsmodules\tdmdownloads\Broken();
+//$broken = new XoopsModules\Tdmdownloads\Broken();
 
 //$tt = new xoops2\Tdmdownloads;
 //$tt = new xoopsObj;
 
 //OK
-$tt         = new Xoopsmodules\tdmdownloads\Tdmdownloads();
+$tt         = new XoopsModules\Tdmdownloads\Tdmdownloads();
 $mydirname4 = $tt::$mydirname2; //set in constructor
 
 //OK
@@ -69,7 +69,7 @@ $xoopsTpl->assign('mydirname', $mydirname4);
 $lid = $utilities->cleanVars($_REQUEST, 'lid', 0, 'int');
 
 //information du t�l�chargement
-//$downloadsHandler             = new Xoopsmodules\tdmdownloads\DownloadsHandler($db);
+//$downloadsHandler             = new XoopsModules\Tdmdownloads\DownloadsHandler($db);
 $view_downloads = $downloadsHandler->get($lid);
 
 // redirection si le t�l�chargement n'existe pas ou n'est pas activ�
@@ -88,12 +88,12 @@ $criteria = new CriteriaCompo();
 $criteria->setSort('cat_weight ASC, cat_title');
 $criteria->setOrder('ASC');
 $criteria->add(new Criteria('cat_cid', '(' . implode(',', $categories) . ')', 'IN'));
-//$categoryHandler          = new Xoopsmodules\tdmdownloads\CategoryHandler($db);
-$downloadscat_arr = $categoryHandler->getAll($criteria);
-$mytree           = new Tdmobjecttree($downloadscat_arr, 'cat_cid', 'cat_pid');
+//$categoryHandler          = new XoopsModules\Tdmdownloads\CategoryHandler($db);
+$downloadscatArray = $categoryHandler->getAll($criteria);
+$mytree           = new TdmObjectTree($downloadscatArray, 'cat_cid', 'cat_pid');
 
 //navigation
-$navigation = $utilities->getPathTreeUrl($mytree, $view_downloads->getVar('cid'), $downloadscat_arr, 'cat_title', $prefix = ' <img src="assets/images/deco/arrow.gif" alt="arrow" /> ', true, 'ASC', true);
+$navigation = $utilities->getPathTreeUrl($mytree, $view_downloads->getVar('cid'), $downloadscatArray, 'cat_title', $prefix = ' <img src="assets/images/deco/arrow.gif" alt="arrow" /> ', true, 'ASC', true);
 $navigation = $navigation . ' <img src="assets/images/deco/arrow.gif" alt="arrow" /> ' . $view_downloads->getVar('title');
 $xoopsTpl->assign('navigation', $navigation);
 
@@ -179,8 +179,8 @@ $criteria = new CriteriaCompo();
 $criteria->setSort('weight ASC, title');
 $criteria->setOrder('ASC');
 $criteria->add(new Criteria('status', 1));
-//$downloadsfieldHandler        = new Xoopsmodules\tdmdownloads\FieldHandler($db);
-$downloads_field = $downloadsfieldHandler->getAll($criteria);
+//$fieldHandler        = new XoopsModules\Tdmdownloads\FieldHandler($db);
+$downloads_field = $fieldHandler->getAll($criteria);
 $nb_champ        = count($downloads_field);
 $champ_sup       = '';
 $champ_sup_vide  = 0;
@@ -216,12 +216,12 @@ foreach (array_keys($downloads_field) as $i) {
             }
         }
     } else {
-        //        $downloadsfielddataHandler    = new Xoopsmodules\tdmdownloads\FielddataHandler($db);
-        $view_data = $downloadsfielddataHandler->get();
+        //        $fielddataHandler    = new XoopsModules\Tdmdownloads\FielddataHandler($db);
+        $view_data = $fielddataHandler->get();
         $criteria  = new CriteriaCompo();
         $criteria->add(new Criteria('lid', $_REQUEST['lid']));
         $criteria->add(new Criteria('fid', $downloads_field[$i]->getVar('fid')));
-        $downloadsfielddata = $downloadsfielddataHandler->getAll($criteria);
+        $downloadsfielddata = $fielddataHandler->getAll($criteria);
         $contenu            = '';
         foreach (array_keys($downloadsfielddata) as $j) {
             $contenu = $downloadsfielddata[$j]->getVar('data', 'n');
@@ -302,7 +302,7 @@ if ((1 == $xoopsModuleConfig['usetag']) && is_dir('../tag')) {
 
 // titre de la page
 $pagetitle = $view_downloads->getVar('title') . ' - ';
-$pagetitle .= $utilities->getPathTreeUrl($mytree, $view_downloads->getVar('cid'), $downloadscat_arr, 'cat_title', $prefix = ' - ', false, 'DESC', true);
+$pagetitle .= $utilities->getPathTreeUrl($mytree, $view_downloads->getVar('cid'), $downloadscatArray, 'cat_title', $prefix = ' - ', false, 'DESC', true);
 $xoopsTpl->assign('xoops_pagetitle', $pagetitle);
 //version for title
 $xoopsTpl->assign('version', $view_downloads->getVar('version'));

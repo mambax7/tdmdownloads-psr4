@@ -1,4 +1,6 @@
 <?php
+
+use XoopsModules\Tdmdownloads\Utility;
 /**
  * TDMDownload
  *
@@ -14,7 +16,7 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-use \Xoopsmodules\tdmdownloads;
+use \XoopsModules\Tdmdownloads;
 
 /**
  *
@@ -28,9 +30,9 @@ function xoops_module_pre_install_tdmdownloads(\XoopsModule $module)
     require_once __DIR__ . '/../../../mainfile.php';
     require_once __DIR__ . '/common.php';
     $moduleDirName = basename(dirname(__DIR__));
-    /** @var tdmdownloads\Utility $utilityClass */
-    $utilityClass  = 'Xoopsmodules\tdmdownloads\Utility';
-    $utilityClass0 = new tdmdownloads\Utility();
+    /** @var Tdmdownloads\Utility $utilityClass */
+    $utilityClass  = Utility::class;
+    $utilityClass0 = new Tdmdownloads\Utility();
     if (!class_exists($utilityClass)) {
         xoops_load('Utility', $moduleDirName);
     }
@@ -63,44 +65,44 @@ function xoops_module_install_tdmdownloads(XoopsModule $module)
     require_once __DIR__ . '/../include/config.php';
     require_once __DIR__ . '/common.php';
     $moduleDirName = basename(dirname(__DIR__));
-    /** @var tdmdownloads\Utility $utilityClass */
-    $utilityClass = new Xoopsmodules\tdmdownloads\Utility();
+    /** @var Tdmdownloads\Utility $utilityClass */
+    $utilityClass = new XoopsModules\Tdmdownloads\Utility();
     //    $utilityTest = $utility;
 
-    //    $downloadsfieldHandler = xoops_getModuleHandler('FieldHandler', $moduleDirName);
-    $downloadsfieldHandler = new Xoopsmodules\tdmdownloads\FieldHandler();
-    $obj                   = $downloadsfieldHandler->create();
+    //    $fieldHandler = xoops_getModuleHandler('FieldHandler', $moduleDirName);
+    $fieldHandler = new XoopsModules\Tdmdownloads\FieldHandler();
+    $obj          = $fieldHandler->create();
     $obj->setVar('title', _AM_TDMDOWNLOADS_FORMHOMEPAGE);
     $obj->setVar('img', 'homepage.png');
     $obj->setVar('weight', 1);
     $obj->setVar('search', 0);
     $obj->setVar('status', 1);
     $obj->setVar('status_def', 1);
-    $downloadsfieldHandler->insert($obj);
-    $obj = $downloadsfieldHandler->create();
+    $fieldHandler->insert($obj);
+    $obj = $fieldHandler->create();
     $obj->setVar('title', _AM_TDMDOWNLOADS_FORMVERSION);
     $obj->setVar('img', 'version.png');
     $obj->setVar('weight', 2);
     $obj->setVar('search', 0);
     $obj->setVar('status', 1);
     $obj->setVar('status_def', 1);
-    $downloadsfieldHandler->insert($obj);
-    $obj = $downloadsfieldHandler->create();
+    $fieldHandler->insert($obj);
+    $obj = $fieldHandler->create();
     $obj->setVar('title', _AM_TDMDOWNLOADS_FORMSIZE);
     $obj->setVar('img', 'size.png');
     $obj->setVar('weight', 3);
     $obj->setVar('search', 0);
     $obj->setVar('status', 1);
     $obj->setVar('status_def', 1);
-    $downloadsfieldHandler->insert($obj);
-    $obj = $downloadsfieldHandler->create();
+    $fieldHandler->insert($obj);
+    $obj = $fieldHandler->create();
     $obj->setVar('title', _AM_TDMDOWNLOADS_FORMPLATFORM);
     $obj->setVar('img', 'platform.png');
     $obj->setVar('weight', 4);
     $obj->setVar('search', 0);
     $obj->setVar('status', 1);
     $obj->setVar('status_def', 1);
-    $downloadsfieldHandler->insert($obj);
+    $fieldHandler->insert($obj);
 
     $configurator = include __DIR__ . '/config.php';
 

@@ -16,11 +16,12 @@
  * @since
  * @author       XOOPS Development Team
  */
+
 //require_once __DIR__ . '/../autoloader.php';
 
-use Xoopsmodules\tdmdownloads;
+use XoopsModules\Tdmdownloads;
 
-//use Xoopsmodules\tdmdownloads\common;
+//use XoopsModules\Tdmdownloads\Common;
 
 /*
 if (!defined('XXXXXX_MODULE_PATH')) {
@@ -49,38 +50,39 @@ $db = \XoopsDatabaseFactory::getDatabase();
 /** @var XoopsObjectHandler $categoryHandler */
 //$sbcolumnsHandler = xoops_getModuleHandler('sbcolumns', $moduleDirName);
 
-//$categoryHandler = new tdmdownloads\CategoryHandler($db);
+//$categoryHandler = new Tdmdownloads\CategoryHandler($db);
 
 /** @var XoopsObjectHandler $downloadsHandler */
 //$sbarticlesHandler = xoops_getModuleHandler('sbarticles', $moduleDirName);
-//$downloadsHandler = new tdmdownloads\DownloadsHandler($db);
+//$downloadsHandler = new Tdmdownloads\DownloadsHandler($db);
 
-/** @var XoopsObjectHandler $downloadsbrokenHandler */
+/** @var XoopsObjectHandler $brokenHandler */
 //$sbvotedataHandler = xoops_getModuleHandler('sbvotedata', $moduleDirName);
-//$downloadsbrokenHandler = new tdmdownloads\DownloadsbrokenHandler($db);
+//$brokenHandler = new Tdmdownloads\DownloadsbrokenHandler($db);
 
 /** @var XoopsObjectHandler $testHandler */
 //$testHandler = xoops_getModuleHandler('test', $moduleDirName);
-//$testHandler = new tdmdownloads\TestHandler($db);
+//$testHandler = new Tdmdownloads\TestHandler($db);
 
-$helper                       = tdmdownloads\Helper::getInstance();
-$utility                      = new tdmdownloads\Utility();
-$utilities                    = new tdmdownloads\Utilities();
-$categoryHandler              = new tdmdownloads\CategoryHandler($db);
-$downloadsHandler             = new tdmdownloads\DownloadsHandler($db);
-$downloadsvotedataHandler     = new tdmdownloads\RatingHandler($db);
-$downloadsfieldHandler        = new tdmdownloads\FieldHandler($db);
-$downloadsfielddataHandler    = new tdmdownloads\FielddataHandler($db);
-$downloadsbrokenHandler       = new tdmdownloads\BrokenHandler($db);
-$downloadsmodHandler          = new tdmdownloads\ModifiedHandler($db);
-$downloadsfieldmoddataHandler = new tdmdownloads\ModifiedfielddataHandler($db);
+$helper                   = Tdmdownloads\Helper::getInstance();
+$utility                  = new Tdmdownloads\Utility();
+$utilities                = new Tdmdownloads\Utilities();
+$brokenHandler            = new Tdmdownloads\BrokenHandler($db);
+$categoryHandler          = new Tdmdownloads\CategoryHandler($db);
+$downlimitHandler         = new Tdmdownloads\DownlimitHandler($db);
+$downloadsHandler         = new Tdmdownloads\DownloadsHandler($db);
+$fielddataHandler         = new Tdmdownloads\FielddataHandler($db);
+$fieldHandler             = new Tdmdownloads\FieldHandler($db);
+$modifiedfielddataHandler = new Tdmdownloads\ModifiedfielddataHandler($db);
+$modifiedHandler          = new Tdmdownloads\ModifiedHandler($db);
+$ratingHandler            = new Tdmdownloads\RatingHandler($db);
 
 $debug = false;
 
-if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof XoopsTpl)) {
+if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof \XoopsTpl)) {
     require_once $GLOBALS['xoops']->path('class/template.php');
-    $xoopsTpl = new XoopsTpl();
+    $xoopsTpl = new \XoopsTpl();
 }
 
 $moduleDirName = basename(dirname(__DIR__));
-$xoopsTpl->assign('mod_url',  XOOPS_URL . '/modules/' . $moduleDirName);
+$GLOBALS['xoopsTpl']->assign('mod_url', XOOPS_URL . '/modules/' . $moduleDirName);

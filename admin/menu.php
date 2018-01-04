@@ -13,12 +13,17 @@
  * @license     GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Gregory Mage (Aka Mage)
  */
-// // defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// // defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
-$moduleDirName = basename(dirname(__DIR__));
+use XoopsModules\Tdmdownloads;
+
+require_once __DIR__ . '/../class/Helper.php';
+//require_once __DIR__ . '/../include/common.php';
+$helper = Tdmdownloads\Helper::getInstance();
 
 $pathIcon32 = \Xmf\Module\Admin::menuIconPath('');
-//$pathModIcon32 = $helper->getModule()->getInfo('modicons32');
+$pathModIcon32 = $helper->getModule()->getInfo('modicons32');
+
 
 $adminmenu[] = [
     'title' => _MI_TDMDOWNLOADS_ADMENU1,

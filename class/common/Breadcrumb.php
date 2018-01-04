@@ -1,4 +1,4 @@
-<?php namespace Xoopsmodules\tdmdownloads\common;
+<?php namespace XoopsModules\Tdmdownloads\Common;
 
 /*
  You may not change or alter any portion of this comment or credits
@@ -12,7 +12,7 @@
 /**
  * Breadcrumb Class
  *
- * @copyright   The XOOPS Project http://sourceforge.net/projects/xoops/
+ * @copyright   XOOPS Project (https://xoops.org)
  * @license     http://www.fsf.org/copyleft/gpl.html GNU public license
  * @author      lucio <lucio.rota@gmail.com>
  * @package     pedigree
@@ -26,14 +26,14 @@
  * $breadcrumb->addLink( 'bread 3', 'index3.php' );
  * echo $breadcrumb->render();
  */
-defined('XOOPS_ROOT_PATH') || exit('XOOPS Root Path not defined');
+defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
- * Class PedigreeBreadcrumb
+ * Class Breadcrumb
  */
 class Breadcrumb
 {
-    public  $dirname;
+    public $dirname;
     private $bread = [];
 
     /**
@@ -66,7 +66,7 @@ class Breadcrumb
     {
         if (!isset($GLOBALS['xoTheme']) || !is_object($GLOBALS['xoTheme'])) {
             require_once $GLOBALS['xoops']->path('class/theme.php');
-            $GLOBALS['xoTheme'] = new xos_opal_Theme();
+            $GLOBALS['xoTheme'] = new \xos_opal_Theme();
         }
 
         require_once $GLOBALS['xoops']->path('class/template.php');

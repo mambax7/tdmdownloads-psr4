@@ -22,20 +22,20 @@ require_once __DIR__ . '/admin_header.php';
 xoops_cp_header();
 
 // compte le nombre de catégories
-$criteria      = new CriteriaCompo();
+$criteria      = new \CriteriaCompo();
 $nb_categories = $categoryHandler->getCount($criteria);
 // compte le nombre de téléchargements
-$criteria = new CriteriaCompo();
-$criteria->add(new Criteria('status', 0, '!='));
+$criteria = new \CriteriaCompo();
+$criteria->add(new \Criteria('status', 0, '!='));
 $nb_downloads = $downloadsHandler->getCount($criteria);
 // compte le nombre de téléchargements en attente de validation
-$criteria = new CriteriaCompo();
-$criteria->add(new Criteria('status', 0));
+$criteria = new \CriteriaCompo();
+$criteria->add(new \Criteria('status', 0));
 $nb_downloads_waiting = $downloadsHandler->getCount($criteria);
 // compte le nombre de rapport de téléchargements brisés
-$nb_broken = $downloadsbrokenHandler->getCount();
+$nb_broken = $brokenHandler->getCount();
 // compte le nombre de demande de modifications
-$nb_modified = $downloadsmodHandler->getCount();
+$nb_modified = $modifiedHandler->getCount();
 
 $moduleDirName      = basename(dirname(__DIR__));
 $moduleDirNameUpper = strtoupper($moduleDirName);
@@ -107,7 +107,7 @@ foreach (array_keys($folders) as $i) {
 }
 */
 
-//$moduleHelper = Xmf\Module\Helper::getHelper($moduleDirName);
+//$helper = Xmf\Module\Helper::getHelper($moduleDirName);
 $helper->loadLanguage('common');
 
 //xoops_loadLanguage('common', $moduleDirName);

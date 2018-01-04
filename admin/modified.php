@@ -46,11 +46,11 @@ switch ($op) {
         }
         $criteria->setSort('requestid');
         $criteria->setOrder('ASC');
-        //        $downloadsmodHandler          = new Xoopsmodules\tdmdownloads\ModifiedHandler($db);
-        $downloadsmod_arr = $downloadsmodHandler->getAll($criteria);
-        $numrows          = $downloadsmodHandler->getCount($criteria);
+        //        $modifiedHandler          = new XoopsModules\Tdmdownloads\ModifiedHandler($db);
+        $downloadsmod_arr = $modifiedHandler->getAll($criteria);
+        $numrows          = $modifiedHandler->getCount($criteria);
         if ($numrows > $limit) {
-            $pagenav = new XoopsPageNav($numrows, $limit, $start, 'start', 'op=liste&limit=' . $limit);
+            $pagenav = new \XoopsPageNav($numrows, $limit, $start, 'start', 'op=liste&limit=' . $limit);
             $pagenav = $pagenav->renderNav(4);
         } else {
             $pagenav = '';
@@ -99,7 +99,7 @@ switch ($op) {
         //information du téléchargement
         $view_downloads = $downloadsHandler->get($_REQUEST['downloads_lid']);
         //information du téléchargement modifié
-        $view_moddownloads = $downloadsmodHandler->get($_REQUEST['mod_id']);
+        $view_moddownloads = $modifiedHandler->get($_REQUEST['mod_id']);
 
         // original
         $downloads_title = $view_downloads->getVar('title');
@@ -144,7 +144,7 @@ switch ($op) {
         $criteria->setSort('weight ASC, title');
         $criteria->setOrder('ASC');
         $criteria->add(new Criteria('status', 1));
-        $downloads_field = $downloadsfieldHandler->getAll($criteria);
+        $downloads_field = $fieldHandler->getAll($criteria);
         foreach (array_keys($downloads_field) as $i) {
             if (1 == $downloads_field[$i]->getVar('status_def')) {
                 if (1 == $downloads_field[$i]->getVar('fid')) {
@@ -169,7 +169,7 @@ switch ($op) {
                 $criteria = new CriteriaCompo();
                 $criteria->add(new Criteria('lid', $_REQUEST['downloads_lid']));
                 $criteria->add(new Criteria('fid', $downloads_field[$i]->getVar('fid')));
-                $downloadsfielddata = $downloadsfielddataHandler->getAll($criteria);
+                $downloadsfielddata = $fielddataHandler->getAll($criteria);
                 foreach (array_keys($downloadsfielddata) as $j) {
                     $contenu = $downloadsfielddata[$j]->getVar('data');
                 }
@@ -178,7 +178,7 @@ switch ($op) {
                 $criteria    = new CriteriaCompo();
                 $criteria->add(new Criteria('lid', $_REQUEST['mod_id']));
                 $criteria->add(new Criteria('fid', $downloads_field[$i]->getVar('fid')));
-                $downloadsfieldmoddata = $downloadsfieldmoddataHandler->getAll($criteria);
+                $downloadsfieldmoddata = $modifiedfielddataHandler->getAll($criteria);
                 foreach (array_keys($downloadsfieldmoddata) as $j) {
                     $mod_contenu = $downloadsfieldmoddata[$j]->getVar('moddata');
                 }
@@ -201,7 +201,7 @@ switch ($op) {
         $criteria->setSort('weight ASC, title');
         $criteria->setOrder('ASC');
         $criteria->add(new Criteria('status', 1));
-        $downloads_field = $downloadsfieldHandler->getAll($criteria);
+        $downloads_field = $fieldHandler->getAll($criteria);
         foreach (array_keys($downloads_field) as $i) {
             if (1 == $downloads_field[$i]->getVar('status_def')) {
                 if (1 == $downloads_field[$i]->getVar('fid')) {
@@ -234,7 +234,7 @@ switch ($op) {
                 $criteria = new CriteriaCompo();
                 $criteria->add(new Criteria('lid', $_REQUEST['downloads_lid']));
                 $criteria->add(new Criteria('fid', $downloads_field[$i]->getVar('fid')));
-                $downloadsfielddata = $downloadsfielddataHandler->getAll($criteria);
+                $downloadsfielddata = $fielddataHandler->getAll($criteria);
                 foreach (array_keys($downloadsfielddata) as $j) {
                     $contenu = $downloadsfielddata[$j]->getVar('data');
                 }
@@ -243,7 +243,7 @@ switch ($op) {
                 $criteria    = new CriteriaCompo();
                 $criteria->add(new Criteria('lid', $_REQUEST['mod_id']));
                 $criteria->add(new Criteria('fid', $downloads_field[$i]->getVar('fid')));
-                $downloadsfieldmoddata = $downloadsfieldmoddataHandler->getAll($criteria);
+                $downloadsfieldmoddata = $modifiedfielddataHandler->getAll($criteria);
                 foreach (array_keys($downloadsfieldmoddata) as $j) {
                     $mod_contenu = $downloadsfieldmoddata[$j]->getVar('moddata');
                 }
@@ -267,7 +267,7 @@ switch ($op) {
 
     // permet de suprimmer le téléchargment modifié
     case 'del_moddownloads':
-        $obj = $downloadsmodHandler->get($_REQUEST['mod_id']);
+        $obj = $modifiedHandler->get($_REQUEST['mod_id']);
         //        if (isset($_REQUEST['ok']) && $_REQUEST['ok'] === 1) {
         if (1 === Request::getInt('ok', 0, 'POST')) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -286,12 +286,12 @@ switch ($op) {
             // supression des data des champs sup
             $criteria = new CriteriaCompo();
             $criteria->add(new Criteria('lid', $_REQUEST['mod_id']));
-            $downloads_fielddata = $downloadsfieldmoddataHandler->getAll($criteria);
+            $downloads_fielddata = $modifiedfielddataHandler->getAll($criteria);
             foreach (array_keys($downloads_fielddata) as $i) {
-                $objfielddata = $downloadsfieldmoddataHandler->get($downloads_fielddata[$i]->getVar('modiddata'));
-                $downloadsfieldmoddataHandler->delete($objfielddata) || $objvfielddata->getHtmlErrors();
+                $objfielddata = $modifiedfielddataHandler->get($downloads_fielddata[$i]->getVar('modiddata'));
+                $modifiedfielddataHandler->delete($objfielddata) || $objvfielddata->getHtmlErrors();
             }
-            if ($downloadsmodHandler->delete($obj)) {
+            if ($modifiedHandler->delete($obj)) {
                 redirect_header('modified.php', 1, _AM_TDMDOWNLOADS_REDIRECT_DELOK);
             }
             echo $objvotedata->getHtmlErrors();
@@ -314,7 +314,7 @@ switch ($op) {
     // permet d'accépter la modification
     case 'approve':
         // choix du téléchargement:
-        $view_moddownloads = $downloadsmodHandler->get($_REQUEST['mod_id']);
+        $view_moddownloads = $modifiedHandler->get($_REQUEST['mod_id']);
         $obj               = $downloadsHandler->get($view_moddownloads->getVar('lid'));
         // permet d'effacer le fichier actuel si un nouveau fichier proposé est accepté.
         if (true === $_REQUEST['new_file']) {
@@ -343,7 +343,7 @@ switch ($op) {
         $criteria = new CriteriaCompo();
         $criteria->setSort('weight ASC, title');
         $criteria->setOrder('ASC');
-        $downloads_field = $downloadsfieldHandler->getAll($criteria);
+        $downloads_field = $fieldHandler->getAll($criteria);
         foreach (array_keys($downloads_field) as $i) {
             $contenu = '';
             $iddata  = 0;
@@ -351,38 +351,38 @@ switch ($op) {
                 $criteria = new CriteriaCompo();
                 $criteria->add(new Criteria('lid', $view_moddownloads->getVar('requestid')));
                 $criteria->add(new Criteria('fid', $downloads_field[$i]->getVar('fid')));
-                $downloadsfieldmoddata = $downloadsfieldmoddataHandler->getAll($criteria);
+                $downloadsfieldmoddata = $modifiedfielddataHandler->getAll($criteria);
                 foreach (array_keys($downloadsfieldmoddata) as $j) {
                     $contenu = $downloadsfieldmoddata[$j]->getVar('moddata');
                 }
                 $criteria = new CriteriaCompo();
                 $criteria->add(new Criteria('lid', $view_moddownloads->getVar('lid')));
                 $criteria->add(new Criteria('fid', $downloads_field[$i]->getVar('fid')));
-                $downloadsfielddata = $downloadsfielddataHandler->getAll($criteria);
+                $downloadsfielddata = $fielddataHandler->getAll($criteria);
                 foreach (array_keys($downloadsfielddata) as $j) {
                     $iddata = $downloadsfielddata[$j]->getVar('iddata');
                 }
                 if (0 === $iddata) {
-                    $objdata = $downloadsfielddataHandler->create();
+                    $objdata = $fielddataHandler->create();
                     $objdata->setVar('fid', $downloads_field[$i]->getVar('fid'));
                     $objdata->setVar('lid', $view_moddownloads->getVar('lid'));
                 } else {
-                    $objdata = $downloadsfielddataHandler->get($iddata);
+                    $objdata = $fielddataHandler->get($iddata);
                 }
                 $objdata->setVar('data', $contenu);
-                $downloadsfielddataHandler->insert($objdata) || $objdata->getHtmlErrors();
+                $fielddataHandler->insert($objdata) || $objdata->getHtmlErrors();
             }
         }
         // supression du rapport de modification
-        $objmod = $downloadsmodHandler->get($_REQUEST['mod_id']);
-        $downloadsmodHandler->delete($objmod);
+        $objmod = $modifiedHandler->get($_REQUEST['mod_id']);
+        $modifiedHandler->delete($objmod);
         // supression des data des champs sup
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria('lid', $_REQUEST['mod_id']));
-        $downloads_fielddata = $downloadsfieldmoddataHandler->getAll($criteria);
+        $downloads_fielddata = $modifiedfielddataHandler->getAll($criteria);
         foreach (array_keys($downloads_fielddata) as $i) {
-            $objfielddata = $downloadsfieldmoddataHandler->get($downloads_fielddata[$i]->getVar('modiddata'));
-            $downloadsfieldmoddataHandler->delete($objfielddata) || $objvfielddata->getHtmlErrors();
+            $objfielddata = $modifiedfielddataHandler->get($downloads_fielddata[$i]->getVar('modiddata'));
+            $modifiedfielddataHandler->delete($objfielddata) || $objvfielddata->getHtmlErrors();
         }
         // enregistrement
         if ($downloadsHandler->insert($obj)) {

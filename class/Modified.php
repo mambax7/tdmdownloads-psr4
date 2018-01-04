@@ -1,4 +1,4 @@
-<?php namespace Xoopsmodules\tdmdownloads;
+<?php namespace XoopsModules\Tdmdownloads;
 
 /**
  * TDMDownload
@@ -15,7 +15,7 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 class Modified extends \XoopsObject
 {
@@ -49,9 +49,9 @@ class Modified extends \XoopsObject
     public function getNewEnreg($db = null)
     {
         /** @var \XoopsMySQLDatabase $db */
-        $new_enreg = $db->getInsertId();
+        $newEnreg = $db->getInsertId();
 
-        return $new_enreg;
+        return $newEnreg;
     }
 
     /**
@@ -129,21 +129,21 @@ class Modified extends \XoopsObject
         } else {
             $criteria->add(new \Criteria('cat_cid', '(' . implode(',', $categories) . ')', 'IN'));
         }
-        $downloadscat_arr = $categoryHandler->getAll($criteria);
-        if (0 === count($downloadscat_arr)) {
+        $downloadscatArray = $categoryHandler->getAll($criteria);
+        if (0 === count($downloadscatArray)) {
             redirect_header('index.php', 2, _NOPERM);
         }
-        $mytree = new Tdmobjecttree($downloadscat_arr, 'cat_cid', 'cat_pid');
+        $mytree = new TdmObjectTree($downloadscatArray, 'cat_cid', 'cat_pid');
         //        $form->addElement(new \XoopsFormLabel(_AM_TDMDOWNLOADS_FORMINCAT, $mytree->makeSelBox('cid', 'cat_title', '--', $d_cid, true)), true);
         $form->addElement($mytree->makeSelectElement('cid', 'cat_title', '--', $d_cid, true, 0, '', _AM_TDMDOWNLOADS_FORMINCAT), true);
 
         //affichage des champs
-        $downloadsfieldHandler = new FieldHandler(null);// xoops_getModuleHandler('Field', $moduleDirName);
-        $criteria              = new \CriteriaCompo();
+        $fieldHandler = new FieldHandler(null);// xoops_getModuleHandler('Field', $moduleDirName);
+        $criteria     = new \CriteriaCompo();
         $criteria->setSort('weight ASC, title');
         $criteria->setOrder('ASC');
 
-        $downloads_field = $downloadsfieldHandler->getAll($criteria);
+        $downloads_field = $fieldHandler->getAll($criteria);
         foreach (array_keys($downloads_field) as $i) {
             if (1 == $downloads_field[$i]->getVar('status_def')) {
                 if (1 == $downloads_field[$i]->getVar('fid')) {
@@ -212,13 +212,13 @@ class Modified extends \XoopsObject
                     }
                 }
             } else {
-                $contenu                   = '';
-                $nom_champ                 = 'champ' . $downloads_field[$i]->getVar('fid');
-                $downloadsfielddataHandler = new FielddataHandler(null); // xoops_getModuleHandler('Fielddata', $moduleDirName);
-                $criteria                  = new \CriteriaCompo();
+                $contenu          = '';
+                $nom_champ        = 'champ' . $downloads_field[$i]->getVar('fid');
+                $fielddataHandler = new FielddataHandler(null); // xoops_getModuleHandler('Fielddata', $moduleDirName);
+                $criteria         = new \CriteriaCompo();
                 $criteria->add(new \Criteria('lid', $view_downloads->getVar('lid')));
                 $criteria->add(new \Criteria('fid', $downloads_field[$i]->getVar('fid')));
-                $downloadsfielddata = $downloadsfielddataHandler->getAll($criteria);
+                $downloadsfielddata = $fielddataHandler->getAll($criteria);
                 foreach (array_keys($downloadsfielddata) as $j) {
                     if (true === $erreur) {
                         $contenu = $donnee[$nom_champ];

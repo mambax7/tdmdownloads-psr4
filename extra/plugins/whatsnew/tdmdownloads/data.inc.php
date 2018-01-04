@@ -24,7 +24,7 @@ function tdmdownloads_new($limit = 0, $offset = 0)
     global $xoopsDB;
 
     $moduleDirName = basename(dirname(dirname(dirname(dirname(__DIR__)))));
-    $myts          = MyTextSanitizer::getInstance();
+    $myts          = \MyTextSanitizer::getInstance();
 
     $URL_MOD = XOOPS_URL . "/modules/$moduleDirName ";
     $sql     = 'SELECT lid, title, date, cid, submitter, hits, description FROM ' . $xoopsDB->prefix('tdmdownloads_downloads') . ' WHERE status>0 ORDER BY date';

@@ -1,4 +1,4 @@
-<?php namespace Xoopsmodules\tdmdownloads;
+<?php namespace XoopsModules\Tdmdownloads;
 
 /*
          * Module: TDMDownloads
@@ -15,11 +15,11 @@
          * @author          XOOPS Development Team
          * @copyright       20014 XOOPS Project
          * @license         GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
-         * @link            http://xoops.org/
+         * @link            https://xoops.org/
          * @since           1.63
          */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 //require_once __DIR__ . '/xoopsmoduleconstants.php';
 //require_once dirname(__DIR__) . '/xoopsmoduleconstants.php';

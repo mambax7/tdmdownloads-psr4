@@ -19,7 +19,7 @@ require_once __DIR__ . '/admin_header.php';
 
 //On recupere la valeur de l'argument op dans l'URL$
 $op = $utilities->cleanVars($_REQUEST, 'op', 'list', 'string');
-//$downloadsfieldHandler = new Xoopsmodules\tdmdownloads\FieldHandler($db);
+//$fieldHandler = new XoopsModules\Tdmdownloads\FieldHandler($db);
 //Les valeurs de op qui vont permettre d'aller dans les differentes parties de la page
 switch ($op) {
     // Vue liste
@@ -34,7 +34,7 @@ switch ($op) {
         $criteria = new CriteriaCompo();
         $criteria->setSort('weight ASC, title');
         $criteria->setOrder('ASC');
-        $downloads_field = $downloadsfieldHandler->getAll($criteria);
+        $downloads_field = $fieldHandler->getAll($criteria);
         $numrows         = count($downloads_field);
         //Affichage du tableau
         if ($numrows > 0) {
@@ -73,20 +73,20 @@ switch ($op) {
         break;
 
     case 'update_status':
-        $obj = $downloadsfieldHandler->get($_REQUEST['fid']);
+        $obj = $fieldHandler->get($_REQUEST['fid']);
 
         $obj->setVar('status', $_REQUEST['aff']);
-        if ($downloadsfieldHandler->insert($obj)) {
+        if ($fieldHandler->insert($obj)) {
             redirect_header('field.php?op=list', 1, _AM_TDMDOWNLOADS_REDIRECT_SAVE);
         }
         echo $obj->getHtmlErrors();
         break;
 
     case 'update_search':
-        $obj = $downloadsfieldHandler->get($_REQUEST['fid']);
+        $obj = $fieldHandler->get($_REQUEST['fid']);
 
         $obj->setVar('search', $_REQUEST['aff']);
-        if ($downloadsfieldHandler->insert($obj)) {
+        if ($fieldHandler->insert($obj)) {
             redirect_header('field.php?op=list', 1, _AM_TDMDOWNLOADS_REDIRECT_SAVE);
         }
         echo $obj->getHtmlErrors();
@@ -103,7 +103,7 @@ switch ($op) {
         echo $field_admin->displayButton('left');
 
         //Affichage du formulaire de création des champs
-        $obj  = $downloadsfieldHandler->create();
+        $obj  = $fieldHandler->create();
         $form = $obj->getForm();
         $form->display();
         break;
@@ -119,7 +119,7 @@ switch ($op) {
         echo $field_admin->displayButton('left');
 
         //Affichage du formulaire de création des champs
-        $obj  = $downloadsfieldHandler->get($_REQUEST['fid']);
+        $obj  = $fieldHandler->get($_REQUEST['fid']);
         $form = $obj->getForm();
         $form->display();
         break;
@@ -127,7 +127,7 @@ switch ($op) {
     // Pour supprimer un champ
     case 'del_field':
         global $xoopsModule;
-        $obj = $downloadsfieldHandler->get($_REQUEST['fid']);
+        $obj = $fieldHandler->get($_REQUEST['fid']);
         if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header('field.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
@@ -135,26 +135,26 @@ switch ($op) {
             // supression des entrée du champ
             $criteria = new CriteriaCompo();
             $criteria->add(new Criteria('fid', $_REQUEST['fid']));
-            $downloads_arr = $downloadsfielddataHandler->getAll($criteria);
+            $downloads_arr = $fielddataHandler->getAll($criteria);
             foreach (array_keys($downloads_arr) as $i) {
                 // supression de l'entrée
-                $objdownloadsfielddata = $downloadsfielddataHandler->get($downloads_arr[$i]->getVar('iddata'));
-                $downloadsfielddataHandler->delete($objdownloadsfielddata) || $objdownloads->getHtmlErrors();
+                $objdownloadsfielddata = $fielddataHandler->get($downloads_arr[$i]->getVar('iddata'));
+                $fielddataHandler->delete($objdownloadsfielddata) || $objdownloads->getHtmlErrors();
             }
-            if ($downloadsfieldHandler->delete($obj)) {
+            if ($fieldHandler->delete($obj)) {
                 redirect_header('field.php', 1, _AM_TDMDOWNLOADS_REDIRECT_DELOK);
             } else {
                 echo $obj->getHtmlErrors();
             }
         } else {
-            $downloadsfield = $downloadsfieldHandler->get($_REQUEST['fid']);
+            $downloadsfield = $fieldHandler->get($_REQUEST['fid']);
             if (1 == $downloadsfield->getVar('status_def')) {
                 redirect_header('field.php', 2, _AM_TDMDOWNLOADS_REDIRECT_NODELFIELD);
             }
             $message  = '';
             $criteria = new CriteriaCompo();
             $criteria->add(new Criteria('fid', $_REQUEST['fid']));
-            $downloads_arr = $downloadsfielddataHandler->getAll($criteria);
+            $downloads_arr = $fielddataHandler->getAll($criteria);
             if (count($downloads_arr) > 0) {
                 $message .= _AM_TDMDOWNLOADS_DELDATA . '<br>';
                 foreach (array_keys($downloads_arr) as $i) {
@@ -179,16 +179,16 @@ switch ($op) {
             redirect_header('field.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
         }
         if (isset($_REQUEST['fid'])) {
-            $obj = $downloadsfieldHandler->get($_REQUEST['fid']);
+            $obj = $fieldHandler->get($_REQUEST['fid']);
         } else {
-            $obj = $downloadsfieldHandler->create();
+            $obj = $fieldHandler->create();
         }
         $erreur         = false;
         $message_erreur = '';
         // Récupération des variables:
         // Pour l'image
         require_once XOOPS_ROOT_PATH . '/class/uploader.php';
-        $uploader = new XoopsMediaUploader($uploaddir_field, [
+        $uploader = new \XoopsMediaUploader($uploaddir_field, [
             'image/gif',
             'image/jpeg',
             'image/pjpeg',
@@ -221,7 +221,7 @@ switch ($op) {
         if (true === $erreur) {
             echo '<div class="errorMsg" style="text-align: left;">' . $message_erreur . '</div>';
         } else {
-            if ($downloadsfieldHandler->insert($obj)) {
+            if ($fieldHandler->insert($obj)) {
                 redirect_header('field.php', 1, _AM_TDMDOWNLOADS_REDIRECT_SAVE);
             }
             echo $obj->getHtmlErrors();

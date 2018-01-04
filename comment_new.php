@@ -3,7 +3,7 @@
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <http://xoops.org/>                             //
+//                       <https://xoops.org/>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
 //  it under the terms of the GNU General Public License as published by     //
@@ -29,24 +29,24 @@ include __DIR__ . '/header.php';
 $com_itemid = isset($_GET['com_itemid']) ? (int)$_GET['com_itemid'] : 0;
 if ($com_itemid > 0) {
     // Get file title
-//-------------------------------
-//    $sql    = 'SELECT title, cid FROM ' . $xoopsDB->prefix('tdmdownloads_downloads') . ' WHERE lid=' . $com_itemid;
-//    $result = $xoopsDB->query($sql);
-//    if ($result) {
-//        $categories = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);
-//        $row        = $xoopsDB->fetchArray($result);
-//        if (!in_array($row['cid'], $categories)) {
-//            redirect_header(XOOPS_URL, 2, _NOPERM);
-//        }
-//        $com_replytitle = $row['title'];
-//        include XOOPS_ROOT_PATH . '/include/comment_new.php';
-//    }
     //-------------------------------
-    $sql    = 'SELECT title, cid FROM ' . $xoopsDB->prefix('tdmdownloads_downloads') . ' WHERE lid=?' ;
+    //    $sql    = 'SELECT title, cid FROM ' . $xoopsDB->prefix('tdmdownloads_downloads') . ' WHERE lid=' . $com_itemid;
+    //    $result = $xoopsDB->query($sql);
+    //    if ($result) {
+    //        $categories = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);
+    //        $row        = $xoopsDB->fetchArray($result);
+    //        if (!in_array($row['cid'], $categories)) {
+    //            redirect_header(XOOPS_URL, 2, _NOPERM);
+    //        }
+    //        $com_replytitle = $row['title'];
+    //        include XOOPS_ROOT_PATH . '/include/comment_new.php';
+    //    }
+    //-------------------------------
+    $sql = 'SELECT title, cid FROM ' . $xoopsDB->prefix('tdmdownloads_downloads') . ' WHERE lid=?';
 
     $conn = $xoopsDB->conn;
     $stmt = $conn->prepare($sql);
-    if(false === $stmt) {
+    if (false === $stmt) {
         trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->errno . ' ' . $conn->error, E_USER_ERROR);
     }
 
@@ -63,20 +63,17 @@ if ($com_itemid > 0) {
 
     $sql2    = 'SELECT title, cid FROM ' . $xoopsDB->prefix('tdmdownloads_downloads') . ' WHERE lid=' . $com_itemid;
     $result2 = $xoopsDB->query($sql2);
-    $row2        = $xoopsDB->fetchArray($result);
+    $row2    = $xoopsDB->fetchArray($result);
 
-//    while($row = $result->fetch_array(MYSQLI_ASSOC)) {
-//        array_push($a_data, $row);
-//    }
+    //    while($row = $result->fetch_array(MYSQLI_ASSOC)) {
+    //        array_push($a_data, $row);
+    //    }
 
-
-
-        $categories = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);
-        $row        = $xoopsDB->fetchArray($result);
-        if (!in_array($row['cid'], $categories)) {
-            redirect_header(XOOPS_URL, 2, _NOPERM);
-        }
-        $com_replytitle = $row['title'];
-        include XOOPS_ROOT_PATH . '/include/comment_new.php';
-
+    $categories = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);
+    $row        = $xoopsDB->fetchArray($result);
+    if (!in_array($row['cid'], $categories)) {
+        redirect_header(XOOPS_URL, 2, _NOPERM);
+    }
+    $com_replytitle = $row['title'];
+    include XOOPS_ROOT_PATH . '/include/comment_new.php';
 }

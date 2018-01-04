@@ -21,7 +21,7 @@
  *
  * @return array
  */
-//use Xoopsmodules\tdmdownloads;
+//use XoopsModules\Tdmdownloads;
 
 function tdmdownloads_search($queryarray, $andor, $limit, $offset, $userid)
 {
@@ -35,7 +35,7 @@ function tdmdownloads_search($queryarray, $andor, $limit, $offset, $userid)
     }
     //    require_once XOOPS_ROOT_PATH . '/modules/'.$moduleDirName .'/include/functions.php';
     require_once __DIR__ . '/setup.php';
-    $utilities  = new Xoopsmodules\tdmdownloads\Utilities($db, $helper);
+    $utilities  = new XoopsModules\Tdmdownloads\Utilities($db, $helper);
     $categories = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);
     if (is_array($categories) && count($categories) > 0) {
         $sql .= ' AND cid IN (' . implode(',', $categories) . ') ';

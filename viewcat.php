@@ -14,7 +14,7 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-use Xoopsmodules\tdmdownloads\Tdmobjecttree;
+use XoopsModules\Tdmdownloads\TdmObjectTree;
 
 require_once __DIR__ . '/header.php';
 $moduleDirName = basename(__DIR__);
@@ -45,8 +45,8 @@ $criteria = new CriteriaCompo();
 $criteria->setSort('cat_weight ASC, cat_title');
 $criteria->setOrder('ASC');
 $criteria->add(new Criteria('cat_cid', '(' . implode(',', $categories) . ')', 'IN'));
-$downloadscat_arr = $categoryHandler->getAll($criteria);
-$mytree           = new Tdmobjecttree($downloadscat_arr, 'cat_cid', 'cat_pid');
+$downloadscatArray = $categoryHandler->getAll($criteria);
+$mytree           = new TdmObjectTree($downloadscatArray, 'cat_cid', 'cat_pid');
 
 //tableau des t�l�chargements
 $criteria = new CriteriaCompo();
@@ -56,7 +56,7 @@ $downloads_arr = $downloadsHandler->getAll($criteria);
 $xoopsTpl->assign('lang_thereare', sprintf(_MD_TDMDOWNLOADS_INDEX_THEREARE, count($downloads_arr)));
 
 //navigation
-$nav_category = $utilities->getPathTreeUrl($mytree, $cid, $downloadscat_arr, 'cat_title', $prefix = ' <img src="assets/images/deco/arrow.gif" alt="arrow" /> ', true, 'ASC');
+$nav_category = $utilities->getPathTreeUrl($mytree, $cid, $downloadscatArray, 'cat_title', $prefix = ' <img src="assets/images/deco/arrow.gif" alt="arrow" /> ', true, 'ASC');
 $xoopsTpl->assign('category_path', $nav_category);
 
 // info cat�gorie
@@ -68,28 +68,28 @@ $xoopsTpl->assign('cat_description', $cat_info->getVar('cat_description_main'));
 $xoopsTpl->assign('nb_catcol', $xoopsModuleConfig['nb_catcol']);
 $count    = 1;
 $keywords = '';
-foreach (array_keys($downloadscat_arr) as $i) {
-    if ($downloadscat_arr[$i]->getVar('cat_pid') === $cid) {
-        $totaldownloads    = $utilities->getNumbersOfEntries($mytree, $categories, $downloads_arr, $downloadscat_arr[$i]->getVar('cat_cid'));
-        $subcategories_arr = $mytree->getFirstChild($downloadscat_arr[$i]->getVar('cat_cid'));
+foreach (array_keys($downloadscatArray) as $i) {
+    if ($downloadscatArray[$i]->getVar('cat_pid') === $cid) {
+        $totaldownloads    = $utilities->getNumbersOfEntries($mytree, $categories, $downloads_arr, $downloadscatArray[$i]->getVar('cat_cid'));
+        $subcategories_arr = $mytree->getFirstChild($downloadscatArray[$i]->getVar('cat_cid'));
         $chcount           = 0;
         $subcategories     = '';
         //pour les mots clef
-        $keywords .= $downloadscat_arr[$i]->getVar('cat_title') . ',';
+        $keywords .= $downloadscatArray[$i]->getVar('cat_title') . ',';
         foreach (array_keys($subcategories_arr) as $j) {
             if ($chcount >= $xoopsModuleConfig['nbsouscat']) {
-                $subcategories .= '<li>[<a href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/viewcat.php?cid=' . $downloadscat_arr[$i]->getVar('cat_cid') . '">+</a>]</li>';
+                $subcategories .= '<li>[<a href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/viewcat.php?cid=' . $downloadscatArray[$i]->getVar('cat_cid') . '">+</a>]</li>';
                 break;
             }
             $subcategories .= '<li><a href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/viewcat.php?cid=' . $subcategories_arr[$j]->getVar('cat_cid') . '">' . $subcategories_arr[$j]->getVar('cat_title') . '</a></li>';
-            $keywords      .= $downloadscat_arr[$i]->getVar('cat_title') . ',';
+            $keywords      .= $downloadscatArray[$i]->getVar('cat_title') . ',';
             ++$chcount;
         }
         $xoopsTpl->append('subcategories', [
-            'image'            => $uploadurl . $downloadscat_arr[$i]->getVar('cat_imgurl'),
-            'id'               => $downloadscat_arr[$i]->getVar('cat_cid'),
-            'title'            => $downloadscat_arr[$i]->getVar('cat_title'),
-            'description_main' => $downloadscat_arr[$i]->getVar('cat_description_main'),
+            'image'            => $uploadurl . $downloadscatArray[$i]->getVar('cat_imgurl'),
+            'id'               => $downloadscatArray[$i]->getVar('cat_cid'),
+            'title'            => $downloadscatArray[$i]->getVar('cat_title'),
+            'description_main' => $downloadscatArray[$i]->getVar('cat_description_main'),
             'infercategories'  => $subcategories,
             'totaldownloads'   => $totaldownloads,
             'count'            => $count
@@ -226,7 +226,7 @@ if ($xoopsModuleConfig['perpage'] > 0) {
 
     $downloads_arr = $downloadsHandler->getAll($criteria);
     if ($numrows > $limit) {
-        $pagenav = new XoopsPageNav($numrows, $limit, $start, 'start', 'limit=' . $limit . '&cid=' . (int)$_REQUEST['cid'] . '&sort=' . $sort . '&order=' . $order);
+        $pagenav = new \XoopsPageNav($numrows, $limit, $start, 'start', 'limit=' . $limit . '&cid=' . (int)$_REQUEST['cid'] . '&sort=' . $sort . '&order=' . $order);
         $pagenav = $pagenav->renderNav(4);
     } else {
         $pagenav = '';
@@ -358,10 +358,10 @@ if ($xoopsModuleConfig['perpage'] > 0) {
 }
 // r�f�rencement
 // titre de la page
-$pagetitle = $utilities->getPathTreeUrl($mytree, $cid, $downloadscat_arr, 'cat_title', $prefix = ' - ', false, 'DESC');
+$pagetitle = $utilities->getPathTreeUrl($mytree, $cid, $downloadscatArray, 'cat_title', $prefix = ' - ', false, 'DESC');
 $xoopsTpl->assign('xoops_pagetitle', $pagetitle);
 //description
-$xoTheme->addMeta('meta', 'description', strip_tags($downloadscat_arr[$cid]->getVar('cat_description_main')));
+$xoTheme->addMeta('meta', 'description', strip_tags($downloadscatArray[$cid]->getVar('cat_description_main')));
 //keywords
 $keywords = substr($keywords, 0, -1);
 $xoTheme->addMeta('meta', 'keywords', $keywords);

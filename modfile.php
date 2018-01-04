@@ -57,30 +57,30 @@ switch ($op) {
         $criteria->setSort('cat_weight ASC, cat_title');
         $criteria->setOrder('ASC');
         $criteria->add(new Criteria('cat_cid', '(' . implode(',', $categories) . ')', 'IN'));
-        $downloadscat_arr = $categoryHandler->getAll($criteria);
-        $mytree           = new Xoopsmodules\tdmdownloads\TDMObjectTree($downloadscat_arr, 'cat_cid', 'cat_pid');
+        $downloadscatArray = $categoryHandler->getAll($criteria);
+        $mytree           = new XoopsModules\Tdmdownloads\TdmObjectTree($downloadscatArray, 'cat_cid', 'cat_pid');
         //navigation
-        $navigation = $utilities->getPathTreeUrl($mytree, $view_downloads->getVar('cid'), $downloadscat_arr, 'cat_title', $prefix = ' <img src="assets/images/deco/arrow.gif" alt="arrow" /> ', true, 'ASC', true);
+        $navigation = $utilities->getPathTreeUrl($mytree, $view_downloads->getVar('cid'), $downloadscatArray, 'cat_title', $prefix = ' <img src="assets/images/deco/arrow.gif" alt="arrow" /> ', true, 'ASC', true);
         $navigation .= ' <img src="assets/images/deco/arrow.gif" alt="arrow" /> <a title="' . $view_downloads->getVar('title') . '" href="singlefile.php?lid=' . $view_downloads->getVar('lid') . '">' . $view_downloads->getVar('title') . '</a>';
         $navigation .= ' <img src="assets/images/deco/arrow.gif" alt="arrow" /> ' . _MD_TDMDOWNLOADS_SINGLEFILE_MODIFY;
         $xoopsTpl->assign('navigation', $navigation);
         // référencement
         // titre de la page
         $pagetitle = _MD_TDMDOWNLOADS_SINGLEFILE_MODIFY . ' - ' . $view_downloads->getVar('title') . ' - ';
-        $pagetitle .= $utilities->getPathTreeUrl($mytree, $view_downloads->getVar('cid'), $downloadscat_arr, 'cat_title', $prefix = ' - ', false, 'DESC', true);
+        $pagetitle .= $utilities->getPathTreeUrl($mytree, $view_downloads->getVar('cid'), $downloadscatArray, 'cat_title', $prefix = ' - ', false, 'DESC', true);
         $xoopsTpl->assign('xoops_pagetitle', $pagetitle);
         //description
         $xoTheme->addMeta('meta', 'description', strip_tags(_MD_TDMDOWNLOADS_SINGLEFILE_MODIFY . ' (' . $view_downloads->getVar('title') . ')'));
 
         //Affichage du formulaire de notation des téléchargements
-        $obj  = $downloadsmodHandler->create();
+        $obj  = $modifiedHandler->create();
         $form = $obj->getForm($lid, false, $donnee = []);
         $xoopsTpl->assign('themeForm', $form->render());
         break;
     // save
     case 'save':
         require_once XOOPS_ROOT_PATH . '/class/uploader.php';
-        $obj            = $downloadsmodHandler->create();
+        $obj            = $modifiedHandler->create();
         $erreur         = false;
         $message_erreur = '';
         $donnee         = [];
@@ -124,7 +124,7 @@ switch ($op) {
 
         // erreur si le captcha est faux
         xoops_load('captcha');
-        $xoopsCaptcha = XoopsCaptcha::getInstance();
+        $xoopsCaptcha = \XoopsCaptcha::getInstance();
         if (!$xoopsCaptcha->verify()) {
             $message_erreur .= $xoopsCaptcha->getMessage() . '<br>';
             $erreur         = true;
@@ -133,20 +133,20 @@ switch ($op) {
         $criteria = new CriteriaCompo();
         $criteria->setSort('weight ASC, title');
         $criteria->setOrder('ASC');
-        $downloads_field = $downloadsfieldHandler->getAll($criteria);
+        $downloads_field = $fieldHandler->getAll($criteria);
         foreach (array_keys($downloads_field) as $i) {
             if (0 == $downloads_field[$i]->getVar('status_def')) {
                 $nom_champ          = 'champ' . $downloads_field[$i]->getVar('fid');
-                $donnee[$nom_champ] = $_POST[$nom_champ];
+                $donnee[$nom_champ] = Request::getString($nom_champ, '', 'POST');
             }
         }
         if (true === $erreur) {
             $xoopsTpl->assign('message_erreur', $message_erreur);
         } else {
-            $obj->setVar('size', $_POST['size'] . ' ' . $_POST['type_size']);
+            $obj->setVar('size', Request::getInt('size', 0, 'POST') . ' ' . Request::getString('type_size', '', 'POST'));
             // Pour le fichier
             if (isset($_POST['xoops_upload_file'][0])) {
-                $uploader = new XoopsMediaUploader($uploaddir_downloads, explode('|', $xoopsModuleConfig['mimetype']), $xoopsModuleConfig['maxuploadsize'], null, null);
+                $uploader = new \XoopsMediaUploader($uploaddir_downloads, explode('|', $xoopsModuleConfig['mimetype']), $xoopsModuleConfig['maxuploadsize'], null, null);
                 if ($uploader->fetchMedia($_POST['xoops_upload_file'][0])) {
                     if ($xoopsModuleConfig['newnamedownload']) {
                         $uploader->setPrefix($xoopsModuleConfig['prefixdownloads']);
@@ -164,7 +164,7 @@ switch ($op) {
             }
             // Pour l'image
             if (isset($_POST['xoops_upload_file'][1])) {
-                $uploader_2 = new XoopsMediaUploader($uploaddir_shots, [
+                $uploader_2 = new \XoopsMediaUploader($uploaddir_shots, [
                     'image/gif',
                     'image/jpeg',
                     'image/pjpeg',
@@ -185,21 +185,21 @@ switch ($op) {
                 }
             }
 
-            if ($downloadsmodHandler->insert($obj)) {
+            if ($modifiedHandler->insert($obj)) {
                 $lidDownloads = $obj->getNewEnreg($db);
                 // Récupération des champs supplémentaires:
                 $criteria = new CriteriaCompo();
                 $criteria->setSort('weight ASC, title');
                 $criteria->setOrder('ASC');
-                $downloads_field = $downloadsfieldHandler->getAll($criteria);
+                $downloads_field = $fieldHandler->getAll($criteria);
                 foreach (array_keys($downloads_field) as $i) {
                     if (0 == $downloads_field[$i]->getVar('status_def')) {
-                        $objdata   = $downloadsfieldmoddataHandler->create();
+                        $objdata   = $modifiedfielddataHandler->create();
                         $nom_champ = 'champ' . $downloads_field[$i]->getVar('fid');
                         $objdata->setVar('moddata', $_POST[$nom_champ]);
                         $objdata->setVar('lid', $lidDownloads);
                         $objdata->setVar('fid', $downloads_field[$i]->getVar('fid'));
-                        $downloadsfieldmoddataHandler->insert($objdata) || $objdata->getHtmlErrors();
+                        $modifiedfielddataHandler->insert($objdata) || $objdata->getHtmlErrors();
                     }
                 }
                 $tags                      = [];

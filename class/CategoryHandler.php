@@ -1,4 +1,4 @@
-<?php namespace Xoopsmodules\tdmdownloads;
+<?php namespace XoopsModules\Tdmdownloads;
 
 /**
  * TDMDownload
@@ -25,6 +25,6 @@ class CategoryHandler extends \XoopsPersistableObjectHandler
      */
     public function __construct(\XoopsDatabase $db = null)
     {
-        parent::__construct($db, 'tdmdownloads_cat', 'Xoopsmodules\tdmdownloads\Category', 'cat_cid', 'cat_title');
+        parent::__construct($db, 'tdmdownloads_cat', Category::class, 'cat_cid', 'cat_title');
     }
 }

@@ -1,4 +1,4 @@
-<?php namespace Xoopsmodules\tdmdownloads;
+<?php namespace XoopsModules\Tdmdownloads;
 
 /*
      You may not change or alter any portion of this comment or credits
@@ -12,11 +12,11 @@
 /**
  * xoalbum module for xoops
  *
- * @copyright       XOOPS Project (http://xoops.org)
+ * @copyright       XOOPS Project (https://xoops.org)
  * @license         GPL 2.0 or later
  * @package         xoalbum
  * @since           2.0.0
- * @author          XOOPS Development Team <name@site.com> - <http://xoops.org>
+ * @author          XOOPS Development Team <name@site.com> - <https://xoops.org>
  */
 
 //defined('XOOPS_ROOT_PATH') || die('Restricted access');
@@ -43,7 +43,7 @@ class Helper extends \Xmf\Module\Helper
     /**
      * Get instance
      * @param bool $debug
-     * @return \Xoopsmodules\tdmdownloads\Helper
+     * @return \XoopsModules\Tdmdownloads\Helper
      */
     public static function getInstance($debug = false)
     {
@@ -68,16 +68,16 @@ class Helper extends \Xmf\Module\Helper
     {
         // get all dirnames
         $moduleHandler = xoops_getHandler('module');
-        $criteria      = new CriteriaCompo();
+        $criteria      = new \CriteriaCompo();
         if (count($dirnames) > 0) {
             foreach ($dirnames as $mDir) {
-                $criteria->add(new Criteria('dirname', $mDir), 'OR');
+                $criteria->add(new \Criteria('dirname', $mDir), 'OR');
             }
         }
         if (!empty($otherCriteria)) {
             $criteria->add($otherCriteria);
         }
-        $criteria->add(new Criteria('isactive', 1), 'AND');
+        $criteria->add(new \Criteria('isactive', 1), 'AND');
         $modules = $moduleHandler->getObjects($criteria, true);
         if ($asObj) {
             return $modules;
@@ -88,5 +88,13 @@ class Helper extends \Xmf\Module\Helper
         }
 
         return $dirs;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDirname()
+    {
+        return $this->dirname;
     }
 }

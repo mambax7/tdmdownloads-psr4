@@ -15,14 +15,14 @@
  */
 
 use Xmf\Request;
-use Xoopsmodules\tdmdownloads\Tdmobjecttree;
+use XoopsModules\Tdmdownloads\TdmObjectTree;
 
 require_once __DIR__ . '/admin_header.php';
 
-$myts = MyTextSanitizer::getInstance();
-//$thumbnail         = new Xoopsmodules\tdmdownloads\DownloadsHandler();
-//$downloadsHandler = new Xoopsmodules\tdmdownloads\DownloadsHandler($db);
-//$categoryHandler = new Xoopsmodules\tdmdownloads\CategoryHandler($db);
+$myts = \MyTextSanitizer::getInstance();
+//$thumbnail         = new XoopsModules\Tdmdownloads\DownloadsHandler();
+//$downloadsHandler = new XoopsModules\Tdmdownloads\DownloadsHandler($db);
+//$categoryHandler = new XoopsModules\Tdmdownloads\CategoryHandler($db);
 
 //On recupere la valeur de l'argument op dans l'URL$
 $op = $utilities->cleanVars($_REQUEST, 'op', 'list', 'string');
@@ -122,7 +122,7 @@ switch ($op) {
         $downloads_arr                  = $downloadsHandler->getByLink($criteria);
         $numrows                        = $downloadsHandler->getCount($criteria);
         if ($numrows > $limit) {
-            $pagenav = new XoopsPageNav($numrows, $limit, $start, 'start', 'op=list&document_tri=' . $document_tri . '&document_order=' . $document_order . '&statut_display=' . $statut_display);
+            $pagenav = new \XoopsPageNav($numrows, $limit, $start, 'start', 'op=list&document_tri=' . $document_tri . '&document_order=' . $document_order . '&statut_display=' . $statut_display);
             $pagenav = $pagenav->renderNav(4);
         } else {
             $pagenav = '';
@@ -162,7 +162,7 @@ switch ($op) {
             echo '<th align="center" width="5%">' . _AM_TDMDOWNLOADS_FORMRATING . '</th>';
             echo '<th align="center" width="15%">' . _AM_TDMDOWNLOADS_FORMACTION . '</th>';
             echo '</tr>';
-            $mytree = new Tdmobjecttree($category_arr, 'cat_cid', 'cat_pid');
+            $mytree = new TdmObjectTree($category_arr, 'cat_cid', 'cat_pid');
             $class  = 'odd';
             foreach (array_keys($downloads_arr) as $i) {
                 $class    = ('even' === $class) ? 'odd' : 'even';
@@ -215,9 +215,9 @@ switch ($op) {
         //        require_once dirname(__DIR__) . '/include/setup.php';
         //        require_once __DIR__ . '/admin_header.php';
 
-        //        $downloadsHandler = new Xoopsmodules\tdmdownloads\DownloadsHandler($db);
+        //        $downloadsHandler = new XoopsModules\Tdmdownloads\DownloadsHandler($db);
 
-        //        $downloads = new Xoopsmodules\tdmdownloads\Downloads();
+        //        $downloads = new XoopsModules\Tdmdownloads\Downloads();
         //        $downloadsHandler->className = 'Downloads';
 
         //Affichage du formulaire de création des téléchargements
@@ -268,26 +268,26 @@ switch ($op) {
                 // supression des votes
                 $criteria = new CriteriaCompo();
                 $criteria->add(new Criteria('lid', $downloads_lid));
-                $downloads_votedata = $downloadsvotedataHandler->getAll($criteria);
+                $downloads_votedata = $ratingHandler->getAll($criteria);
                 foreach (array_keys($downloads_votedata) as $i) {
-                    $objvotedata = $downloadsvotedataHandler->get($downloads_votedata[$i]->getVar('ratingid'));
-                    $downloadsvotedataHandler->delete($objvotedata) || $objvotedata->getHtmlErrors();
+                    $objvotedata = $ratingHandler->get($downloads_votedata[$i]->getVar('ratingid'));
+                    $ratingHandler->delete($objvotedata) || $objvotedata->getHtmlErrors();
                 }
                 // supression des rapports de fichier brisé
                 $criteria = new CriteriaCompo();
                 $criteria->add(new Criteria('lid', $downloads_lid));
-                $downloads_broken = $downloadsbrokenHandler->getAll($criteria);
+                $downloads_broken = $brokenHandler->getAll($criteria);
                 foreach (array_keys($downloads_broken) as $i) {
-                    $objbroken = $downloadsbrokenHandler->get($downloads_broken[$i]->getVar('reportid'));
-                    $downloadsbrokenHandler->delete($objbroken) || $objbroken->getHtmlErrors();
+                    $objbroken = $brokenHandler->get($downloads_broken[$i]->getVar('reportid'));
+                    $brokenHandler->delete($objbroken) || $objbroken->getHtmlErrors();
                 }
                 // supression des data des champs sup.
                 $criteria = new CriteriaCompo();
                 $criteria->add(new Criteria('lid', $downloads_lid));
-                $downloads_fielddata = $downloadsfielddataHandler->getAll($criteria);
+                $downloads_fielddata = $fielddataHandler->getAll($criteria);
                 foreach (array_keys($downloads_fielddata) as $i) {
-                    $objfielddata = $downloadsfielddataHandler->get($downloads_fielddata[$i]->getVar('iddata'));
-                    $downloadsfielddataHandler->delete($objfielddata) || $objvfielddata->getHtmlErrors();
+                    $objfielddata = $fielddataHandler->get($downloads_fielddata[$i]->getVar('iddata'));
+                    $fielddataHandler->delete($objfielddata) || $objvfielddata->getHtmlErrors();
                 }
                 // supression des commentaires
                 xoops_comment_delete($xoopsModule->getVar('mid'), $downloads_lid);
@@ -342,7 +342,7 @@ switch ($op) {
         //catégorie
         //$view_categorie = $categoryHandler->get($view_downloads->getVar('cid'));
         $category_arr = $categoryHandler->getAll();
-        $mytree       = new Tdmobjecttree($category_arr, 'cat_cid', 'cat_pid');
+        $mytree       = new TdmObjectTree($category_arr, 'cat_cid', 'cat_pid');
         // sortie des informations
         $downloads_title       = $view_downloads->getVar('title');
         $downloads_description = $view_downloads->getVar('description');
@@ -367,7 +367,7 @@ switch ($op) {
         $criteria->setSort('weight ASC, title');
         $criteria->setOrder('ASC');
         $criteria->add(new Criteria('status', 1));
-        $downloads_field = $downloadsfieldHandler->getAll($criteria);
+        $downloads_field = $fieldHandler->getAll($criteria);
         $class           = 'odd';
         foreach (array_keys($downloads_field) as $i) {
             if (1 == $downloads_field[$i]->getVar('status_def')) {
@@ -412,7 +412,7 @@ switch ($op) {
                 $criteria = new CriteriaCompo();
                 $criteria->add(new Criteria('lid', $downloads_lid));
                 $criteria->add(new Criteria('fid', $downloads_field[$i]->getVar('fid')));
-                $downloadsfielddata = $downloadsfielddataHandler->getAll($criteria);
+                $downloadsfielddata = $fielddataHandler->getAll($criteria);
                 foreach (array_keys($downloadsfielddata) as $j) {
                     $contenu = $downloadsfielddata[$j]->getVar('data');
                 }
@@ -514,7 +514,7 @@ switch ($op) {
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria('lid', $downloads_lid));
         $criteria->add(new Criteria('ratinguser', 0, '!='));
-        $downloadsvotedata_arr = $downloadsvotedataHandler->getAll($criteria);
+        $downloadsvotedata_arr = $ratingHandler->getAll($criteria);
         $total_vote            = count($downloadsvotedata_arr);
         echo '<table width="100%">';
         echo '<tr><td colspan="5"><b>';
@@ -550,7 +550,7 @@ switch ($op) {
         $criteria = new CriteriaCompo();
         $criteria->add(new Criteria('lid', $downloads_lid));
         $criteria->add(new Criteria('ratinguser', 0));
-        $downloadsvotedata_arr = $downloadsvotedataHandler->getAll($criteria);
+        $downloadsvotedata_arr = $ratingHandler->getAll($criteria);
         $total_vote            = count($downloadsvotedata_arr);
         echo '<tr><td colspan="5"><br><b>';
         printf(_AM_TDMDOWNLOADS_DOWNLOADS_VOTESANONYME, $total_vote);
@@ -570,12 +570,12 @@ switch ($op) {
 
     // permet de suprimmer un vote et de recalculer la note
     case 'del_vote':
-        $objvotedata = $downloadsvotedataHandler->get(Request::getInt('rid'));
-        if ($downloadsvotedataHandler->delete($objvotedata)) {
+        $objvotedata = $ratingHandler->get(Request::getInt('rid'));
+        if ($ratingHandler->delete($objvotedata)) {
             $criteria = new CriteriaCompo();
             $criteria->add(new Criteria('lid', Request::getInt('lid')));
-            $downloadsvotedata_arr = $downloadsvotedataHandler->getAll($criteria);
-            $total_vote            = $downloadsvotedataHandler->getCount($criteria);
+            $downloadsvotedata_arr = $ratingHandler->getAll($criteria);
+            $total_vote            = $ratingHandler->getCount($criteria);
             $obj                   = $downloadsHandler->get(Request::getInt('lid'));
             if (0 === $total_vote) {
                 $obj->setVar('rating', number_format(0, 1));
@@ -691,7 +691,7 @@ switch ($op) {
         $criteria = new CriteriaCompo();
         $criteria->setSort('weight ASC, title');
         $criteria->setOrder('ASC');
-        $downloads_field = $downloadsfieldHandler->getAll($criteria);
+        $downloads_field = $fieldHandler->getAll($criteria);
         foreach (array_keys($downloads_field) as $i) {
             if (0 == $downloads_field[$i]->getVar('status_def')) {
                 $nom_champ          = 'champ' . $downloads_field[$i]->getVar('fid');
@@ -710,7 +710,7 @@ switch ($op) {
             $obj->setVar('size', $_POST['size'] . ' ' . $_POST['type_size']);
             // Pour le fichier
             if (isset($_POST['xoops_upload_file'][0])) {
-                $uploader = new XoopsMediaUploader($uploaddir_downloads, explode('|', $xoopsModuleConfig['mimetype']), $xoopsModuleConfig['maxuploadsize'], null, null);
+                $uploader = new \XoopsMediaUploader($uploaddir_downloads, explode('|', $xoopsModuleConfig['mimetype']), $xoopsModuleConfig['maxuploadsize'], null, null);
                 if ($uploader->fetchMedia($_POST['xoops_upload_file'][0])) {
                     if ($xoopsModuleConfig['newnamedownload']) {
                         $uploader->setPrefix($xoopsModuleConfig['prefixdownloads']);
@@ -728,7 +728,7 @@ switch ($op) {
             }
             // Pour l'image
             if (isset($_POST['xoops_upload_file'][1])) {
-                $uploader_2 = new XoopsMediaUploader($uploaddir_shots, [
+                $uploader_2 = new \XoopsMediaUploader($uploaddir_shots, [
                     'image/gif',
                     'image/jpeg',
                     'image/pjpeg',
@@ -750,7 +750,7 @@ switch ($op) {
             }
             // enregistrement
             if ($downloadsHandler->insert($obj)) {
-                if (!(Request::hasVar('downloads_modified'))) {
+                if (!Request::hasVar('downloads_modified')) {
                     $lidDownloads = $obj->getNewEnreg($db);
                 } else {
                     $lidDownloads = Request::getInt('lid');
@@ -764,24 +764,24 @@ switch ($op) {
                 $criteria = new CriteriaCompo();
                 $criteria->setSort('weight ASC, title');
                 $criteria->setOrder('ASC');
-                $downloads_field = $downloadsfieldHandler->getAll($criteria);
+                $downloads_field = $fieldHandler->getAll($criteria);
                 foreach (array_keys($downloads_field) as $i) {
                     if (0 == $downloads_field[$i]->getVar('status_def')) {
                         $iddata = 'iddata' . $downloads_field[$i]->getVar('fid');
                         if (isset($_REQUEST[$iddata])) {
                             if ('' === $_REQUEST[$iddata]) {
-                                $objdata = $downloadsfielddataHandler->create();
+                                $objdata = $fielddataHandler->create();
                             } else {
-                                $objdata = $downloadsfielddataHandler->get($_REQUEST[$iddata]);
+                                $objdata = $fielddataHandler->get($_REQUEST[$iddata]);
                             }
                         } else {
-                            $objdata = $downloadsfielddataHandler->create();
+                            $objdata = $fielddataHandler->create();
                         }
                         $nom_champ = 'champ' . $downloads_field[$i]->getVar('fid');
                         $objdata->setVar('data', $_POST[$nom_champ]);
                         $objdata->setVar('lid', $lidDownloads);
                         $objdata->setVar('fid', $downloads_field[$i]->getVar('fid'));
-                        $downloadsfielddataHandler->insert($objdata) || $objdata->getHtmlErrors();
+                        $fielddataHandler->insert($objdata) || $objdata->getHtmlErrors();
                     }
                 }
                 //permission pour télécharger

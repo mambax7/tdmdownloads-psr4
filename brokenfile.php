@@ -14,7 +14,7 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-use Xoopsmodules\tdmdownloads\Tdmobjecttree;
+use XoopsModules\Tdmdownloads\TdmObjectTree;
 
 require_once __DIR__ . '/header.php';
 // template d'affichage
@@ -54,28 +54,28 @@ switch ($op) {
         $criteria->setSort('cat_weight ASC, cat_title');
         $criteria->setOrder('ASC');
         $criteria->add(new Criteria('cat_cid', '(' . implode(',', $categories) . ')', 'IN'));
-        $downloadscat_arr = $categoryHandler->getAll($criteria);
-        $mytree           = new Tdmobjecttree($downloadscat_arr, 'cat_cid', 'cat_pid');
+        $downloadscatArray = $categoryHandler->getAll($criteria);
+        $mytree           = new TdmObjectTree($downloadscatArray, 'cat_cid', 'cat_pid');
         //navigation
-        $navigation = $utilities->getPathTreeUrl($mytree, $view_downloads->getVar('cid'), $downloadscat_arr, 'cat_title', $prefix = ' <img src="assets/images/deco/arrow.gif" alt="arrow" /> ', true, 'ASC', true);
+        $navigation = $utilities->getPathTreeUrl($mytree, $view_downloads->getVar('cid'), $downloadscatArray, 'cat_title', $prefix = ' <img src="assets/images/deco/arrow.gif" alt="arrow" /> ', true, 'ASC', true);
         $navigation .= ' <img src="assets/images/deco/arrow.gif" alt="arrow" /> <a title="' . $view_downloads->getVar('title') . '" href="singlefile.php?lid=' . $view_downloads->getVar('lid') . '">' . $view_downloads->getVar('title') . '</a>';
         $navigation .= ' <img src="assets/images/deco/arrow.gif" alt="arrow" /> ' . _MD_TDMDOWNLOADS_SINGLEFILE_REPORTBROKEN;
         $xoopsTpl->assign('navigation', $navigation);
         // r�f�rencement
         // titre de la page
         $pagetitle = _MD_TDMDOWNLOADS_SINGLEFILE_REPORTBROKEN . ' - ' . $view_downloads->getVar('title') . ' - ';
-        $pagetitle .= $utilities->getPathTreeUrl($mytree, $view_downloads->getVar('cid'), $downloadscat_arr, 'cat_title', $prefix = ' - ', false, 'DESC', true);
+        $pagetitle .= $utilities->getPathTreeUrl($mytree, $view_downloads->getVar('cid'), $downloadscatArray, 'cat_title', $prefix = ' - ', false, 'DESC', true);
         $xoopsTpl->assign('xoops_pagetitle', $pagetitle);
         //description
         $xoTheme->addMeta('meta', 'description', strip_tags(_MD_TDMDOWNLOADS_SINGLEFILE_REPORTBROKEN . ' (' . $view_downloads->getVar('title') . ')'));
         //Affichage du formulaire de fichier bris�*/
-        $obj  = $downloadsbrokenHandler->create();
+        $obj  = $brokenHandler->create();
         $form = $obj->getForm($lid);
         $xoopsTpl->assign('themeForm', $form->render());
         break;
     // save
     case 'save':
-        $obj = $downloadsbrokenHandler->create();
+        $obj = $brokenHandler->create();
         if (empty($xoopsUser)) {
             $ratinguser = 0;
         } else {
@@ -85,7 +85,7 @@ switch ($op) {
             // si c'est un membre on v�rifie qu'il n'envoie pas 2 fois un rapport
             $criteria = new CriteriaCompo();
             $criteria->add(new Criteria('lid', $lid));
-            $downloadsbroken_arr = $downloadsbrokenHandler->getAll($criteria);
+            $downloadsbroken_arr = $brokenHandler->getAll($criteria);
             foreach (array_keys($downloadsbroken_arr) as $i) {
                 if ($downloadsbroken_arr[$i]->getVar('sender') === $ratinguser) {
                     redirect_header('singlefile.php?lid=' . $lid, 2, _MD_TDMDOWNLOADS_BROKENFILE_ALREADYREPORTED);
@@ -97,7 +97,7 @@ switch ($op) {
             $criteria->add(new Criteria('lid', $lid));
             $criteria->add(new Criteria('sender', 0));
             $criteria->add(new Criteria('ip', getenv('REMOTE_ADDR')));
-            if ($downloadsbrokenHandler->getCount($criteria) >= 1) {
+            if ($brokenHandler->getCount($criteria) >= 1) {
                 redirect_header('singlefile.php?lid=' . $lid, 2, _MD_TDMDOWNLOADS_BROKENFILE_ALREADYREPORTED);
             }
         }
@@ -105,7 +105,7 @@ switch ($op) {
         $message_erreur = '';
         // Test avant la validation
         xoops_load('captcha');
-        $xoopsCaptcha = XoopsCaptcha::getInstance();
+        $xoopsCaptcha = \XoopsCaptcha::getInstance();
         if (!$xoopsCaptcha->verify()) {
             $message_erreur .= $xoopsCaptcha->getMessage() . '<br>';
             $erreur         = true;
@@ -116,7 +116,7 @@ switch ($op) {
         if (true === $erreur) {
             $xoopsTpl->assign('message_erreur', $message_erreur);
         } else {
-            if ($downloadsbrokenHandler->insert($obj)) {
+            if ($brokenHandler->insert($obj)) {
                 $tags                      = [];
                 $tags['BROKENREPORTS_URL'] = XOOPS_URL . '/modules/' . $xoopsModule->getVar('dirname') . '/admin/broken.php';
                 $notificationHandler       = xoops_getHandler('notification');

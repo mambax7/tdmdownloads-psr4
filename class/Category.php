@@ -1,4 +1,4 @@
-<?php namespace Xoopsmodules\tdmdownloads;
+<?php namespace XoopsModules\Tdmdownloads;
 
 /**
  * TDMDownload
@@ -15,7 +15,7 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 class Category extends \XoopsObject
 {
     // constructor
@@ -102,8 +102,8 @@ class Category extends \XoopsObject
         $criteria        = new \CriteriaCompo();
         $criteria->setSort('cat_weight ASC, cat_title');
         $criteria->setOrder('ASC');
-        $downloadscat_arr = $categoryHandler->getAll($criteria);
-        $mytree           = new Tdmobjecttree($downloadscat_arr, 'cat_cid', 'cat_pid');
+        $downloadscatArray = $categoryHandler->getAll($criteria);
+        $mytree           = new TdmObjectTree($downloadscatArray, 'cat_cid', 'cat_pid');
         //$form->addElement(new \XoopsFormLabel(_AM_TDMDOWNLOADS_FORMINCAT, $mytree->makeSelBox('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true)));
         $form->addElement($mytree->makeSelectElement('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true, 0, '', _AM_TDMDOWNLOADS_FORMINCAT), true);
         //poids de la catégorie

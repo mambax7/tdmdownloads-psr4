@@ -20,8 +20,8 @@ xoops_cp_header();
 // pour file protection
 $xoopsUrl       = parse_url(XOOPS_URL);
 $xoopsUrl       = str_replace('www.', '', $xoopsUrl['host']);
-$fileProtection = _AM_TDMDOWNLOADS_ABOUT_FILEPROTECTION_INFO1 . '<br /><br />' . XOOPS_ROOT_PATH . '/uploads/TDMDownloads/downloads/' . '<br /><br />' . _AM_TDMDOWNLOADS_ABOUT_FILEPROTECTION_INFO2 . '<br /><br />';
-$fileProtection .= 'RewriteEngine on' . '<br />' . 'RewriteCond %{HTTP_REFERER} !' . $xoopsUrl . "/.*$ [NC]<br />ReWriteRule \.*$ - [F]";
+$fileProtection = _AM_TDMDOWNLOADS_ABOUT_FILEPROTECTION_INFO1 . '<br><br>' . XOOPS_ROOT_PATH . '/uploads/TDMDownloads/downloads/' . '<br><br>' . _AM_TDMDOWNLOADS_ABOUT_FILEPROTECTION_INFO2 . '<br><br>';
+$fileProtection .= 'RewriteEngine on' . '<br>' . 'RewriteCond %{HTTP_REFERER} !' . $xoopsUrl . "/.*$ [NC]<br>ReWriteRule \.*$ - [F]";
 
 $adminObject = \Xmf\Module\Admin::getInstance();
 

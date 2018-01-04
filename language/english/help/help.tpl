@@ -12,29 +12,29 @@
     extract the /TDMDownloas folder into the ../modules directory. Install the module through Admin -> System Module ->
     Modules.
     <b><b>
-        Detailed instructions on installing modules are available in the
-        <a href="https://www.gitbook.com/book/xoops/xoops-operations-guide/" target="_blank">XOOPS Operations Manual</a>
+            Detailed instructions on installing modules are available in the
+            <a href="https://www.gitbook.com/book/xoops/xoops-operations-guide/" target="_blank">XOOPS Operations Manual</a>
 
-        <p class="even">
-        <h4 class="odd">Operating instructions</h4>
-        To set up this module you need to:
-        <b><b>
-            i) Configure your preferences for the module (see "Preferences") and
-            optionally the Partners block if you intend to use it (see
-            Blocks)
+            <p class="even">
+            <h4 class="odd">Operating instructions</h4>
+            To set up this module you need to:
             <b><b>
-                ii) Check that you have given your user groups the necessary module and
-                block access rights to use this module. Group permissions are set through
-                the Administration Menu -> System -> Groups.
-                <b><b>
-                    Detailed instructions on configuring the access rights for user groups are available in the
-                    <a href="https://www.gitbook.com/book/xoops/xoops-operations-guide/" target="_blank">XOOPS
-                        Operations Manual</a>
-                    </p>
-                    <h4 class="odd">Tutorial</h4>
+                    i) Configure your preferences for the module (see "Preferences") and
+                    optionally the Partners block if you intend to use it (see
+                    Blocks)
+                    <b><b>
+                            ii) Check that you have given your user groups the necessary module and
+                            block access rights to use this module. Group permissions are set through
+                            the Administration Menu -> System -> Groups.
+                            <b><b>
+                                    Detailed instructions on configuring the access rights for user groups are available in the
+                                    <a href="https://www.gitbook.com/book/xoops/xoops-operations-guide/" target="_blank">XOOPS
+                                        Operations Manual</a>
+                                    </p>
+                                    <h4 class="odd">Tutorial</h4>
 
-                    <p class="even">
-                        Not available at the moment.
-                    </p>
-                    <!-- -----Help Content ---------- -->
+                                    <p class="even">
+                                        Not available at the moment.
+                                    </p>
+                                    <!-- -----Help Content ---------- -->
 </div>

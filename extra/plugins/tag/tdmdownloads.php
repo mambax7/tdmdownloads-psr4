@@ -31,8 +31,8 @@ function TDMDownloads_tag_iteminfo(&$items)
         }
     }
     $moduleDirName = basename(dirname(dirname(dirname(__DIR__))));
-    $itemHandler   = new DownloadsHandler(null);// xoops_getModuleHandler('tdmdownloads_downloads', $moduleDirName);
-    $items_obj     = $itemHandler->getObjects(new Criteria('lid', '(' . implode(', ', $items_id) . ')', 'IN'), true);
+    $itemHandler   = new \DownloadsHandler(null);// xoops_getModuleHandler('tdmdownloads_downloads', $moduleDirName);
+    $items_obj     = $itemHandler->getObjects(new \Criteria('lid', '(' . implode(', ', $items_id) . ')', 'IN'), true);
 
     foreach (array_keys($items) as $cat_id) {
         foreach (array_keys($items[$cat_id]) as $item_id) {
@@ -74,8 +74,7 @@ function TDMDownloads_tag_synchronization($mid)
                . "                FROM {$itemHandler->table} "
                . "                WHERE {$itemHandler->table}.status > 0"
                . '            ) '
-               . '        )';
-    else:
+               . '        )'; else:
         $sql = "    DELETE {$linkHandler->table} FROM {$linkHandler->table}"
                . "    LEFT JOIN {$itemHandler->table} AS aa ON {$linkHandler->table}.tag_itemid = aa.{$itemHandler->keyName} "
                . '    WHERE '

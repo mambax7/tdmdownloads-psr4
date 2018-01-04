@@ -14,8 +14,8 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-//use Xoopsmodules\tdmdownloads;
-//use Xoopsmodules\tdmdownloads\Tdmobjecttree;
+//use XoopsModules\Tdmdownloads;
+//use XoopsModules\Tdmdownloads\TdmObjectTree;
 
 //require_once dirname(__DIR__) . '/include/setup.php';
 
@@ -23,7 +23,7 @@ require_once __DIR__ . '/../../../include/cp_header.php';
 require_once $GLOBALS['xoops']->path('www/class/xoopsformloader.php');
 
 //require_once __DIR__ . '/../../../class/xoopsformloader.php';
-//require_once __DIR__ . '/../class/utility.php';
+//require_once __DIR__ . '/../class/Utility.php';
 require_once __DIR__ . '/../include/common.php';
 
 $moduleDirName = basename(dirname(__DIR__));
@@ -31,7 +31,7 @@ $moduleDirName = basename(dirname(__DIR__));
 /** @var Xmf\Module\Admin $adminObject */
 $adminObject = \Xmf\Module\Admin::getInstance();
 
-$myts = MyTextSanitizer::getInstance();
+$myts = \MyTextSanitizer::getInstance();
 
 if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof XoopsTpl)) {
     require_once $GLOBALS['xoops']->path('class/template.php');

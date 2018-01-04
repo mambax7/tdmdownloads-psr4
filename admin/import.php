@@ -20,10 +20,9 @@ $import_admin = \Xmf\Module\Admin::getInstance();
 echo $import_admin->displayNavigation(basename(__FILE__));
 
 //Action dans switch
+$op = 'index';
 if (isset($_REQUEST['op'])) {
     $op = $_REQUEST['op'];
-} else {
-    $op = 'index';
 }
 
 // import depuis mydownloads

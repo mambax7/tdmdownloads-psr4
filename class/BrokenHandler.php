@@ -1,4 +1,4 @@
-<?php namespace Xoopsmodules\tdmdownloads;
+<?php namespace XoopsModules\Tdmdownloads;
 
 /**
  * TDMDownload
@@ -15,7 +15,7 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('XOOPS root path not defined');
+// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
 
 /**
  * Class TDMDownloadsBrokenHandler
@@ -27,6 +27,6 @@ class BrokenHandler extends \XoopsPersistableObjectHandler
      */
     public function __construct(\XoopsDatabase $db = null)
     {
-        parent::__construct($db, 'tdmdownloads_broken', 'Xoopsmodules\tdmdownloads\Broken', 'reportid', 'lid');
+        parent::__construct($db, 'tdmdownloads_broken', Broken::class, 'reportid', 'lid');
     }
 }

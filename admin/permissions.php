@@ -106,7 +106,7 @@ if (4 === $permission) {
         }
     }
 }
-//$categoryHandler          = new Xoopsmodules\tdmdownloads\CategoryHandler($db);
+//$categoryHandler          = new XoopsModules\Tdmdownloads\CategoryHandler($db);
 if ($categoryHandler->getCount()) {
     echo $permissionsForm->render();
 } else {
