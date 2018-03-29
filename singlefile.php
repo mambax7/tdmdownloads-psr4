@@ -15,6 +15,9 @@
  */
 
 use XoopsModules\Tdmdownloads\TdmObjectTree;
+use XoopsModules\Tdmdownloads;
+/** @var Tdmdownloads\Helper $helper */
+$helper = Tdmdownloads\Helper::getInstance();
 
 //spl_autoload_extensions(".php");
 //spl_autoload_register();
@@ -38,17 +41,17 @@ $moduleDirName = basename(__DIR__);
 
 //$mydirname3b = xoopsObj::mydirname();
 
-//$broken = new XoopsModules\Tdmdownloads\Broken();
+//$broken = new \XoopsModules\Tdmdownloads\Broken();
 
 //$tt = new xoops2\Tdmdownloads;
 //$tt = new xoopsObj;
 
 //OK
-$tt         = new XoopsModules\Tdmdownloads\Tdmdownloads();
+$tt         = new \XoopsModules\Tdmdownloads\Tdmdownloads();
 $mydirname4 = $tt::$mydirname2; //set in constructor
 
 //OK
-//$mydirname4 = (new Xoops\Tdmdownloads\Tdmdownloads)->mydirname(); //calling a function
+//$mydirname4 = (new \Xoops\Tdmdownloads\Tdmdownloads)->mydirname(); //calling a function
 
 //OK
 //use Xoops\Tdmdownloads\Tdmdownloads as xoopsObj;
@@ -69,7 +72,7 @@ $xoopsTpl->assign('mydirname', $mydirname4);
 $lid = $utilities->cleanVars($_REQUEST, 'lid', 0, 'int');
 
 //information du t�l�chargement
-//$downloadsHandler             = new XoopsModules\Tdmdownloads\DownloadsHandler($db);
+//$downloadsHandler             = new \XoopsModules\Tdmdownloads\DownloadsHandler($db);
 $view_downloads = $downloadsHandler->get($lid);
 
 // redirection si le t�l�chargement n'existe pas ou n'est pas activ�
@@ -84,11 +87,11 @@ if (!in_array($view_downloads->getVar('cid'), $categories)) {
 }
 
 //tableau des cat�gories
-$criteria = new CriteriaCompo();
+$criteria = new \CriteriaCompo();
 $criteria->setSort('cat_weight ASC, cat_title');
 $criteria->setOrder('ASC');
-$criteria->add(new Criteria('cat_cid', '(' . implode(',', $categories) . ')', 'IN'));
-//$categoryHandler          = new XoopsModules\Tdmdownloads\CategoryHandler($db);
+$criteria->add(new \Criteria('cat_cid', '(' . implode(',', $categories) . ')', 'IN'));
+//$categoryHandler          = new \XoopsModules\Tdmdownloads\CategoryHandler($db);
 $downloadscatArray = $categoryHandler->getAll($criteria);
 $mytree           = new TdmObjectTree($downloadscatArray, 'cat_cid', 'cat_pid');
 
@@ -99,13 +102,13 @@ $xoopsTpl->assign('navigation', $navigation);
 
 // sortie des informations
 //Utilisation d'une copie d'�cran avec la largeur selon les pr�f�rences
-if (1 == $xoopsModuleConfig['useshots']) {
-    $xoopsTpl->assign('shotwidth', $xoopsModuleConfig['shotwidth']);
+if (1 == $helper->getConfig('useshots')) {
+    $xoopsTpl->assign('shotwidth', $helper->getConfig('shotwidth'));
     $xoopsTpl->assign('show_screenshot', true);
-    $xoopsTpl->assign('img_float', $xoopsModuleConfig['img_float']);
+    $xoopsTpl->assign('img_float', $helper->getConfig('img_float'));
 }
 
-if ('ltr' === $xoopsModuleConfig['download_float']) {
+if ('ltr' === $helper->getConfig('download_float')) {
     $xoopsTpl->assign('textfloat', 'floatleft');
     $xoopsTpl->assign('infofloat', 'floatright');
 } else {
@@ -158,28 +161,28 @@ $xoopsTpl->assign('hits', sprintf(_MD_TDMDOWNLOADS_SINGLEFILE_NBTELECH, $view_do
 $xoopsTpl->assign('rating', number_format($view_downloads->getVar('rating'), 1));
 $xoopsTpl->assign('votes', sprintf(_MD_TDMDOWNLOADS_SINGLEFILE_VOTES, $view_downloads->getVar('votes')));
 $xoopsTpl->assign('nb_comments', sprintf(_MD_TDMDOWNLOADS_SINGLEFILE_COMMENTS, $view_downloads->getVar('comments')));
-$xoopsTpl->assign('show_bookmark', $xoopsModuleConfig['show_bookmark']);
-$xoopsTpl->assign('show_social', $xoopsModuleConfig['show_social']);
+$xoopsTpl->assign('show_bookmark', $helper->getConfig('show_bookmark'));
+$xoopsTpl->assign('show_social', $helper->getConfig('show_social'));
 
 //paypal
 $paypal = false;
-if (true === $xoopsModuleConfig['use_paypal'] && '' !== $view_downloads->getVar('paypal')) {
+if (true === $helper->getConfig('use_paypal') && '' !== $view_downloads->getVar('paypal')) {
     $paypal = '<form name="_xclick" action="https://www.paypal.com/cgi-bin/webscr" method="post">
     <input type="hidden" name="cmd" value="_xclick">
     <input type="hidden" name="business" value="' . $view_downloads->getVar('paypal') . '">
     <input type="hidden" name="item_name" value="' . sprintf(_MD_TDMDOWNLOADS_SINGLEFILE_PAYPAL, $view_downloads->getVar('title')) . ' (' . XoopsUser::getUnameFromId(!empty($xoopsUser) ? $xoopsUser->getVar('uid') : 0) . ')">
-    <input type="hidden" name="currency_code" value="' . $xoopsModuleConfig['currency_paypal'] . '">
-    <input type="image" src="' . $xoopsModuleConfig['image_paypal'] . '" border="0" name="submit" alt="Make payments with PayPal - it\'s fast, free and secure!">
+    <input type="hidden" name="currency_code" value="' . $helper->getConfig('currency_paypal') . '">
+    <input type="image" src="' . $helper->getConfig('image_paypal') . '" border="0" name="submit" alt="Make payments with PayPal - it\'s fast, free and secure!">
     </form>';
 }
 $xoopsTpl->assign('paypal', $paypal);
 
 // pour les champs suppl�mentaires
-$criteria = new CriteriaCompo();
+$criteria = new \CriteriaCompo();
 $criteria->setSort('weight ASC, title');
 $criteria->setOrder('ASC');
-$criteria->add(new Criteria('status', 1));
-//$fieldHandler        = new XoopsModules\Tdmdownloads\FieldHandler($db);
+$criteria->add(new \Criteria('status', 1));
+//$fieldHandler        = new \XoopsModules\Tdmdownloads\FieldHandler($db);
 $downloads_field = $fieldHandler->getAll($criteria);
 $nb_champ        = count($downloads_field);
 $champ_sup       = '';
@@ -216,11 +219,11 @@ foreach (array_keys($downloads_field) as $i) {
             }
         }
     } else {
-        //        $fielddataHandler    = new XoopsModules\Tdmdownloads\FielddataHandler($db);
+        //        $fielddataHandler    = new \XoopsModules\Tdmdownloads\FielddataHandler($db);
         $view_data = $fielddataHandler->get();
-        $criteria  = new CriteriaCompo();
-        $criteria->add(new Criteria('lid', $_REQUEST['lid']));
-        $criteria->add(new Criteria('fid', $downloads_field[$i]->getVar('fid')));
+        $criteria  = new \CriteriaCompo();
+        $criteria->add(new \Criteria('lid', $_REQUEST['lid']));
+        $criteria->add(new \Criteria('fid', $downloads_field[$i]->getVar('fid')));
         $downloadsfielddata = $fielddataHandler->getAll($criteria);
         $contenu            = '';
         foreach (array_keys($downloadsfielddata) as $j) {
@@ -249,7 +252,7 @@ $xoopsTpl->assign('perm_vote', $perm_vote);
 $xoopsTpl->assign('perm_modif', $perm_modif);
 $categories = $utilities->getItemIds('tdmdownloads_download', $moduleDirName);
 $item       = $utilities->getItemIds('tdmdownloads_download_item', $moduleDirName);
-if (1 == $xoopsModuleConfig['permission_download']) {
+if (1 == $helper->getConfig('permission_download')) {
     if (!in_array($view_downloads->getVar('cid'), $categories)) {
         $xoopsTpl->assign('perm_download', false);
     } else {
@@ -264,7 +267,7 @@ if (1 == $xoopsModuleConfig['permission_download']) {
 }
 
 // pour utiliser tellafriend.
-if ((1 == $xoopsModuleConfig['usetellafriend']) && is_dir('../tellafriend')) {
+if ((1 == $helper->getConfig('usetellafriend')) && is_dir('../tellafriend')) {
     $string  = sprintf(_MD_TDMDOWNLOADS_SINGLEFILE_INTFILEFOUND, $xoopsConfig['sitename'] . ':  ' . XOOPS_URL . '/modules/' . $moduleDirName . '/singlefile.php?lid=' . $_REQUEST['lid']);
     $subject = sprintf(_MD_TDMDOWNLOADS_SINGLEFILE_INTFILEFOUND, $xoopsConfig['sitename']);
     if (false !== stripos($subject, '%')) {
@@ -292,7 +295,7 @@ $xoopsTpl->assign('tellafriend_texte', $tellafriend_texte);
 
 // r�f�rencement
 // tags
-if ((1 == $xoopsModuleConfig['usetag']) && is_dir('../tag')) {
+if ((1 == $helper->getConfig('usetag')) && is_dir('../tag')) {
     require_once XOOPS_ROOT_PATH . '/modules/tag/include/tagbar.php';
     $xoopsTpl->assign('tags', true);
     $xoopsTpl->assign('tagbar', tagBar($_REQUEST['lid'], 0));

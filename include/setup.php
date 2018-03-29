@@ -23,7 +23,7 @@ use XoopsModules\Tdmdownloads;
 
 require_once dirname(__DIR__) . '/class/Autoloader.php';
 // true param for auto-registration in spl_autoload_register() function.
-$loaderPsr4 = new XoopsModules\Tdmdownloads\Autoloader(true);
+$loaderPsr4 = new \XoopsModules\Tdmdownloads\Autoloader(true);
 
 // Register a namespace
 //$loaderPsr4->registerNamespace('org\\example\\libraries', './org/example/libraries');
@@ -62,7 +62,7 @@ $loaderPsr4->registerNamespace('tdmdownloads', dirname(__DIR__) . '/tests');
 
 require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
 
-$db = XoopsDatabaseFactory::getDatabaseConnection();
+$db = \XoopsDatabaseFactory::getDatabaseConnection();
 xoops_load('XoopsRequest');
 
 if (!defined('TDMDOWNLOADS_DIRNAME')) {
@@ -82,7 +82,7 @@ define('TDMDOWNLOADS_UPLOAD_PATH', XOOPS_UPLOAD_PATH . '/' . TDMDOWNLOADS_DIRNAM
 
 $helper = Tdmdownloads\Helper::getInstance(false);
 //$helper      = & Helper::getInstance();
-$utilities   = new XoopsModules\Tdmdownloads\Utilities($db, $helper);
+$utilities   = new \XoopsModules\Tdmdownloads\Utilities($db, $helper);
 $mainLang    = '_MD_' . strtoupper($helper->getDirname());
 $modinfoLang = '_MI_' . strtoupper($helper->getDirname());
 $adminLang   = '_AM_' . strtoupper($helper->getDirname());
@@ -107,11 +107,11 @@ $uploadFolders = [
 $mod_copyright = "<a href='https://xoops.org' title='XOOPS Project' target='_blank'>
                      <img src='" . TDMDOWNLOADS_AUTHOR_LOGOIMG . " alt='XOOPS Project' /></a>";
 
-//$categoryHandler              = new XoopsModules\Tdmdownloads\CategoryHandler($db);
-//$downloadsHandler             = new XoopsModules\Tdmdownloads\DownloadsHandler($db);
-//$ratingHandler     = new XoopsModules\Tdmdownloads\RatingHandler($db);
-//$fieldHandler        = new XoopsModules\Tdmdownloads\FieldHandler($db);
-//$fielddataHandler    = new XoopsModules\Tdmdownloads\FielddataHandler($db);
-//$brokenHandler       = new XoopsModules\Tdmdownloads\BrokenHandler($db);
-//$modifiedHandler          = new XoopsModules\Tdmdownloads\ModifiedHandler($db);
-//$modifiedfielddataHandler = new XoopsModules\Tdmdownloads\ModifiedfielddataHandler($db);
+//$categoryHandler              = new \XoopsModules\Tdmdownloads\CategoryHandler($db);
+//$downloadsHandler             = new \XoopsModules\Tdmdownloads\DownloadsHandler($db);
+//$ratingHandler     = new \XoopsModules\Tdmdownloads\RatingHandler($db);
+//$fieldHandler        = new \XoopsModules\Tdmdownloads\FieldHandler($db);
+//$fielddataHandler    = new \XoopsModules\Tdmdownloads\FielddataHandler($db);
+//$brokenHandler       = new \XoopsModules\Tdmdownloads\BrokenHandler($db);
+//$modifiedHandler          = new \XoopsModules\Tdmdownloads\ModifiedHandler($db);
+//$modifiedfielddataHandler = new \XoopsModules\Tdmdownloads\ModifiedfielddataHandler($db);

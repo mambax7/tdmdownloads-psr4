@@ -33,7 +33,7 @@
  */
 function tdmdownloads_com_update($downloadId, $totalNumber)
 {
-    $db  = XoopsDatabaseFactory::getDatabaseConnection();
+    $db  = \XoopsDatabaseFactory::getDatabaseConnection();
     $sql = 'UPDATE ' . $db->prefix('tdmdownloads_downloads') . ' SET comments = ' . $totalNumber . ' WHERE lid = ' . $downloadId;
     $db->query($sql);
 }

@@ -15,7 +15,11 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+use XoopsModules\Tdmdownloads;
+/** @var Tdmdownloads\Helper $helper */
+$helper = Tdmdownloads\Helper::getInstance();
+
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 class Category extends \XoopsObject
 {
     // constructor
@@ -54,7 +58,9 @@ class Category extends \XoopsObject
      */
     public function getForm($action = false)
     {
-        global $xoopsModuleConfig;
+        /** @var Tdmdownloads\Helper $helper */
+        $helper = Tdmdownloads\Helper::getInstance();
+
         if (false === $action) {
             $action = $_SERVER['REQUEST_URI'];
         }
@@ -77,7 +83,7 @@ class Category extends \XoopsObject
         $editor_configs['cols']   = 160;
         $editor_configs['width']  = '100%';
         $editor_configs['height'] = '400px';
-        $editor_configs['editor'] = $xoopsModuleConfig['editor'];
+        $editor_configs['editor'] = $helper->getConfig('editor');
         $form->addElement(new \XoopsFormEditor(_AM_TDMDOWNLOADS_FORMTEXT, 'cat_description_main', $editor_configs), false);
         //image
         $downloadscat_img = $this->getVar('cat_imgurl') ?: 'blank.gif';
@@ -87,18 +93,18 @@ class Category extends \XoopsObject
         $imageselect      = new \XoopsFormSelect($imgpath, 'downloadscat_img', $downloadscat_img);
         $topics_array     = \XoopsLists:: getImgListAsArray(XOOPS_ROOT_PATH . $uploadirectory);
         foreach ($topics_array as $image) {
-            $imageselect->addOption("$image", $image);
+            $imageselect->addOption((string)$image, $image);
         }
         $imageselect->setExtra("onchange='showImgSelected(\"image3\", \"downloadscat_img\", \"" . $uploadirectory . '", "", "' . XOOPS_URL . "\")'");
         $imgtray->addElement($imageselect, false);
         $imgtray->addElement(new \XoopsFormLabel('', "<br><img src='" . XOOPS_URL . '/' . $uploadirectory . '/' . $downloadscat_img . "' name='image3' id='image3' alt='' />"));
         $fileseltray = new \XoopsFormElementTray('', '<br>');
-        $fileseltray->addElement(new \XoopsFormFile(_AM_TDMDOWNLOADS_FORMUPLOAD, 'attachedfile', $xoopsModuleConfig['maxuploadsize']), false);
+        $fileseltray->addElement(new \XoopsFormFile(_AM_TDMDOWNLOADS_FORMUPLOAD, 'attachedfile', $helper->getConfig('maxuploadsize')), false);
         $fileseltray->addElement(new \XoopsFormLabel(''), false);
         $imgtray->addElement($fileseltray);
         $form->addElement($imgtray);
         // Pour faire une sous-catégorie
-        $categoryHandler = new CategoryHandler(null);//  xoops_getModuleHandler('Category', $moduleDirName);
+        $categoryHandler = Tdmdownloads\Helper::getInstance()->getHandler('Category');//  xoops_getModuleHandler('Category', $moduleDirName);
         $criteria        = new \CriteriaCompo();
         $criteria->setSort('cat_weight ASC, cat_title');
         $criteria->setOrder('ASC');
@@ -137,7 +143,7 @@ class Category extends \XoopsObject
         $groups_news_can_submit_checkbox->addOptionArray($group_list);
         $form->addElement($groups_news_can_submit_checkbox);
         // pour télécharger
-        if (1 == $xoopsModuleConfig['permission_download']) {
+        if (1 == $helper->getConfig('permission_download')) {
             $groups_news_can_download_checkbox->addOptionArray($group_list);
             $form->addElement($groups_news_can_download_checkbox);
         }
@@ -164,7 +170,7 @@ class Category extends \XoopsObject
 //    /**
 //     * @param null|object $db
 //     */
-//    public function __construct(XoopsDatabase $db)
+//    public function __construct(\XoopsDatabase $db)
 //    {
 //        parent::__construct($db, "tdmdownloads_cat", 'Category', 'cat_cid', 'cat_title');
 //    }

@@ -85,8 +85,8 @@ switch ($op) {
         }
         // si c'est un membre on v�rifie qu'il ne vote pas pour son fichier
         if (0 !== $ratinguser) {
-            $criteria = new CriteriaCompo();
-            $criteria->add(new Criteria('lid', $lid));
+            $criteria = new \CriteriaCompo();
+            $criteria->add(new \Criteria('lid', $lid));
             $downloads_arr = $downloadsHandler->getAll($criteria);
             foreach (array_keys($downloads_arr) as $i) {
                 if ($downloads_arr[$i]->getVar('submitter') === $ratinguser) {
@@ -94,8 +94,8 @@ switch ($op) {
                 }
             }
             // si c'est un membre on v�rifie qu'il ne vote pas 2 fois
-            $criteria = new CriteriaCompo();
-            $criteria->add(new Criteria('lid', $lid));
+            $criteria = new \CriteriaCompo();
+            $criteria->add(new \Criteria('lid', $lid));
             $downloadsvotes_arr = $ratingHandler->getAll($criteria);
             foreach (array_keys($downloadsvotes_arr) as $i) {
                 if ($downloadsvotes_arr[$i]->getVar('ratinguser') === $ratinguser) {
@@ -105,11 +105,11 @@ switch ($op) {
         } else {
             // si c'est un utilisateur anonyme on v�rifie qu'il ne vote pas 2 fois par jour
             $yesterday = (time() - 86400);
-            $criteria  = new CriteriaCompo();
-            $criteria->add(new Criteria('lid', $lid));
-            $criteria->add(new Criteria('ratinguser', 0));
-            $criteria->add(new Criteria('ratinghostname', getenv('REMOTE_ADDR')));
-            $criteria->add(new Criteria('ratingtimestamp', $yesterday, '>'));
+            $criteria  = new \CriteriaCompo();
+            $criteria->add(new \Criteria('lid', $lid));
+            $criteria->add(new \Criteria('ratinguser', 0));
+            $criteria->add(new \Criteria('ratinghostname', getenv('REMOTE_ADDR')));
+            $criteria->add(new \Criteria('ratingtimestamp', $yesterday, '>'));
             if ($ratingHandler->getCount($criteria) >= 1) {
                 redirect_header('singlefile.php?lid=' . Request::getInt('lid', 0), 2, _MD_TDMDOWNLOADS_RATEFILE_VOTEONCE);
             }
@@ -137,8 +137,8 @@ switch ($op) {
             $xoopsTpl->assign('message_erreur', $message_erreur);
         } else {
             if ($ratingHandler->insert($obj)) {
-                $criteria = new CriteriaCompo();
-                $criteria->add(new Criteria('lid', $lid));
+                $criteria = new \CriteriaCompo();
+                $criteria->add(new \Criteria('lid', $lid));
                 $downloadsvotes_arr = $ratingHandler->getAll($criteria);
                 $total_vote         = $ratingHandler->getCount($criteria);
                 $total_rating       = 0;

@@ -17,55 +17,63 @@
  * @author       XOOPS Development Team
  */
 
-//require_once __DIR__ . '/../autoloader.php';
-
 use XoopsModules\Tdmdownloads;
+include __DIR__ . '/../preloads/autoloader.php';
 
-//use XoopsModules\Tdmdownloads\Common;
+$moduleDirName = basename(dirname(__DIR__));
+$moduleDirNameUpper   = strtoupper($moduleDirName); //$capsDirName
 
-/*
-if (!defined('XXXXXX_MODULE_PATH')) {
-    define('XXXXXX_DIRNAME', basename(dirname(__DIR__)));
-    define('XXXXXX_URL', XOOPS_URL . '/modules/' . XXXXXX_DIRNAME);
-    define('XXXXXX_IMAGE_URL', XXXXXX_URL . '/assets/images/');
-    define('XXXXXX_ROOT_PATH', XOOPS_ROOT_PATH . '/modules/' . XXXXXX_DIRNAME);
-    define('XXXXXX_IMAGE_PATH', XXXXXX_ROOT_PATH . '/assets/images');
-    define('XXXXXX_ADMIN_URL', XXXXXX_URL . '/admin/');
-    define('XXXXXX_UPLOAD_URL', XOOPS_UPLOAD_URL . '/' . XXXXXX_DIRNAME);
-    define('XXXXXX_UPLOAD_PATH', XOOPS_UPLOAD_PATH . '/' . XXXXXX_DIRNAME);
+
+/** @var \XoopsDatabase $db */
+/** @var Tdmdownloads\Helper $helper */
+/** @var Tdmdownloads\Utility $utility */
+$db      = \XoopsDatabaseFactory::getDatabaseConnection();
+$helper  = Tdmdownloads\Helper::getInstance();
+$utility = new Tdmdownloads\Utility();
+//$configurator = new Tdmdownloads\Common\Configurator();
+
+$helper->loadLanguage('common');
+
+//handlers
+//$categoryHandler     = new xxxxx\CategoryHandler($db);
+//$downloadHandler     = new xxxxx\DownloadHandler($db);
+
+if (!defined($moduleDirNameUpper . '_CONSTANTS_DEFINED')) {
+    define($moduleDirNameUpper . '_DIRNAME', basename(dirname(__DIR__)));
+    define($moduleDirNameUpper . '_ROOT_PATH', XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/');
+    define($moduleDirNameUpper . '_PATH', XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/');
+    define($moduleDirNameUpper . '_URL', XOOPS_URL . '/modules/' . $moduleDirName . '/');
+    define($moduleDirNameUpper . '_IMAGE_URL', constant($moduleDirNameUpper . '_URL') . '/assets/images/');
+    define($moduleDirNameUpper . '_IMAGE_PATH', constant($moduleDirNameUpper . '_ROOT_PATH') . '/assets/images');
+    define($moduleDirNameUpper . '_ADMIN_URL', constant($moduleDirNameUpper . '_URL') . '/admin/');
+    define($moduleDirNameUpper . '_ADMIN_PATH', constant($moduleDirNameUpper . '_ROOT_PATH') . '/admin/');
+    define($moduleDirNameUpper . '_ADMIN', constant($moduleDirNameUpper . '_URL') . '/admin/index.php');
+    define($moduleDirNameUpper . '_AUTHOR_LOGOIMG', constant($moduleDirNameUpper . '_URL') . '/assets/images/logoModule.png');
+    define($moduleDirNameUpper . '_UPLOAD_URL', XOOPS_UPLOAD_URL . '/' . $moduleDirName); // WITHOUT Trailing slash
+    define($moduleDirNameUpper . '_UPLOAD_PATH', XOOPS_UPLOAD_PATH . '/' . $moduleDirName); // WITHOUT Trailing slash
+    define($moduleDirNameUpper . '_CONSTANTS_DEFINED', 1);
 }
-xoops_loadLanguage('common', XXXXXX_DIRNAME);
-*/
 
-//require_once XXXXXX_ROOT_PATH . '/include/functions.php';
-//require_once XXXXXX_ROOT_PATH . '/include/constants.php';
-//require_once XXXXXX_ROOT_PATH . '/include/seo_functions.php';
-//require_once XXXXXX_ROOT_PATH . '/class/metagen.php';
-//require_once XXXXXX_ROOT_PATH . '/class/session.php';
-//require_once XXXXXX_ROOT_PATH . '/class/xoalbum.php';
-//require_once XXXXXX_ROOT_PATH . '/class/request.php';
 
-$db = \XoopsDatabaseFactory::getDatabase();
-
-/** @var XoopsObjectHandler $categoryHandler */
+/** @var \XoopsObjectHandler $categoryHandler */
 //$sbcolumnsHandler = xoops_getModuleHandler('sbcolumns', $moduleDirName);
 
 //$categoryHandler = new Tdmdownloads\CategoryHandler($db);
 
-/** @var XoopsObjectHandler $downloadsHandler */
+/** @var \XoopsObjectHandler $downloadsHandler */
 //$sbarticlesHandler = xoops_getModuleHandler('sbarticles', $moduleDirName);
 //$downloadsHandler = new Tdmdownloads\DownloadsHandler($db);
 
-/** @var XoopsObjectHandler $brokenHandler */
+/** @var \XoopsObjectHandler $brokenHandler */
 //$sbvotedataHandler = xoops_getModuleHandler('sbvotedata', $moduleDirName);
 //$brokenHandler = new Tdmdownloads\DownloadsbrokenHandler($db);
 
-/** @var XoopsObjectHandler $testHandler */
+/** @var \XoopsObjectHandler $testHandler */
 //$testHandler = xoops_getModuleHandler('test', $moduleDirName);
 //$testHandler = new Tdmdownloads\TestHandler($db);
 
-$helper                   = Tdmdownloads\Helper::getInstance();
-$utility                  = new Tdmdownloads\Utility();
+//$helper                   = Tdmdownloads\Helper::getInstance();
+//$utility                  = new Tdmdownloads\Utility();
 $utilities                = new Tdmdownloads\Utilities();
 $brokenHandler            = new Tdmdownloads\BrokenHandler($db);
 $categoryHandler          = new Tdmdownloads\CategoryHandler($db);

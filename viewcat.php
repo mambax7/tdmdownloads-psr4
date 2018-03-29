@@ -15,6 +15,9 @@
  */
 
 use XoopsModules\Tdmdownloads\TdmObjectTree;
+use XoopsModules\Tdmdownloads;
+/** @var Tdmdownloads\Helper $helper */
+$helper = Tdmdownloads\Helper::getInstance();
 
 require_once __DIR__ . '/header.php';
 $moduleDirName = basename(__DIR__);
@@ -30,8 +33,8 @@ $cid = $utilities->cleanVars($_REQUEST, 'cid', 0, 'int');
 $categories = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);
 
 // redirection si la cat�gorie n'existe pas
-$criteria = new CriteriaCompo();
-$criteria->add(new Criteria('cat_cid', $cid));
+$criteria = new \CriteriaCompo();
+$criteria->add(new \Criteria('cat_cid', $cid));
 if (0 === $cid || 0 === $categoryHandler->getCount($criteria)) {
     redirect_header('index.php', 3, _MD_TDMDOWNLOADS_CAT_NONEXISTENT);
 }
@@ -41,17 +44,17 @@ if (!in_array((int)$cid, $categories)) {
 }
 
 //tableau des cat�gories
-$criteria = new CriteriaCompo();
+$criteria = new \CriteriaCompo();
 $criteria->setSort('cat_weight ASC, cat_title');
 $criteria->setOrder('ASC');
-$criteria->add(new Criteria('cat_cid', '(' . implode(',', $categories) . ')', 'IN'));
+$criteria->add(new \Criteria('cat_cid', '(' . implode(',', $categories) . ')', 'IN'));
 $downloadscatArray = $categoryHandler->getAll($criteria);
 $mytree           = new TdmObjectTree($downloadscatArray, 'cat_cid', 'cat_pid');
 
 //tableau des t�l�chargements
-$criteria = new CriteriaCompo();
-$criteria->add(new Criteria('status', 0, '!='));
-$criteria->add(new Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
+$criteria = new \CriteriaCompo();
+$criteria->add(new \Criteria('status', 0, '!='));
+$criteria->add(new \Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
 $downloads_arr = $downloadsHandler->getAll($criteria);
 $xoopsTpl->assign('lang_thereare', sprintf(_MD_TDMDOWNLOADS_INDEX_THEREARE, count($downloads_arr)));
 
@@ -65,7 +68,7 @@ $cat_info = $categoryHandler->get($cid);
 $xoopsTpl->assign('cat_description', $cat_info->getVar('cat_description_main'));
 
 //affichage des cat�gories
-$xoopsTpl->assign('nb_catcol', $xoopsModuleConfig['nb_catcol']);
+$xoopsTpl->assign('nb_catcol', $helper->getConfig('nb_catcol'));
 $count    = 1;
 $keywords = '';
 foreach (array_keys($downloadscatArray) as $i) {
@@ -77,7 +80,7 @@ foreach (array_keys($downloadscatArray) as $i) {
         //pour les mots clef
         $keywords .= $downloadscatArray[$i]->getVar('cat_title') . ',';
         foreach (array_keys($subcategories_arr) as $j) {
-            if ($chcount >= $xoopsModuleConfig['nbsouscat']) {
+            if ($chcount >= $helper->getConfig('nbsouscat')) {
                 $subcategories .= '<li>[<a href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/viewcat.php?cid=' . $downloadscatArray[$i]->getVar('cat_cid') . '">+</a>]</li>';
                 break;
             }
@@ -101,19 +104,19 @@ foreach (array_keys($downloadscatArray) as $i) {
 //pour afficher les r�sum�s
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //t�l�chargements r�cents
-if (1 == $xoopsModuleConfig['bldate']) {
-    $criteria = new CriteriaCompo();
-    $criteria->add(new Criteria('status', 0, '!='));
-    $criteria->add(new Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
-    $criteria->add(new Criteria('cid', (int)$_REQUEST['cid']));
+if (1 == $helper->getConfig('bldate')) {
+    $criteria = new \CriteriaCompo();
+    $criteria->add(new \Criteria('status', 0, '!='));
+    $criteria->add(new \Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
+    $criteria->add(new \Criteria('cid', (int)$_REQUEST['cid']));
     $criteria->setSort('date');
     $criteria->setOrder('DESC');
-    $criteria->setLimit($xoopsModuleConfig['nbbl']);
+    $criteria->setLimit($helper->getConfig('nbbl'));
     $downloads_arr = $downloadsHandler->getAll($criteria);
     foreach (array_keys($downloads_arr) as $i) {
         $title = $downloads_arr[$i]->getVar('title');
-        if (strlen($title) >= $xoopsModuleConfig['longbl']) {
-            $title = substr($title, 0, $xoopsModuleConfig['longbl']) . '...';
+        if (strlen($title) >= $helper->getConfig('longbl')) {
+            $title = substr($title, 0, $helper->getConfig('longbl')) . '...';
         }
         $date = formatTimestamp($downloads_arr[$i]->getVar('date'), 's');
         $xoopsTpl->append('bl_date', [
@@ -125,19 +128,19 @@ if (1 == $xoopsModuleConfig['bldate']) {
     }
 }
 //plus t�l�charg�s
-if (1 == $xoopsModuleConfig['blpop']) {
-    $criteria = new CriteriaCompo();
-    $criteria->add(new Criteria('status', 0, '!='));
-    $criteria->add(new Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
-    $criteria->add(new Criteria('cid', (int)$_REQUEST['cid']));
+if (1 == $helper->getConfig('blpop')) {
+    $criteria = new \CriteriaCompo();
+    $criteria->add(new \Criteria('status', 0, '!='));
+    $criteria->add(new \Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
+    $criteria->add(new \Criteria('cid', (int)$_REQUEST['cid']));
     $criteria->setSort('hits');
     $criteria->setOrder('DESC');
-    $criteria->setLimit($xoopsModuleConfig['nbbl']);
+    $criteria->setLimit($helper->getConfig('nbbl'));
     $downloads_arr = $downloadsHandler->getAll($criteria);
     foreach (array_keys($downloads_arr) as $i) {
         $title = $downloads_arr[$i]->getVar('title');
-        if (strlen($title) >= $xoopsModuleConfig['longbl']) {
-            $title = substr($title, 0, $xoopsModuleConfig['longbl']) . '...';
+        if (strlen($title) >= $helper->getConfig('longbl')) {
+            $title = substr($title, 0, $helper->getConfig('longbl')) . '...';
         }
         $xoopsTpl->append('bl_pop', [
             'id'    => $downloads_arr[$i]->getVar('lid'),
@@ -148,19 +151,19 @@ if (1 == $xoopsModuleConfig['blpop']) {
     }
 }
 //mieux not�s
-if (1 == $xoopsModuleConfig['blrating']) {
-    $criteria = new CriteriaCompo();
-    $criteria->add(new Criteria('status', 0, '!='));
-    $criteria->add(new Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
-    $criteria->add(new Criteria('cid', (int)$_REQUEST['cid']));
+if (1 == $helper->getConfig('blrating')) {
+    $criteria = new \CriteriaCompo();
+    $criteria->add(new \Criteria('status', 0, '!='));
+    $criteria->add(new \Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
+    $criteria->add(new \Criteria('cid', (int)$_REQUEST['cid']));
     $criteria->setSort('rating');
     $criteria->setOrder('DESC');
-    $criteria->setLimit($xoopsModuleConfig['nbbl']);
+    $criteria->setLimit($helper->getConfig('nbbl'));
     $downloads_arr = $downloadsHandler->getAll($criteria);
     foreach (array_keys($downloads_arr) as $i) {
         $title = $downloads_arr[$i]->getVar('title');
-        if (strlen($title) >= $xoopsModuleConfig['longbl']) {
-            $title = substr($title, 0, $xoopsModuleConfig['longbl']) . '...';
+        if (strlen($title) >= $helper->getConfig('longbl')) {
+            $title = substr($title, 0, $helper->getConfig('longbl')) . '...';
         }
         $rating = number_format($downloads_arr[$i]->getVar('rating'), 1);
         $xoopsTpl->append('bl_rating', [
@@ -173,24 +176,24 @@ if (1 == $xoopsModuleConfig['blrating']) {
 }
 // affichage du r�sum�
 $bl_affichage = 1;
-if (0 == $xoopsModuleConfig['bldate'] && 0 == $xoopsModuleConfig['blpop'] && 0 == $xoopsModuleConfig['blrating']) {
+if (0 == $helper->getConfig('bldate') && 0 == $helper->getConfig('blpop') && 0 == $helper->getConfig('blrating')) {
     $bl_affichage = 0;
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 // affichage des t�l�chargements
-if ($xoopsModuleConfig['perpage'] > 0) {
-    $xoopsTpl->assign('nb_dowcol', $xoopsModuleConfig['nb_dowcol']);
+if ($helper->getConfig('perpage') > 0) {
+    $xoopsTpl->assign('nb_dowcol', $helper->getConfig('nb_dowcol'));
     //Utilisation d'une copie d'�cran avec la largeur selon les pr�f�rences
-    if (1 == $xoopsModuleConfig['useshots']) {
-        $xoopsTpl->assign('shotwidth', $xoopsModuleConfig['shotwidth']);
+    if (1 == $helper->getConfig('useshots')) {
+        $xoopsTpl->assign('shotwidth', $helper->getConfig('shotwidth'));
         $xoopsTpl->assign('show_screenshot', true);
-        $xoopsTpl->assign('img_float', $xoopsModuleConfig['img_float']);
+        $xoopsTpl->assign('img_float', $helper->getConfig('img_float'));
     }
-    $criteria = new CriteriaCompo();
-    $criteria->add(new Criteria('status', 0, '!='));
-    $criteria->add(new Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
-    $criteria->add(new Criteria('cid', (int)$_REQUEST['cid']));
+    $criteria = new \CriteriaCompo();
+    $criteria->add(new \Criteria('status', 0, '!='));
+    $criteria->add(new \Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
+    $criteria->add(new \Criteria('cid', (int)$_REQUEST['cid']));
     $numrows = $downloadsHandler->getCount($criteria);
     $xoopsTpl->assign('lang_thereare', sprintf(_MD_TDMDOWNLOADS_CAT_THEREARE, $numrows));
 
@@ -199,8 +202,8 @@ if ($xoopsModuleConfig['perpage'] > 0) {
         $criteria->setLimit($_REQUEST['limit']);
         $limit = $_REQUEST['limit'];
     } else {
-        $criteria->setLimit($xoopsModuleConfig['perpage']);
-        $limit = $xoopsModuleConfig['perpage'];
+        $criteria->setLimit($helper->getConfig('perpage'));
+        $limit = $helper->getConfig('perpage');
     }
     if (isset($_REQUEST['start'])) {
         $criteria->setStart($_REQUEST['start']);
@@ -277,7 +280,7 @@ if ($xoopsModuleConfig['perpage'] > 0) {
         }
         //permission de t�l�charger
         $perm_download = true;
-        if (1 === $xoopsModuleConfig['permission_download']) {
+        if (1 === $helper->getConfig('permission_download')) {
             if (!in_array($downloads_arr[$i]->getVar('cid'), $categories)) {
                 $perm_download = false;
             }
@@ -315,7 +318,7 @@ if ($xoopsModuleConfig['perpage'] > 0) {
     $xoopsTpl->assign('bl_affichage', $bl_affichage);
 
     // affichage du sommaire
-    if ($xoopsModuleConfig['autosummary']) {
+    if ($helper->getConfig('autosummary')) {
         if (0 == $numrows) {
             $xoopsTpl->assign('aff_summary', false);
         } else {

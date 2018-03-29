@@ -54,7 +54,7 @@ function importMydownloads($path = '', $imgurl = '')
 
         //Inserer les donn�es des cat�gories
         $query_topic = $xoopsDB->query('SELECT cid, pid, title, imgurl FROM ' . $xoopsDB->prefix('mydownloads_cat'));
-        while ($donnees = $xoopsDB->fetchArray($query_topic)) {
+        while (false !== ($donnees = $xoopsDB->fetchArray($query_topic))) {
             if ('' === $donnees['imgurl']) {
                 $img = 'blank.gif';
             } else {
@@ -73,7 +73,7 @@ function importMydownloads($path = '', $imgurl = '')
 
         //Inserer les donnees des t�l�chargemnts
         $query_links = $xoopsDB->query('SELECT lid, cid, title, url, homepage, version, size, platform, logourl, submitter, status, date, hits, rating, votes, comments FROM ' . $xoopsDB->prefix('mydownloads_downloads'));
-        while ($donnees = $xoopsDB->fetchArray($query_links)) {
+        while (false !== ($donnees = $xoopsDB->fetchArray($query_links))) {
             //On recupere la description
             $requete = $xoopsDB->queryF('SELECT description FROM ' . $xoopsDB->prefix('mydownloads_text') . " WHERE lid = '" . $donnees['lid'] . "'");
             list($description) = $xoopsDB->fetchRow($requete);
@@ -123,7 +123,7 @@ function importMydownloads($path = '', $imgurl = '')
         echo '<b>';
         //Inserer les donnees des votes
         $query_vote = $xoopsDB->query('SELECT ratingid, lid, ratinguser, rating, ratinghostname, ratingtimestamp FROM ' . $xoopsDB->prefix('mydownloads_votedata'));
-        while ($donnees = $xoopsDB->fetchArray($query_vote)) {
+        while (false !== ($donnees = $xoopsDB->fetchArray($query_vote))) {
             $insert = $xoopsDB->queryF('INSERT INTO '
                                        . $xoopsDB->prefix('tdmdownloads_votedata')
                                        . " (ratingid, lid, ratinguser, rating, ratinghostname, ratingtimestamp ) VALUES ('"
@@ -182,7 +182,7 @@ function importWfdownloads($shots = '', $catimg = '')
 
         //Inserer les donn�es des cat�gories
         $query_topic = $xoopsDB->query('SELECT cid, pid, title, imgurl, description, total, summary, spotlighttop, spotlighthis, dohtml, dosmiley, doxcode, doimage, dobr, weight, formulize_fid FROM ' . $xoopsDB->prefix('wfdownloads_cat'));
-        while ($donnees = $xoopsDB->fetchArray($query_topic)) {
+        while (false !== ($donnees = $xoopsDB->fetchArray($query_topic))) {
             if ('' === $donnees['imgurl']) {
                 $img = 'blank.gif';
             } else {
@@ -214,7 +214,7 @@ function importWfdownloads($shots = '', $catimg = '')
         //Inserer les donnees des t�l�chargemnts
         $query_links = $xoopsDB->query('SELECT lid, cid, title, url, filename, filetype, homepage, version, size, platform, screenshot, screenshot2, screenshot3, screenshot4, submitter, publisher, status, date, hits, rating, votes, comments, license, mirror, price, paypalemail, features, requirements, homepagetitle, forumid, limitations, versiontypes, dhistory, published, expired, updated, offline, summary, description, ipaddress, notifypub, formulize_idreq  FROM '
                                        . $xoopsDB->prefix('wfdownloads_downloads'));
-        while ($donnees = $xoopsDB->fetchArray($query_links)) {
+        while (false !== ($donnees = $xoopsDB->fetchArray($query_links))) {
             if ('' === $donnees['url']) {
                 $newurl = XOOPS_URL . '/uploads/' . $donnees['filename'];
             } else {
@@ -268,7 +268,7 @@ function importWfdownloads($shots = '', $catimg = '')
 
         //Inserer les donnees des votes
         $query_vote = $xoopsDB->query('SELECT ratingid, lid, ratinguser, rating, ratinghostname, ratingtimestamp FROM ' . $xoopsDB->prefix('wfdownloads_votedata'));
-        while ($donnees = $xoopsDB->fetchArray($query_vote)) {
+        while (false !== ($donnees = $xoopsDB->fetchArray($query_vote))) {
             $insert = $xoopsDB->queryF('INSERT INTO '
                                        . $xoopsDB->prefix('tdmdownloads_votedata')
                                        . " (ratingid, lid, ratinguser, rating, ratinghostname, ratingtimestamp ) VALUES ('"

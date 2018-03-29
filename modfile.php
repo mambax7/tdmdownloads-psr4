@@ -15,6 +15,9 @@
  */
 
 use Xmf\Request;
+use XoopsModules\Tdmdownloads;
+/** @var Tdmdownloads\Helper $helper */
+$helper = Tdmdownloads\Helper::getInstance();
 
 require_once __DIR__ . '/header.php';
 // template d'affichage
@@ -53,12 +56,12 @@ switch ($op) {
             redirect_header('index.php', 2, _NOPERM);
         }
         //tableau des catégories
-        $criteria = new CriteriaCompo();
+        $criteria = new \CriteriaCompo();
         $criteria->setSort('cat_weight ASC, cat_title');
         $criteria->setOrder('ASC');
-        $criteria->add(new Criteria('cat_cid', '(' . implode(',', $categories) . ')', 'IN'));
+        $criteria->add(new \Criteria('cat_cid', '(' . implode(',', $categories) . ')', 'IN'));
         $downloadscatArray = $categoryHandler->getAll($criteria);
-        $mytree           = new XoopsModules\Tdmdownloads\TdmObjectTree($downloadscatArray, 'cat_cid', 'cat_pid');
+        $mytree           = new \XoopsModules\Tdmdownloads\TdmObjectTree($downloadscatArray, 'cat_cid', 'cat_pid');
         //navigation
         $navigation = $utilities->getPathTreeUrl($mytree, $view_downloads->getVar('cid'), $downloadscatArray, 'cat_title', $prefix = ' <img src="assets/images/deco/arrow.gif" alt="arrow" /> ', true, 'ASC', true);
         $navigation .= ' <img src="assets/images/deco/arrow.gif" alt="arrow" /> <a title="' . $view_downloads->getVar('title') . '" href="singlefile.php?lid=' . $view_downloads->getVar('lid') . '">' . $view_downloads->getVar('title') . '</a>';
@@ -130,7 +133,7 @@ switch ($op) {
             $erreur         = true;
         }
         // pour enregistrer temporairement les valeur des champs sup
-        $criteria = new CriteriaCompo();
+        $criteria = new \CriteriaCompo();
         $criteria->setSort('weight ASC, title');
         $criteria->setOrder('ASC');
         $downloads_field = $fieldHandler->getAll($criteria);
@@ -146,10 +149,10 @@ switch ($op) {
             $obj->setVar('size', Request::getInt('size', 0, 'POST') . ' ' . Request::getString('type_size', '', 'POST'));
             // Pour le fichier
             if (isset($_POST['xoops_upload_file'][0])) {
-                $uploader = new \XoopsMediaUploader($uploaddir_downloads, explode('|', $xoopsModuleConfig['mimetype']), $xoopsModuleConfig['maxuploadsize'], null, null);
+                $uploader = new \XoopsMediaUploader($uploaddir_downloads, explode('|', $helper->getConfig('mimetype')), $helper->getConfig('maxuploadsize'), null, null);
                 if ($uploader->fetchMedia($_POST['xoops_upload_file'][0])) {
-                    if ($xoopsModuleConfig['newnamedownload']) {
-                        $uploader->setPrefix($xoopsModuleConfig['prefixdownloads']);
+                    if ($helper->getConfig('newnamedownload')) {
+                        $uploader->setPrefix($helper->getConfig('prefixdownloads'));
                     }
                     $uploader->fetchMedia($_POST['xoops_upload_file'][0]);
                     if (!$uploader->upload()) {
@@ -170,7 +173,7 @@ switch ($op) {
                     'image/pjpeg',
                     'image/x-png',
                     'image/png'
-                ], $xoopsModuleConfig['maxuploadsize'], null, null);
+                ], $helper->getConfig('maxuploadsize'), null, null);
                 if ($uploader_2->fetchMedia($_POST['xoops_upload_file'][1])) {
                     $uploader_2->setPrefix('downloads_');
                     $uploader_2->fetchMedia($_POST['xoops_upload_file'][1]);
@@ -188,7 +191,7 @@ switch ($op) {
             if ($modifiedHandler->insert($obj)) {
                 $lidDownloads = $obj->getNewEnreg($db);
                 // Récupération des champs supplémentaires:
-                $criteria = new CriteriaCompo();
+                $criteria = new \CriteriaCompo();
                 $criteria->setSort('weight ASC, title');
                 $criteria->setOrder('ASC');
                 $downloads_field = $fieldHandler->getAll($criteria);

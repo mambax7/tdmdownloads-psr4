@@ -14,15 +14,19 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
+use XoopsModules\Tdmdownloads;
+/** @var Tdmdownloads\Helper $helper */
+$helper = Tdmdownloads\Helper::getInstance();
+
 use XoopsModules\Tdmdownloads\TdmObjectTree;
 
 //require __DIR__ . '/include/setup.php';
 require_once __DIR__ . '/header.php';
 // template d'affichage
 $moduleDirName = basename(__DIR__);
-//$downloadsHandler             = new XoopsModules\Tdmdownloads\DownloadsHandler($db);
-//$categoryHandler          = new XoopsModules\Tdmdownloads\TDMDownloads_catHandler($db);
-//$ratingHandler     = new XoopsModules\Tdmdownloads\RatingHandler($db);
+//$downloadsHandler             = new \XoopsModules\Tdmdownloads\DownloadsHandler($db);
+//$categoryHandler          = new \XoopsModules\Tdmdownloads\TDMDownloads_catHandler($db);
+//$ratingHandler     = new \XoopsModules\Tdmdownloads\RatingHandler($db);
 
 $GLOBALS['xoopsOption']['template_main'] = 'tdmdownloads_index.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';
@@ -48,7 +52,7 @@ $downloadscatArray = $categoryHandler->getAll($criteria);
 $mytree           = new TdmObjectTree($downloadscatArray, 'cat_cid', 'cat_pid');
 
 //affichage des cat�gories
-$xoopsTpl->assign('nb_catcol', $xoopsModuleConfig['nb_catcol']);
+$xoopsTpl->assign('nb_catcol', $helper->getConfig('nb_catcol'));
 $count    = 1;
 $keywords = '';
 foreach (array_keys($downloadscatArray) as $i) {
@@ -60,7 +64,7 @@ foreach (array_keys($downloadscatArray) as $i) {
         //pour les mots clef
         $keywords .= $downloadscatArray[$i]->getVar('cat_title') . ',';
         foreach (array_keys($subcategories_arr) as $j) {
-            if ($chcount >= $xoopsModuleConfig['nbsouscat']) {
+            if ($chcount >= $helper->getConfig('nbsouscat')) {
                 $subcategories .= '<li>[<a href="' . XOOPS_URL . '/modules/' . $moduleDirName . '/viewcat.php?cid=' . $downloadscatArray[$i]->getVar('cat_cid') . '">+</a>]</li>';
                 break;
             }
@@ -84,18 +88,18 @@ foreach (array_keys($downloadscatArray) as $i) {
 //pour afficher les r�sum�s
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 //t�l�chargements r�cents
-if (1 == $xoopsModuleConfig['bldate']) {
+if (1 == $helper->getConfig('bldate')) {
     $criteria = new \CriteriaCompo();
     $criteria->add(new \Criteria('status', 0, '!='));
     $criteria->add(new \Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
     $criteria->setSort('date');
     $criteria->setOrder('DESC');
-    $criteria->setLimit($xoopsModuleConfig['nbbl']);
+    $criteria->setLimit($helper->getConfig('nbbl'));
     $downloads_arr_date = $downloadsHandler->getAll($criteria);
     foreach (array_keys($downloads_arr_date) as $i) {
         $title = $downloads_arr_date[$i]->getVar('title');
-        if (strlen($title) >= $xoopsModuleConfig['longbl']) {
-            $title = substr($title, 0, $xoopsModuleConfig['longbl']) . '...';
+        if (strlen($title) >= $helper->getConfig('longbl')) {
+            $title = substr($title, 0, $helper->getConfig('longbl')) . '...';
         }
         $date = formatTimestamp($downloads_arr_date[$i]->getVar('date'), 's');
         $xoopsTpl->append('bl_date', [
@@ -107,18 +111,18 @@ if (1 == $xoopsModuleConfig['bldate']) {
     }
 }
 //plus t�l�charg�s
-if (1 == $xoopsModuleConfig['blpop']) {
+if (1 == $helper->getConfig('blpop')) {
     $criteria = new \CriteriaCompo();
     $criteria->add(new \Criteria('status', 0, '!='));
     $criteria->add(new \Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
     $criteria->setSort('hits');
     $criteria->setOrder('DESC');
-    $criteria->setLimit($xoopsModuleConfig['nbbl']);
+    $criteria->setLimit($helper->getConfig('nbbl'));
     $downloads_arr_hits = $downloadsHandler->getAll($criteria);
     foreach (array_keys($downloads_arr_hits) as $i) {
         $title = $downloads_arr_hits[$i]->getVar('title');
-        if (strlen($title) >= $xoopsModuleConfig['longbl']) {
-            $title = substr($title, 0, $xoopsModuleConfig['longbl']) . '...';
+        if (strlen($title) >= $helper->getConfig('longbl')) {
+            $title = substr($title, 0, $helper->getConfig('longbl')) . '...';
         }
         $xoopsTpl->append('bl_pop', [
             'id'    => $downloads_arr_hits[$i]->getVar('lid'),
@@ -129,18 +133,18 @@ if (1 == $xoopsModuleConfig['blpop']) {
     }
 }
 //mieux not�s
-if (1 == $xoopsModuleConfig['blrating']) {
+if (1 == $helper->getConfig('blrating')) {
     $criteria = new \CriteriaCompo();
     $criteria->add(new \Criteria('status', 0, '!='));
     $criteria->add(new \Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
     $criteria->setSort('rating');
     $criteria->setOrder('DESC');
-    $criteria->setLimit($xoopsModuleConfig['nbbl']);
+    $criteria->setLimit($helper->getConfig('nbbl'));
     $downloads_arr_rating = $downloadsHandler->getAll($criteria);
     foreach (array_keys($downloads_arr_rating) as $i) {
         $title = $downloads_arr_rating[$i]->getVar('title');
-        if (strlen($title) >= $xoopsModuleConfig['longbl']) {
-            $title = substr($title, 0, $xoopsModuleConfig['longbl']) . '...';
+        if (strlen($title) >= $helper->getConfig('longbl')) {
+            $title = substr($title, 0, $helper->getConfig('longbl')) . '...';
         }
         $rating = number_format($downloads_arr_rating[$i]->getVar('rating'), 1);
         $xoopsTpl->append('bl_rating', [
@@ -152,27 +156,27 @@ if (1 == $xoopsModuleConfig['blrating']) {
     }
 }
 $bl_affichage = 1;
-if (0 == $xoopsModuleConfig['bldate'] && 0 == $xoopsModuleConfig['blpop'] && 0 == $xoopsModuleConfig['blrating']) {
+if (0 == $helper->getConfig('bldate') && 0 == $helper->getConfig('blpop') && 0 == $helper->getConfig('blrating')) {
     $bl_affichage = 0;
 }
 $xoopsTpl->assign('bl_affichage', $bl_affichage);
-$xoopsTpl->assign('show_latest_files', $xoopsModuleConfig['show_latest_files']);
+$xoopsTpl->assign('show_latest_files', $helper->getConfig('show_latest_files'));
 
 //----------------------------------------------------------------------------------------------------------------------------------------------------
 
 // affichage des t�l�chargements
-if ($xoopsModuleConfig['newdownloads'] > 0) {
-    $xoopsTpl->assign('nb_dowcol', $xoopsModuleConfig['nb_dowcol']);
+if ($helper->getConfig('newdownloads') > 0) {
+    $xoopsTpl->assign('nb_dowcol', $helper->getConfig('nb_dowcol'));
     //Utilisation d'une copie d'�cran avec la largeur selon les pr�f�rences
-    if (1 == $xoopsModuleConfig['useshots']) {
-        $xoopsTpl->assign('shotwidth', $xoopsModuleConfig['shotwidth']);
+    if (1 == $helper->getConfig('useshots')) {
+        $xoopsTpl->assign('shotwidth', $helper->getConfig('shotwidth'));
         $xoopsTpl->assign('show_screenshot', true);
-        $xoopsTpl->assign('img_float', $xoopsModuleConfig['img_float']);
+        $xoopsTpl->assign('img_float', $helper->getConfig('img_float'));
     }
     $criteria = new \CriteriaCompo();
     $criteria->add(new \Criteria('status', 0, '!='));
     $criteria->add(new \Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
-    $criteria->setLimit($xoopsModuleConfig['newdownloads']);
+    $criteria->setLimit($helper->getConfig('newdownloads'));
     $tblsort     = [];
     $tblsort[1]  = 'date';
     $tblsort[2]  = 'date';
@@ -191,8 +195,8 @@ if ($xoopsModuleConfig['newdownloads'] > 0) {
     $tblorder[6] = 'ASC';
     $tblorder[7] = 'DESC';
     $tblorder[8] = 'ASC';
-    $sort        = isset($xoopsModuleConfig['toporder']) ? $xoopsModuleConfig['toporder'] : 1;
-    $order       = isset($xoopsModuleConfig['toporder']) ? $xoopsModuleConfig['toporder'] : 1;
+    $sort        = null !==($helper->getConfig('toporder')) ? $helper->getConfig('toporder') : 1;
+    $order       = null !==($helper->getConfig('toporder')) ? $helper->getConfig('toporder') : 1;
     $criteria->setSort($tblsort[$sort]);
     $criteria->setOrder($tblorder[$order]);
     $downloads_arr = $downloadsHandler->getAll($criteria);
@@ -241,7 +245,7 @@ if ($xoopsModuleConfig['newdownloads'] > 0) {
         //permission de t�l�charger
 
         $perm_download = true;
-        if (1 === $xoopsModuleConfig['permission_download']) {
+        if (1 === $helper->getConfig('permission_download')) {
             if (!in_array($downloads_arr[$i]->getVar('cid'), $categories)) {
                 $perm_download = false;
             }

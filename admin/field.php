@@ -14,12 +14,16 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
+use XoopsModules\Tdmdownloads;
+/** @var Tdmdownloads\Helper $helper */
+$helper = Tdmdownloads\Helper::getInstance();
+
 //require dirname(__DIR__) . '/include/setup.php';
 require_once __DIR__ . '/admin_header.php';
 
 //On recupere la valeur de l'argument op dans l'URL$
 $op = $utilities->cleanVars($_REQUEST, 'op', 'list', 'string');
-//$fieldHandler = new XoopsModules\Tdmdownloads\FieldHandler($db);
+//$fieldHandler = new \XoopsModules\Tdmdownloads\FieldHandler($db);
 //Les valeurs de op qui vont permettre d'aller dans les differentes parties de la page
 switch ($op) {
     // Vue liste
@@ -31,7 +35,7 @@ switch ($op) {
         $field_admin->addItemButton(_AM_TDMDOWNLOADS_FIELD_NEW, 'field.php?op=new_field', 'add');
         $field_admin->addItemButton(_AM_TDMDOWNLOADS_FIELD_LIST, 'field.php?op=list', 'list');
         echo $field_admin->displayButton('left');
-        $criteria = new CriteriaCompo();
+        $criteria = new \CriteriaCompo();
         $criteria->setSort('weight ASC, title');
         $criteria->setOrder('ASC');
         $downloads_field = $fieldHandler->getAll($criteria);
@@ -133,8 +137,8 @@ switch ($op) {
                 redirect_header('field.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
             }
             // supression des entrée du champ
-            $criteria = new CriteriaCompo();
-            $criteria->add(new Criteria('fid', $_REQUEST['fid']));
+            $criteria = new \CriteriaCompo();
+            $criteria->add(new \Criteria('fid', $_REQUEST['fid']));
             $downloads_arr = $fielddataHandler->getAll($criteria);
             foreach (array_keys($downloads_arr) as $i) {
                 // supression de l'entrée
@@ -152,8 +156,8 @@ switch ($op) {
                 redirect_header('field.php', 2, _AM_TDMDOWNLOADS_REDIRECT_NODELFIELD);
             }
             $message  = '';
-            $criteria = new CriteriaCompo();
-            $criteria->add(new Criteria('fid', $_REQUEST['fid']));
+            $criteria = new \CriteriaCompo();
+            $criteria->add(new \Criteria('fid', $_REQUEST['fid']));
             $downloads_arr = $fielddataHandler->getAll($criteria);
             if (count($downloads_arr) > 0) {
                 $message .= _AM_TDMDOWNLOADS_DELDATA . '<br>';
@@ -194,7 +198,7 @@ switch ($op) {
             'image/pjpeg',
             'image/x-png',
             'image/png'
-        ], $xoopsModuleConfig['maxuploadsize'], 16, null);
+        ], $helper->getConfig('maxuploadsize'), 16, null);
         if ($uploader->fetchMedia($_POST['xoops_upload_file'][0])) {
             $uploader->setPrefix('downloads_');
             $uploader->fetchMedia($_POST['xoops_upload_file'][0]);

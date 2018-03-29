@@ -18,7 +18,7 @@
  * @return array
  */
 
-//use XoopsModules\Tdmdownloads;
+use XoopsModules\Tdmdownloads;
 
 //require_once dirname(__DIR__) . '/include/setup.php';
 
@@ -36,7 +36,7 @@ function b_tdmdownloads_top_show($options)
     //    require_once XOOPS_ROOT_PATH . '/modules/' . $mymodule->getInfo('dirname') . '/include/setup.php';
     //    require_once XOOPS_ROOT_PATH . "/modules/$moduleDirName/include/functions.php";
     //appel de la class
-    $downloadsHandler = new XoopsModules\Tdmdownloads\DownloadsHandler(null);// xoops_getModuleHandler('Downloads', $moduleDirName);
+    $downloadsHandler = Tdmdownloads\Helper::getInstance()->getHandler('Downloads'); // xoops_getModuleHandler('Downloads', $moduleDirName);
     $block            = [];
     $type_block       = $options[0];
     $nb_entree        = $options[1];
@@ -61,15 +61,15 @@ function b_tdmdownloads_top_show($options)
     $db = $helper = null;
     $xoTheme->addStylesheet(XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/blocks.css', null);
     //    require_once dirname(__DIR__) . '/include/setup.php';
-    $utilities = new XoopsModules\Tdmdownloads\Utilities($db, $helper);
+    $utilities = new \XoopsModules\Tdmdownloads\Utilities($db, $helper);
 
     $categories = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);
-    $criteria   = new CriteriaCompo();
-    $criteria->add(new Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
+    $criteria   = new \CriteriaCompo();
+    $criteria->add(new \Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
     if (!(0 == $options[0] && 1 === count($options))) {
-        $criteria->add(new Criteria('cid', '(' . implode(',', $options) . ')', 'IN'));
+        $criteria->add(new \Criteria('cid', '(' . implode(',', $options) . ')', 'IN'));
     }
-    $criteria->add(new Criteria('status', 0, '!='));
+    $criteria->add(new \Criteria('status', 0, '!='));
     switch ($type_block) { // pour le bloc: dernier fichier
         case 'date':
             $criteria->setSort('date');
@@ -136,8 +136,8 @@ function b_tdmdownloads_top_edit($options)
 {
     //appel de la class
     $moduleDirName   = basename(dirname(__DIR__));
-    $categoryHandler = new XoopsModules\Tdmdownloads\CategoryHandler(null);//  xoops_getModuleHandler('Category', $moduleDirName);
-    $criteria        = new CriteriaCompo();
+    $categoryHandler = Tdmdownloads\Helper::getInstance()->getHandler('Category');//  xoops_getModuleHandler('Category', $moduleDirName);
+    $criteria        = new \CriteriaCompo();
     $criteria->setSort('cat_weight ASC, cat_title');
     $criteria->setOrder('ASC');
     $downloadscatArray = $categoryHandler->getAll($criteria);

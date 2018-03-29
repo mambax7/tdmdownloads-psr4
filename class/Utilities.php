@@ -7,6 +7,9 @@
  * Time: 01:20
  */
 
+use XoopsModules\Tdmdownloads;
+
+
 class Utilities
 {
     protected $db;
@@ -85,11 +88,13 @@ class Utilities
     public function getStatusImage($time, $status)
     {
         $moduleDirName = basename(dirname(__DIR__));
-        global $xoopsModuleConfig;
+        /** @var Tdmdownloads\Helper $helper */
+        $helper = Tdmdownloads\Helper::getInstance();
+
         $count     = 7;
         $new       = '';
         $startdate = (time() - (86400 * $count));
-        if (1 == $xoopsModuleConfig['showupdated']) {
+        if (1 == $helper->getConfig('showupdated')) {
             if ($startdate < $time) {
                 $language = $GLOBALS['xoopsConfig']['language'];
                 if (!is_dir(XOOPS_ROOT_PATH . "/modules/$moduleDirName/language/" . $language . '/')) {
@@ -124,10 +129,12 @@ class Utilities
 
     public function getPopularImage($hits)
     {
-        global $xoopsModuleConfig;
+        /** @var Tdmdownloads\Helper $helper */
+        $helper = Tdmdownloads\Helper::getInstance();
+
         $moduleDirName = basename(dirname(__DIR__));
         $pop           = '';
-        if ($hits >= $xoopsModuleConfig['popular']) {
+        if ($hits >= $helper->getConfig('popular')) {
             $language = $GLOBALS['xoopsConfig']['language'];
             if (!is_dir(XOOPS_ROOT_PATH . "/modules/$moduleDirName/language/" . $language . '/')) {
                 $language = 'english';

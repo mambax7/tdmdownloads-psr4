@@ -15,7 +15,7 @@
  * @author      Gregory Mage (Aka Mage) and Hossein Azizabadi (Aka voltan)
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
  * Class TDMDownloadsDownlimitHandler

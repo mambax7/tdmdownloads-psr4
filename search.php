@@ -15,6 +15,9 @@
  */
 
 use XoopsModules\Tdmdownloads\TdmObjectTree;
+use XoopsModules\Tdmdownloads;
+/** @var Tdmdownloads\Helper $helper */
+$helper = Tdmdownloads\Helper::getInstance();
 
 require_once __DIR__ . '/header.php';
 $moduleDirName = basename(__DIR__);
@@ -53,13 +56,13 @@ $criteria = new \CriteriaCompo();
 $criteria->setSort('cat_weight ASC, cat_title');
 $criteria->setOrder('ASC');
 $criteria->add(new \Criteria('cat_cid', '(' . implode(',', $categories) . ')', 'IN'));
-/*$cat_select = new XoopsFormSelect(_MD_TDMDOWNLOADS_SEARCH_CATEGORIES . ' ', 'cat', $cat);
+/*$cat_select = new \XoopsFormSelect(_MD_TDMDOWNLOADS_SEARCH_CATEGORIES . ' ', 'cat', $cat);
 $cat_select->addOption(0,_MD_TDMDOWNLOADS_SEARCH_ALL2);
 $cat_select->addOptionArray($categoryHandler->getList($criteria ));
 $form->addElement($cat_select);*/
 $downloadscatArray = $categoryHandler->getAll($criteria);
 $mytree           = new TdmObjectTree($downloadscatArray, 'cat_cid', 'cat_pid');
-//$form->addElement(new XoopsFormLabel(_AM_TDMDOWNLOADS_FORMINCAT, $mytree->makeSelBox('cat', 'cat_title', '--', $cat, true)));
+//$form->addElement(new \XoopsFormLabel(_AM_TDMDOWNLOADS_FORMINCAT, $mytree->makeSelBox('cat', 'cat_title', '--', $cat, true)));
 $form->addElement($mytree->makeSelectElement('cat', 'cat_title', '--', $cat, true, 0, '', _AM_TDMDOWNLOADS_FORMINCAT), true);
 
 //recherche champ sup.
@@ -108,7 +111,7 @@ foreach (array_keys($downloads_field) as $i) {
         if (4 == $downloads_field[$i]->getVar('fid')) {
             //platform
             $title_sup      = _AM_TDMDOWNLOADS_FORMPLATFORM;
-            $platform_array = explode('|', $xoopsModuleConfig['plateform']);
+            $platform_array = explode('|', $helper->getConfig('plateform'));
             foreach ($platform_array as $platform) {
                 $contenu_arr[$platform] = $platform;
             }
@@ -186,8 +189,8 @@ $tblorder[5] = 'DESC';
 $tblorder[6] = 'ASC';
 $tblorder[7] = 'DESC';
 $tblorder[8] = 'ASC';
-$sort        = isset($xoopsModuleConfig['searchorder']) ? $xoopsModuleConfig['searchorder'] : 1;
-$order       = isset($xoopsModuleConfig['searchorder']) ? $xoopsModuleConfig['searchorder'] : 1;
+$sort        = null !==($helper->getConfig('searchorder')) ? $helper->getConfig('searchorder') : 1;
+$order       = null !==($helper->getConfig('searchorder')) ? $helper->getConfig('searchorder') : 1;
 $criteria_2->setSort($tblsort[$sort]);
 $criteria_2->setOrder($tblorder[$order]);
 $numrows = $downloadsHandler->getCount($criteria_2);
@@ -195,8 +198,8 @@ if (isset($_REQUEST['limit'])) {
     $criteria_2->setLimit($_REQUEST['limit']);
     $limit = $_REQUEST['limit'];
 } else {
-    $criteria_2->setLimit($xoopsModuleConfig['perpageliste']);
-    $limit = $xoopsModuleConfig['perpageliste'];
+    $criteria_2->setLimit($helper->getConfig('perpageliste'));
+    $limit = $helper->getConfig('perpageliste');
 }
 if (isset($_REQUEST['start'])) {
     $criteria_2->setStart($_REQUEST['start']);

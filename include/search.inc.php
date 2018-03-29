@@ -35,7 +35,7 @@ function tdmdownloads_search($queryarray, $andor, $limit, $offset, $userid)
     }
     //    require_once XOOPS_ROOT_PATH . '/modules/'.$moduleDirName .'/include/functions.php';
     require_once __DIR__ . '/setup.php';
-    $utilities  = new XoopsModules\Tdmdownloads\Utilities($db, $helper);
+    $utilities  = new \XoopsModules\Tdmdownloads\Utilities($db, $helper);
     $categories = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);
     if (is_array($categories) && count($categories) > 0) {
         $sql .= ' AND cid IN (' . implode(',', $categories) . ') ';
@@ -57,7 +57,7 @@ function tdmdownloads_search($queryarray, $andor, $limit, $offset, $userid)
     $result = $xoopsDB->query($sql, $limit, $offset);
     $ret    = [];
     $i      = 0;
-    while ($myrow = $xoopsDB->fetchArray($result)) {
+    while (false !== ($myrow = $xoopsDB->fetchArray($result))) {
         $ret[$i]['image'] = 'assets/images/deco/tdmdownloads_search.png';
         $ret[$i]['link']  = 'singlefile.php?cid=' . $myrow['cid'] . '&lid=' . $myrow['lid'] . '';
         $ret[$i]['title'] = $myrow['title'];

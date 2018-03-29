@@ -13,11 +13,11 @@
  * @license     GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Gregory Mage (Aka Mage)
  */
-// // defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+// // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 use XoopsModules\Tdmdownloads;
 
-require_once __DIR__ . '/../class/Helper.php';
+// require_once __DIR__ . '/../class/Helper.php';
 //require_once __DIR__ . '/../include/common.php';
 $helper = Tdmdownloads\Helper::getInstance();
 

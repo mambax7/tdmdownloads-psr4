@@ -50,10 +50,10 @@ switch ($op) {
     // Vue liste
     case 'liste':
         //tableau des cat�gories
-        $criteria = new CriteriaCompo();
+        $criteria = new \CriteriaCompo();
         $criteria->setSort('cat_weight ASC, cat_title');
         $criteria->setOrder('ASC');
-        $criteria->add(new Criteria('cat_cid', '(' . implode(',', $categories) . ')', 'IN'));
+        $criteria->add(new \Criteria('cat_cid', '(' . implode(',', $categories) . ')', 'IN'));
         $downloadscatArray = $categoryHandler->getAll($criteria);
         $mytree           = new TdmObjectTree($downloadscatArray, 'cat_cid', 'cat_pid');
         //navigation
@@ -83,8 +83,8 @@ switch ($op) {
         }
         if (0 !== $ratinguser) {
             // si c'est un membre on v�rifie qu'il n'envoie pas 2 fois un rapport
-            $criteria = new CriteriaCompo();
-            $criteria->add(new Criteria('lid', $lid));
+            $criteria = new \CriteriaCompo();
+            $criteria->add(new \Criteria('lid', $lid));
             $downloadsbroken_arr = $brokenHandler->getAll($criteria);
             foreach (array_keys($downloadsbroken_arr) as $i) {
                 if ($downloadsbroken_arr[$i]->getVar('sender') === $ratinguser) {
@@ -93,10 +93,10 @@ switch ($op) {
             }
         } else {
             // si c'est un utilisateur anonyme on v�rifie qu'il n'envoie pas 2 fois un rapport
-            $criteria = new CriteriaCompo();
-            $criteria->add(new Criteria('lid', $lid));
-            $criteria->add(new Criteria('sender', 0));
-            $criteria->add(new Criteria('ip', getenv('REMOTE_ADDR')));
+            $criteria = new \CriteriaCompo();
+            $criteria->add(new \Criteria('lid', $lid));
+            $criteria->add(new \Criteria('sender', 0));
+            $criteria->add(new \Criteria('ip', getenv('REMOTE_ADDR')));
             if ($brokenHandler->getCount($criteria) >= 1) {
                 redirect_header('singlefile.php?lid=' . $lid, 2, _MD_TDMDOWNLOADS_BROKENFILE_ALREADYREPORTED);
             }

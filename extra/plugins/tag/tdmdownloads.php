@@ -18,6 +18,8 @@
  * @return bool|null
  */
 
+use XoopsModules\Tdmdownloads;
+
 function TDMDownloads_tag_iteminfo(&$items)
 {
     if (empty($items) || !is_array($items)) {
@@ -31,7 +33,7 @@ function TDMDownloads_tag_iteminfo(&$items)
         }
     }
     $moduleDirName = basename(dirname(dirname(dirname(__DIR__))));
-    $itemHandler   = new \DownloadsHandler(null);// xoops_getModuleHandler('tdmdownloads_downloads', $moduleDirName);
+    $itemHandler   = Tdmdownloads\Helper::getInstance()->getHandler('Downloads'); // xoops_getModuleHandler('tdmdownloads_downloads', $moduleDirName);
     $items_obj     = $itemHandler->getObjects(new \Criteria('lid', '(' . implode(', ', $items_id) . ')', 'IN'), true);
 
     foreach (array_keys($items) as $cat_id) {
@@ -60,8 +62,8 @@ function TDMDownloads_tag_iteminfo(&$items)
 function TDMDownloads_tag_synchronization($mid)
 {
     $moduleDirName = basename(dirname(dirname(dirname(__DIR__))));
-    $itemHandler   = new DownloadsHandler(null);// xoops_getModuleHandler('tdmdownloads_downloads', $moduleDirName);
-    $linkHandler   = xoops_getModuleHandler('link', 'tag');
+    $itemHandler   = Tdmdownloads\Helper::getInstance()->getHandler('Downloads'); // xoops_getModuleHandler('tdmdownloads_downloads', $moduleDirName);
+    $linkHandler   = \XoopsModules\Tag\Helper::getInstance()->getHandler('Link'); //@var \XoopsModules\Tag\Handler $tagHandler
 
     /* clear tag-item links */
     if (version_compare($GLOBALS['xoopsDB']->getServerVersion(), '4.1.0', 'ge')):

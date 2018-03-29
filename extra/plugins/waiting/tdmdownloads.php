@@ -13,7 +13,7 @@
  */
 function b_waiting_tdmdownloads()
 {
-    $xoopsDB       = XoopsDatabaseFactory::getDatabaseConnection();
+    $xoopsDB       = \XoopsDatabaseFactory::getDatabaseConnection();
     $moduleDirName = basename(dirname(dirname(__DIR__)));
     $ret           = [];
 

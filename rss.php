@@ -14,33 +14,37 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
+use XoopsModules\Tdmdownloads;
+/** @var Tdmdownloads\Helper $helper */
+$helper = Tdmdownloads\Helper::getInstance();
+
 require_once __DIR__ . '/header.php';
 require_once XOOPS_ROOT_PATH . '/class/template.php';
-$items_count = $xoopsModuleConfig['perpagerss'];
+$items_count = $helper->getConfig('perpagerss');
 $cid         = isset($_GET['cid']) ? (int)$_GET['cid'] : 0;
 if (function_exists('mb_http_output')) {
     mb_http_output('pass');
 }
 //header ('Content-Type:text/xml; charset=UTF-8');
-$xoopsModuleConfig['utf8'] = false;
+$helper->getConfig('utf8') = false;
 
 $moduleDirName = basename(__DIR__);
 
-$tpl          = new XoopsTpl();
+$tpl          = new \XoopsTpl();
 $tpl->caching = 2; //1 = Cache global, 2 = Cache individuel (par template)
-$tpl->xoops_setCacheTime($xoopsModuleConfig['timecacherss'] * 60); // Temps de cache en secondes
+$tpl->xoops_setCacheTime($helper->getConfig('timecacherss') * 60); // Temps de cache en secondes
 $categories = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);
-$criteria   = new CriteriaCompo();
-$criteria->add(new Criteria('status', 0, '!='));
-$criteria->add(new Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
+$criteria   = new \CriteriaCompo();
+$criteria->add(new \Criteria('status', 0, '!='));
+$criteria->add(new \Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
 if (0 !== $cid) {
-    $criteria->add(new Criteria('cid', $cid));
+    $criteria->add(new \Criteria('cid', $cid));
     $cat   = $categoryHandler->get($cid);
     $title = $xoopsConfig['sitename'] . ' - ' . $xoopsModule->getVar('name') . ' - ' . $cat->getVar('cat_title');
 } else {
     $title = $xoopsConfig['sitename'] . ' - ' . $xoopsModule->getVar('name');
 }
-$criteria->setLimit($xoopsModuleConfig['perpagerss']);
+$criteria->setLimit($helper->getConfig('perpagerss'));
 $criteria->setSort('date');
 $criteria->setOrder('DESC');
 $downloads_arr = $downloadsHandler->getAll($criteria);
@@ -61,8 +65,8 @@ if (!$tpl->is_cached('db:tdmdownloads_rss.tpl', $cid)) {
         $tpl->assign('docs', 'http://cyber.law.harvard.edu/rss/rss.html');
     }
     $tpl->assign('mydirname', $moduleDirName);
-    $tpl->assign('image_url', XOOPS_URL . $xoopsModuleConfig['logorss']);
-    $dimention = getimagesize(XOOPS_ROOT_PATH . $xoopsModuleConfig['logorss']);
+    $tpl->assign('image_url', XOOPS_URL . $helper->getConfig('logorss'));
+    $dimention = getimagesize(XOOPS_ROOT_PATH . $helper->getConfig('logorss'));
     if (empty($dimention[0])) {
         $width = 88;
     } else {

@@ -14,6 +14,10 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
+use XoopsModules\Tdmdownloads;
+/** @var Tdmdownloads\Helper $helper */
+$helper = Tdmdownloads\Helper::getInstance();
+
 error_reporting(0);
 include __DIR__ . '/header.php';
 
@@ -30,7 +34,7 @@ if (!in_array($view_downloads->getVar('cid'), $categories)) {
     redirect_header(XOOPS_URL, 2, _NOPERM);
 }
 //redirection si pas de permission (t�l�charger)
-if (2 == $xoopsModuleConfig['permission_download']) {
+if (2 == $helper->getConfig('permission_download')) {
     $item = $utilities->getItemIds('tdmdownloads_download_item', $moduleDirName);
     if (!in_array($view_downloads->getVar('lid'), $item)) {
         redirect_header('singlefile.php?lid=' . $view_downloads->getVar('lid'), 2, _MD_TDMDOWNLOADS_SINGLEFILE_NOPERMDOWNLOAD);
@@ -42,32 +46,32 @@ if (2 == $xoopsModuleConfig['permission_download']) {
     }
 }
 //check download limit option
-if (1 == $xoopsModuleConfig['downlimit']) {
-    $limitlid    = $xoopsModuleConfig['limitlid'];
-    $limitglobal = $xoopsModuleConfig['limitglobal'];
+if (1 == $helper->getConfig('downlimit')) {
+    $limitlid    = $helper->getConfig('limitlid');
+    $limitglobal = $helper->getConfig('limitglobal');
     $yesterday   = strtotime(formatTimestamp(time() - 86400));
     if ($limitlid > 0) {
-        $criteria = new CriteriaCompo();
+        $criteria = new \CriteriaCompo();
         if ($xoopsUser) {
-            $criteria->add(new Criteria('downlimit_uid', $xoopsUser->getVar('uid'), '='));
+            $criteria->add(new \Criteria('downlimit_uid', $xoopsUser->getVar('uid'), '='));
         } else {
-            $criteria->add(new Criteria('downlimit_hostname', getenv('REMOTE_ADDR'), '='));
+            $criteria->add(new \Criteria('downlimit_hostname', getenv('REMOTE_ADDR'), '='));
         }
-        $criteria->add(new Criteria('downlimit_lid', $lid, '='));
-        $criteria->add(new Criteria('downlimit_date', $yesterday, '>'));
+        $criteria->add(new \Criteria('downlimit_lid', $lid, '='));
+        $criteria->add(new \Criteria('downlimit_date', $yesterday, '>'));
         $numrows = $downloadslimitHandler->getCount($criteria);
         if ($numrows >= $limitlid) {
             redirect_header('singlefile.php?lid=' . $view_downloads->getVar('lid'), 5, sprintf(_MD_TDMDOWNLOADS_SINGLEFILE_LIMITLID, $numrows, $limitlid));
         }
     }
     if ($limitglobal > 0) {
-        $criteria = new CriteriaCompo();
+        $criteria = new \CriteriaCompo();
         if ($xoopsUser) {
-            $criteria->add(new Criteria('downlimit_uid', $xoopsUser->getVar('uid'), '='));
+            $criteria->add(new \Criteria('downlimit_uid', $xoopsUser->getVar('uid'), '='));
         } else {
-            $criteria->add(new Criteria('downlimit_hostname', getenv('REMOTE_ADDR'), '='));
+            $criteria->add(new \Criteria('downlimit_hostname', getenv('REMOTE_ADDR'), '='));
         }
-        $criteria->add(new Criteria('downlimit_date', $yesterday, '>'));
+        $criteria->add(new \Criteria('downlimit_date', $yesterday, '>'));
         $numrows = $downloadslimitHandler->getCount($criteria);
         if ($numrows >= $limitglobal) {
             redirect_header('singlefile.php?lid=' . $view_downloads->getVar('lid'), 5, sprintf(_MD_TDMDOWNLOADS_SINGLEFILE_LIMITGLOBAL, $numrows, $limitglobal));
@@ -81,8 +85,8 @@ if (1 == $xoopsModuleConfig['downlimit']) {
     $obj->setVar('downlimit_date', strtotime(formatTimestamp(time())));
     $downloadslimitHandler->insert($obj) || $obj->getHtmlErrors();
     // purge
-    $criteria = new CriteriaCompo();
-    $criteria->add(new Criteria('downlimit_date', time() - 172800, '<'));
+    $criteria = new \CriteriaCompo();
+    $criteria->add(new \Criteria('downlimit_date', time() - 172800, '<'));
     $numrows = $downloadslimitHandler->getCount($criteria);
     echo 'a d�truire: ' . $numrows . '<b>';
     $downloadslimitHandler->deleteAll($criteria);
@@ -90,11 +94,11 @@ if (1 == $xoopsModuleConfig['downlimit']) {
 
 @$xoopsLogger->activated = false;
 error_reporting(0);
-if ($xoopsModuleConfig['check_host']) {
+if ($helper->getConfig('check_host')) {
     $goodhost     = 0;
     $referer      = parse_url(xoops_getenv('HTTP_REFERER'));
     $referer_host = $referer['host'];
-    foreach ($xoopsModuleConfig['referers'] as $ref) {
+    foreach ($helper->getConfig('referers') as $ref) {
         if (!empty($ref) && preg_match('/' . $ref . '/i', $referer_host)) {
             $goodhost = '1';
             break;

@@ -42,9 +42,9 @@ function b_tdmdownloads_search_show()
     //appel des fichiers de langues
     xoops_loadLanguage('main', $moduleDirName);
     xoops_loadLanguage('admin', $moduleDirName);
-    $categoryHandler  = new XoopsModules\Tdmdownloads\CategoryHandler(null);
-    $utilities        = new XoopsModules\Tdmdownloads\Utilities($db, $helper);
-    $downloadsHandler = new XoopsModules\Tdmdownloads\DownloadsHandler($db);
+    $categoryHandler  = new \XoopsModules\Tdmdownloads\CategoryHandler(null);
+    $utilities        = new \XoopsModules\Tdmdownloads\Utilities($db, $helper);
+    $downloadsHandler = new \XoopsModules\Tdmdownloads\DownloadsHandler($db);
     $categories       = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);
 
     $block = [];
@@ -61,7 +61,7 @@ function b_tdmdownloads_search_show()
     $criteria->add(new \Criteria('cat_cid', '(' . implode(',', $categories) . ')', 'IN'));
     $downloadscatArray = $categoryHandler->getAll($criteria);
     $mytree           = new TdmObjectTree($downloadscatArray, 'cat_cid', 'cat_pid');
-    //$form->addElement(new XoopsFormLabel(_AM_TDMDOWNLOADS_FORMINCAT, $mytree->makeSelBox('cat', 'cat_title', '--', '', true)));
+    //$form->addElement(new \XoopsFormLabel(_AM_TDMDOWNLOADS_FORMINCAT, $mytree->makeSelBox('cat', 'cat_title', '--', '', true)));
     $form->addElement($mytree->makeSelectElement('cat', 'cat_title', '--', '', true, 0, '', _AM_TDMDOWNLOADS_FORMINCAT), true);
     //recherche champ sup.
     //    $fieldHandler = xoops_getModuleHandler('Field', $moduleDirName);
@@ -70,7 +70,7 @@ function b_tdmdownloads_search_show()
     $criteria->add(new \Criteria('status', 1));
     $criteria->setSort('weight ASC, title');
     $criteria->setOrder('ASC');
-    $fieldHandler    = new XoopsModules\Tdmdownloads\fieldHandler();
+    $fieldHandler    = new \XoopsModules\Tdmdownloads\fieldHandler();
     $downloads_field = $fieldHandler->getAll($criteria);
     foreach (array_keys($downloads_field) as $i) {
         $title_sup                                          = '';
@@ -124,7 +124,7 @@ function b_tdmdownloads_search_show()
             $criteria->add(new \Criteria('fid', $downloads_field[$i]->getVar('fid')));
             $criteria->setSort('data');
             $criteria->setOrder('ASC');
-            $fielddataHandler = new XoopsModules\Tdmdownloads\fielddataHandler();
+            $fielddataHandler = new \XoopsModules\Tdmdownloads\fielddataHandler();
             $tdmdownloads_arr = $fielddataHandler->getAll($criteria);
             foreach (array_keys($tdmdownloads_arr) as $j) {
                 $contenu_arr[$tdmdownloads_arr[$j]->getVar('data', 'n')] = $tdmdownloads_arr[$j]->getVar('data');

@@ -14,6 +14,11 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
+
+use XoopsModules\Tdmdownloads;
+/** @var Tdmdownloads\Helper $helper */
+$helper = Tdmdownloads\Helper::getInstance();
+
 require_once __DIR__ . '/admin_header.php';
 
 //On recupere la valeur de l'argument op dans l'URL$
@@ -27,13 +32,13 @@ switch ($op) {
         xoops_cp_header();
         $broken_admin = \Xmf\Module\Admin::getInstance();
         echo $broken_admin->displayNavigation(basename(__FILE__));
-        $criteria = new CriteriaCompo();
+        $criteria = new \CriteriaCompo();
         if (isset($_REQUEST['limit'])) {
             $criteria->setLimit($_REQUEST['limit']);
             $limit = $_REQUEST['limit'];
         } else {
-            $criteria->setLimit($xoopsModuleConfig['perpageadmin']);
-            $limit = $xoopsModuleConfig['perpageadmin'];
+            $criteria->setLimit($helper->getConfig('perpageadmin'));
+            $limit = $helper->getConfig('perpageadmin');
         }
         if (isset($_REQUEST['start'])) {
             $criteria->setStart($_REQUEST['start']);
@@ -45,7 +50,7 @@ switch ($op) {
         $criteria->setSort('reportid');
         $criteria->setOrder('ASC');
         //pour faire une jointure de table
-        //        $brokenHandler       = new XoopsModules\Tdmdownloads\BrokenHandler($db);
+        //        $brokenHandler       = new \XoopsModules\Tdmdownloads\BrokenHandler($db);
         $brokenHandler->table_link   = $brokenHandler->db->prefix('tdmdownloads_downloads'); // Nom de la table en jointure
         $brokenHandler->field_link   = 'lid'; // champ de la table en jointure
         $brokenHandler->field_object = 'lid'; // champ de la table courante

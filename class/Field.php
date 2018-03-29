@@ -15,7 +15,9 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-// defined('XOOPS_ROOT_PATH') || exit('Restricted access.');
+use XoopsModules\Tdmdownloads;
+
+// defined('XOOPS_ROOT_PATH') || die('Restricted access');
 class Field extends \XoopsObject
 {
     // constructor
@@ -56,7 +58,9 @@ class Field extends \XoopsObject
      */
     public function getForm($action = false)
     {
-        global $xoopsModuleConfig;
+        /** @var Tdmdownloads\Helper $helper */
+        $helper = Tdmdownloads\Helper::getInstance();
+
         $moduleDirName = basename(dirname(__DIR__));
         if (false === $action) {
             $action = $_SERVER['REQUEST_URI'];
@@ -84,13 +88,13 @@ class Field extends \XoopsObject
         $imageselect        = new \XoopsFormSelect($imgpath, 'downloadsfield_img', $downloadsfield_img);
         $topics_array       = \XoopsLists:: getImgListAsArray(XOOPS_ROOT_PATH . $uploadirectory);
         foreach ($topics_array as $image) {
-            $imageselect->addOption("$image", $image);
+            $imageselect->addOption((string)$image, $image);
         }
         $imageselect->setExtra("onchange='showImgSelected(\"image3\", \"downloadsfield_img\", \"" . $uploadirectory . '", "", "' . XOOPS_URL . "\")'");
         $imgtray->addElement($imageselect, false);
         $imgtray->addElement(new \XoopsFormLabel('', "<br><img src='" . XOOPS_URL . '/' . $uploadirectory . '/' . $downloadsfield_img . "' name='image3' id='image3' alt='' /><br>"));
         $fileseltray = new \XoopsFormElementTray('', '<br>');
-        $fileseltray->addElement(new \XoopsFormFile(_AM_TDMDOWNLOADS_FORMUPLOAD, 'attachedfile', $xoopsModuleConfig['maxuploadsize']), false);
+        $fileseltray->addElement(new \XoopsFormFile(_AM_TDMDOWNLOADS_FORMUPLOAD, 'attachedfile', $helper->getConfig('maxuploadsize')), false);
         $fileseltray->addElement(new \XoopsFormLabel(''), false);
         $imgtray->addElement($fileseltray);
         $form->addElement($imgtray);

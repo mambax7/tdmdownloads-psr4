@@ -59,18 +59,18 @@ function xoops_module_pre_install_tdmdownloads(\XoopsModule $module)
  *
  * @return bool true if installation successful, false if not
  */
-function xoops_module_install_tdmdownloads(XoopsModule $module)
+function xoops_module_install_tdmdownloads(\XoopsModule $module)
 {
     require_once __DIR__ . '/../../../mainfile.php';
     require_once __DIR__ . '/../include/config.php';
     require_once __DIR__ . '/common.php';
     $moduleDirName = basename(dirname(__DIR__));
     /** @var Tdmdownloads\Utility $utilityClass */
-    $utilityClass = new XoopsModules\Tdmdownloads\Utility();
+    $utilityClass = new \XoopsModules\Tdmdownloads\Utility();
     //    $utilityTest = $utility;
 
     //    $fieldHandler = xoops_getModuleHandler('FieldHandler', $moduleDirName);
-    $fieldHandler = new XoopsModules\Tdmdownloads\FieldHandler();
+    $fieldHandler = new \XoopsModules\Tdmdownloads\FieldHandler();
     $obj          = $fieldHandler->create();
     $obj->setVar('title', _AM_TDMDOWNLOADS_FORMHOMEPAGE);
     $obj->setVar('img', 'homepage.png');
@@ -127,10 +127,10 @@ function xoops_module_install_tdmdownloads(XoopsModule $module)
     }
 
     //  ---  COPY blank.png FILES ---------------
-    if (count($configurator->blankFiles) > 0) {
+    if (count($configurator->copyBlankFiles) > 0) {
         $file = __DIR__ . '/../assets/images/blank.png';
-        foreach (array_keys($configurator->blankFiles) as $i) {
-            $dest = $configurator->blankFiles[$i] . '/blank.png';
+        foreach (array_keys($configurator->copyBlankFiles) as $i) {
+            $dest = $configurator->copyBlankFiles[$i] . '/blank.png';
             $utilityClass::copyFile($file, $dest);
         }
     }

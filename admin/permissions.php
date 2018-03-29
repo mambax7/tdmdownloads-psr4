@@ -14,6 +14,10 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
+use XoopsModules\Tdmdownloads;
+/** @var Tdmdownloads\Helper $helper */
+$helper = Tdmdownloads\Helper::getInstance();
+
 require_once __DIR__ . '/admin_header.php';
 
 xoops_cp_header();
@@ -60,7 +64,7 @@ switch ($permission) {
         break;
     case 3: // Download Permission
         $formTitle = _AM_TDMDOWNLOADS_PERM_DOWNLOAD;
-        if (1 == $xoopsModuleConfig['permission_download']) {
+        if (1 == $helper->getConfig('permission_download')) {
             $permissionDescription = _AM_TDMDOWNLOADS_PERM_DOWNLOAD_DSC;
             $permissionName        = 'tdmdownloads_download';
         } else {
@@ -88,11 +92,11 @@ if (4 === $permission) {
         $permissionsForm->addItem($perm_id, $permissionName);
     }
 } else {
-    if (3 === $permission && 2 === $xoopsModuleConfig['permission_download']) {
+    if (3 === $permission && 2 === $helper->getConfig('permission_download')) {
         $sql    = 'SELECT lid, cid, title FROM ' . $xoopsDB->prefix('tdmdownloads_downloads') . ' ORDER BY title';
         $result = $xoopsDB->query($sql);
         if ($result) {
-            while ($row = $xoopsDB->fetchArray($result)) {
+            while (false !== ($row = $xoopsDB->fetchArray($result))) {
                 $permissionsForm->addItem($row['lid'], $row['title']);
             }
         }
@@ -100,13 +104,13 @@ if (4 === $permission) {
         $sql    = 'SELECT cat_cid, cat_pid, cat_title FROM ' . $xoopsDB->prefix('tdmdownloads_cat') . ' ORDER BY cat_title';
         $result = $xoopsDB->query($sql);
         if ($result) {
-            while ($row = $xoopsDB->fetchArray($result)) {
+            while (false !== ($row = $xoopsDB->fetchArray($result))) {
                 $permissionsForm->addItem($row['cat_cid'], $row['cat_title'], $row['cat_pid']);
             }
         }
     }
 }
-//$categoryHandler          = new XoopsModules\Tdmdownloads\CategoryHandler($db);
+//$categoryHandler          = new \XoopsModules\Tdmdownloads\CategoryHandler($db);
 if ($categoryHandler->getCount()) {
     echo $permissionsForm->render();
 } else {
