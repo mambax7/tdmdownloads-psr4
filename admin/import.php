@@ -32,7 +32,7 @@ if (isset($_REQUEST['op'])) {
  */
 function importMydownloads($path = '', $imgurl = '')
 {
-    $ok = isset($_POST['ok']) ? (int)$_POST['ok'] : 0;
+    $ok = \Xmf\Request::getInt('ok', 0, 'POST');
     global $xoopsDB;
     if (1 === $ok) {
         //Vider les tables
@@ -160,7 +160,7 @@ function importMydownloads($path = '', $imgurl = '')
  */
 function importWfdownloads($shots = '', $catimg = '')
 {
-    $ok = isset($_POST['ok']) ? (int)$_POST['ok'] : 0;
+    $ok = \Xmf\Request::getInt('ok', 0, 'POST');
     global $xoopsDB;
     if (1 === $ok) {
         //Vider les tables

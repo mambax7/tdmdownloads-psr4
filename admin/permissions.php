@@ -26,7 +26,7 @@ require_once $GLOBALS['xoops']->path('www/class/xoopsform/grouppermform.php');
 $adminObject = \Xmf\Module\Admin::getInstance();
 $adminObject->displayNavigation(basename(__FILE__));
 
-$permission = isset($_POST['permission']) ? (int)$_POST['permission'] : 1;
+$permission = \Xmf\Request::getInt('permission', 1, 'POST');
 $tab_perm   = [
     1 => _AM_TDMDOWNLOADS_PERM_VIEW,
     2 => _AM_TDMDOWNLOADS_PERM_SUBMIT,
