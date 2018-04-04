@@ -96,15 +96,15 @@ class Downloads extends \XoopsObject
             $action = $_SERVER['REQUEST_URI'];
         }
         //permission pour uploader
-        $gpermHandler = xoops_getHandler('groupperm');
+        $grouppermHandler = xoops_getHandler('groupperm');
         $groups       = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
         if ($xoopsUser) {
             $perm_upload = true;
             if (!$xoopsUser->isAdmin($xoopsModule->mid())) {
-                $perm_upload = $gpermHandler->checkRight('tdmdownloads_ac', 32, $groups, $xoopsModule->getVar('mid')) ? true : false;
+                $perm_upload = $grouppermHandler->checkRight('tdmdownloads_ac', 32, $groups, $xoopsModule->getVar('mid')) ? true : false;
             }
         } else {
-            $perm_upload = $gpermHandler->checkRight('tdmdownloads_ac', 32, $groups, $xoopsModule->getVar('mid')) ? true : false;
+            $perm_upload = $grouppermHandler->checkRight('tdmdownloads_ac', 32, $groups, $xoopsModule->getVar('mid')) ? true : false;
         }
         //nom du formulaire selon l'action (editer ou ajouter):
         $title = $this->isNew() ? sprintf(_AM_TDMDOWNLOADS_FORMADD) : sprintf(_AM_TDMDOWNLOADS_FORMEDIT);
@@ -343,11 +343,11 @@ class Downloads extends \XoopsObject
                 if (2 == $helper->getConfig('permission_download')) {
                     $memberHandler = xoops_getHandler('member');
                     $group_list    = $memberHandler->getGroupList();
-                    $gpermHandler  = xoops_getHandler('groupperm');
+                    $grouppermHandler  = xoops_getHandler('groupperm');
                     $full_list     = array_keys($group_list);
                     global $xoopsModule;
                     if (!$this->isNew()) {
-                        $item_ids_download               = $gpermHandler->getGroupIds('tdmdownloads_download_item', $this->getVar('lid'), $xoopsModule->getVar('mid'));
+                        $item_ids_download               = $grouppermHandler->getGroupIds('tdmdownloads_download_item', $this->getVar('lid'), $xoopsModule->getVar('mid'));
                         $item_ids_downloa                = array_values($item_ids_download);
                         $item_news_can_download_checkbox = new \XoopsFormCheckBox(_AM_TDMDOWNLOADS_FORMPERMDOWNLOAD, 'item_download[]', $item_ids_download);
                     } else {

@@ -30,17 +30,17 @@ function xoops_module_pre_install_tdmdownloads(\XoopsModule $module)
     require_once __DIR__ . '/../../../mainfile.php';
     require_once __DIR__ . '/common.php';
     $moduleDirName = basename(dirname(__DIR__));
-    /** @var Tdmdownloads\Utility $utilityClass */
-    $utilityClass  = Utility::class;
-    $utilityClass0 = new Tdmdownloads\Utility();
-    if (!class_exists($utilityClass)) {
+    /** @var Tdmdownloads\Utility $utility */
+    $utility  = Utility::class;
+    $utility0 = new Tdmdownloads\Utility();
+    if (!class_exists($utility)) {
         xoops_load('Utility', $moduleDirName);
     }
 
-    $xoopsSuccess0 = $utilityClass::checkVerXoops($module);
+    $xoopsSuccess0 = $utility::checkVerXoops($module);
     $xoopsSuccess  = $utility::checkVerXoops($module);
 
-    $phpSuccess0 = $utilityClass::checkVerPhp($module);
+    $phpSuccess0 = $utility::checkVerPhp($module);
     $phpSuccess  = $utility::checkVerPhp($module);
 
     if (false !== $xoopsSuccess && false !== $phpSuccess) {
@@ -65,8 +65,8 @@ function xoops_module_install_tdmdownloads(\XoopsModule $module)
     require_once __DIR__ . '/../include/config.php';
     require_once __DIR__ . '/common.php';
     $moduleDirName = basename(dirname(__DIR__));
-    /** @var Tdmdownloads\Utility $utilityClass */
-    $utilityClass = new \XoopsModules\Tdmdownloads\Utility();
+    /** @var Tdmdownloads\Utility $utility */
+    $utility = new \XoopsModules\Tdmdownloads\Utility();
     //    $utilityTest = $utility;
 
     //    $fieldHandler = xoops_getModuleHandler('FieldHandler', $moduleDirName);
@@ -110,19 +110,19 @@ function xoops_module_install_tdmdownloads(\XoopsModule $module)
     global $xoopsModule;
     $moduleId = $xoopsModule->getVar('mid');
     //    $moduleId2    = $helper->getModule()->mid();
-    $gpermHandler = xoops_getHandler('groupperm');
+    $grouppermHandler = xoops_getHandler('groupperm');
     // access rights ------------------------------------------
-    $gpermHandler->addRight($moduleDirName . '_approve', 1, XOOPS_GROUP_ADMIN, $moduleId);
-    $gpermHandler->addRight($moduleDirName . '_submit', 1, XOOPS_GROUP_ADMIN, $moduleId);
-    $gpermHandler->addRight($moduleDirName . '_view', 1, XOOPS_GROUP_ADMIN, $moduleId);
-    $gpermHandler->addRight($moduleDirName . '_view', 1, XOOPS_GROUP_USERS, $moduleId);
-    $gpermHandler->addRight($moduleDirName . '_view', 1, XOOPS_GROUP_ANONYMOUS, $moduleId);
+    $grouppermHandler->addRight($moduleDirName . '_approve', 1, XOOPS_GROUP_ADMIN, $moduleId);
+    $grouppermHandler->addRight($moduleDirName . '_submit', 1, XOOPS_GROUP_ADMIN, $moduleId);
+    $grouppermHandler->addRight($moduleDirName . '_view', 1, XOOPS_GROUP_ADMIN, $moduleId);
+    $grouppermHandler->addRight($moduleDirName . '_view', 1, XOOPS_GROUP_USERS, $moduleId);
+    $grouppermHandler->addRight($moduleDirName . '_view', 1, XOOPS_GROUP_ANONYMOUS, $moduleId);
 
     //  ---  CREATE FOLDERS ---------------
     if (count($configurator->uploadFolders) > 0) {
         //    foreach (array_keys($GLOBALS['uploadFolders']) as $i) {
         foreach (array_keys($configurator->uploadFolders) as $i) {
-            $utilityClass::createFolder($configurator->uploadFolders[$i]);
+            $utility::createFolder($configurator->uploadFolders[$i]);
         }
     }
 
@@ -131,7 +131,7 @@ function xoops_module_install_tdmdownloads(\XoopsModule $module)
         $file = __DIR__ . '/../assets/images/blank.png';
         foreach (array_keys($configurator->copyBlankFiles) as $i) {
             $dest = $configurator->copyBlankFiles[$i] . '/blank.png';
-            $utilityClass::copyFile($file, $dest);
+            $utility::copyFile($file, $dest);
         }
     }
 
@@ -140,7 +140,7 @@ function xoops_module_install_tdmdownloads(\XoopsModule $module)
         foreach (array_keys($configurator->copyFolders) as $i) {
             $source = $configurator->copyFolders[$i]['source'];
             $dest   = $configurator->copyFolders[$i]['dest'];
-            $utilityClass::rcopy($source, $dest);
+            $utility::rcopy($source, $dest);
         }
     }
 

@@ -163,7 +163,7 @@ switch ($op) {
                     $tagHandler = \XoopsModules\Tag\Helper::getInstance()->getHandler('Link'); //@var \XoopsModules\Tag\Handler $tagHandler
                     $criteria   = new \CriteriaCompo();
                     $criteria->add(new \Criteria('tag_itemid', $downloads_arr[$i]->getVar('lid')));
-                    $downloads_tags = $tagHandler->getall($criteria);
+                    $downloads_tags = $tagHandler->getAll($criteria);
                     if (count($downloads_tags) > 0) {
                         foreach (array_keys($downloads_tags) as $j) {
                             $objtags = $tagHandler->get($downloads_tags[$j]->getVar('tl_id'));
@@ -230,7 +230,7 @@ switch ($op) {
                         $tagHandler = \XoopsModules\Tag\Helper::getInstance()->getHandler('Link'); //@var \XoopsModules\Tag\Handler $tagHandler
                         $criteria   = new \CriteriaCompo();
                         $criteria->add(new \Criteria('tag_itemid', $downloads_arr[$j]->getVar('lid')));
-                        $downloads_tags = $tagHandler->getall($criteria);
+                        $downloads_tags = $tagHandler->getAll($criteria);
                         if (count($downloads_tags) > 0) {
                             foreach (array_keys($downloads_tags) as $k) {
                                 $objtags = $tagHandler->get($downloads_tags[$k]->getVar('tl_id'));
@@ -359,42 +359,42 @@ switch ($op) {
                 $newcat_cid = $obj->getNewEnreg($db);
                 //permission pour voir
                 $perm_id      = isset($_REQUEST['cat_cid']) ? $cat_cid : $newcat_cid;
-                $gpermHandler = xoops_getHandler('groupperm');
+                $grouppermHandler = xoops_getHandler('groupperm');
                 $criteria     = new \CriteriaCompo();
                 $criteria->add(new \Criteria('gperm_itemid', $perm_id, '='));
                 $criteria->add(new \Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
                 $criteria->add(new \Criteria('gperm_name', 'tdmdownloads_view', '='));
-                $gpermHandler->deleteAll($criteria);
+                $grouppermHandler->deleteAll($criteria);
                 if (isset($_POST['groups_view'])) {
                     foreach ($_POST['groups_view'] as $onegroup_id) {
-                        $gpermHandler->addRight('tdmdownloads_view', $perm_id, $onegroup_id, $xoopsModule->getVar('mid'));
+                        $grouppermHandler->addRight('tdmdownloads_view', $perm_id, $onegroup_id, $xoopsModule->getVar('mid'));
                     }
                 }
                 //permission pour editer
                 $perm_id      = isset($_REQUEST['cat_cid']) ? $cat_cid : $newcat_cid;
-                $gpermHandler = xoops_getHandler('groupperm');
+                $grouppermHandler = xoops_getHandler('groupperm');
                 $criteria     = new \CriteriaCompo();
                 $criteria->add(new \Criteria('gperm_itemid', $perm_id, '='));
                 $criteria->add(new \Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
                 $criteria->add(new \Criteria('gperm_name', 'tdmdownloads_submit', '='));
-                $gpermHandler->deleteAll($criteria);
+                $grouppermHandler->deleteAll($criteria);
                 if (isset($_POST['groups_submit'])) {
                     foreach ($_POST['groups_submit'] as $onegroup_id) {
-                        $gpermHandler->addRight('tdmdownloads_submit', $perm_id, $onegroup_id, $xoopsModule->getVar('mid'));
+                        $grouppermHandler->addRight('tdmdownloads_submit', $perm_id, $onegroup_id, $xoopsModule->getVar('mid'));
                     }
                 }
                 //permission pour télécharger
                 if (1 === $helper->getConfig('permission_download')) {
                     $perm_id      = isset($_REQUEST['cat_cid']) ? $cat_cid : $newcat_cid;
-                    $gpermHandler = xoops_getHandler('groupperm');
+                    $grouppermHandler = xoops_getHandler('groupperm');
                     $criteria     = new \CriteriaCompo();
                     $criteria->add(new \Criteria('gperm_itemid', $perm_id, '='));
                     $criteria->add(new \Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
                     $criteria->add(new \Criteria('gperm_name', 'tdmdownloads_download', '='));
-                    $gpermHandler->deleteAll($criteria);
+                    $grouppermHandler->deleteAll($criteria);
                     if (isset($_POST['groups_download'])) {
                         foreach ($_POST['groups_download'] as $onegroup_id) {
-                            $gpermHandler->addRight('tdmdownloads_download', $perm_id, $onegroup_id, $xoopsModule->getVar('mid'));
+                            $grouppermHandler->addRight('tdmdownloads_download', $perm_id, $onegroup_id, $xoopsModule->getVar('mid'));
                         }
                     }
                 }

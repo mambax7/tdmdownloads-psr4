@@ -76,8 +76,8 @@ class Modified extends \XoopsObject
             $action = $_SERVER['REQUEST_URI'];
         }
         $groups       = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-        $gpermHandler = xoops_getHandler('groupperm');
-        $perm_upload  = $gpermHandler->checkRight('tdmdownloads_ac', 32, $groups, $xoopsModule->getVar('mid')) ? true : false;
+        $grouppermHandler = xoops_getHandler('groupperm');
+        $perm_upload  = $grouppermHandler->checkRight('tdmdownloads_ac', 32, $groups, $xoopsModule->getVar('mid')) ? true : false;
         //appel des class
         $downloadsHandler = Tdmdownloads\Helper::getInstance()->getHandler('Downloads'); // xoops_getModuleHandler('tdmdownloads_downloads', $moduleDirName);
         $categoryHandler  = Tdmdownloads\Helper::getInstance()->getHandler('Category'); // xoops_getModuleHandler('Category', $moduleDirName);

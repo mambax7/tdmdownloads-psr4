@@ -270,7 +270,7 @@ if (1 == $helper->getConfig('permission_download')) {
 if ((1 == $helper->getConfig('usetellafriend')) && is_dir('../tellafriend')) {
     $string  = sprintf(_MD_TDMDOWNLOADS_SINGLEFILE_INTFILEFOUND, $xoopsConfig['sitename'] . ':  ' . XOOPS_URL . '/modules/' . $moduleDirName . '/singlefile.php?lid=' . $_REQUEST['lid']);
     $subject = sprintf(_MD_TDMDOWNLOADS_SINGLEFILE_INTFILEFOUND, $xoopsConfig['sitename']);
-    if (false !== stripos($subject, '%')) {
+    if (false !== strpos($subject, '%')) {
         $subject = rawurldecode($subject);
     }
     if (false !== stripos($string, '%3F')) {

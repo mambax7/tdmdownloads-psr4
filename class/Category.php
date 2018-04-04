@@ -118,13 +118,13 @@ class Category extends \XoopsObject
         //permissions
         $memberHandler = xoops_getHandler('member');
         $group_list    = $memberHandler->getGroupList();
-        $gpermHandler  = xoops_getHandler('groupperm');
+        $grouppermHandler  = xoops_getHandler('groupperm');
         $full_list     = array_keys($group_list);
         global $xoopsModule;
         if (!$this->isNew()) {
-            $groups_ids_view                   = $gpermHandler->getGroupIds('tdmdownloads_view', $this->getVar('cat_cid'), $xoopsModule->getVar('mid'));
-            $groups_ids_submit                 = $gpermHandler->getGroupIds('tdmdownloads_submit', $this->getVar('cat_cid'), $xoopsModule->getVar('mid'));
-            $groups_ids_download               = $gpermHandler->getGroupIds('tdmdownloads_download', $this->getVar('cat_cid'), $xoopsModule->getVar('mid'));
+            $groups_ids_view                   = $grouppermHandler->getGroupIds('tdmdownloads_view', $this->getVar('cat_cid'), $xoopsModule->getVar('mid'));
+            $groups_ids_submit                 = $grouppermHandler->getGroupIds('tdmdownloads_submit', $this->getVar('cat_cid'), $xoopsModule->getVar('mid'));
+            $groups_ids_download               = $grouppermHandler->getGroupIds('tdmdownloads_download', $this->getVar('cat_cid'), $xoopsModule->getVar('mid'));
             $groups_ids_view                   = array_values($groups_ids_view);
             $groups_news_can_view_checkbox     = new \XoopsFormCheckBox(_AM_TDMDOWNLOADS_PERM_VIEW_DSC, 'groups_view[]', $groups_ids_view);
             $groups_ids_submit                 = array_values($groups_ids_submit);

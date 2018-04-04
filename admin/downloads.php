@@ -299,7 +299,7 @@ switch ($op) {
                     $tagHandler = \XoopsModules\Tag\Helper::getInstance()->getHandler('Link'); //@var \XoopsModules\Tag\Handler $tagHandler
                     $criteria   = new \CriteriaCompo();
                     $criteria->add(new \Criteria('tag_itemid', $downloads_lid));
-                    $downloads_tags = $tagHandler->getall($criteria);
+                    $downloads_tags = $tagHandler->getAll($criteria);
                     foreach (array_keys($downloads_tags) as $i) {
                         $objtags = $tagHandler->get($downloads_tags[$i]->getVar('tl_id'));
                         $tagHandler->delete($objtags) || $objtags->getHtmlErrors();
@@ -789,15 +789,15 @@ switch ($op) {
                 }
                 //permission pour télécharger
                 if (2 == $helper->getConfig('permission_download')) {
-                    $gpermHandler = xoops_getHandler('groupperm');
+                    $grouppermHandler = xoops_getHandler('groupperm');
                     $criteria     = new \CriteriaCompo();
                     $criteria->add(new \Criteria('gperm_itemid', $lidDownloads, '='));
                     $criteria->add(new \Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
                     $criteria->add(new \Criteria('gperm_name', 'tdmdownloads_download_item', '='));
-                    $gpermHandler->deleteAll($criteria);
+                    $grouppermHandler->deleteAll($criteria);
                     if (isset($_POST['item_download'])) {
                         foreach ($_POST['item_download'] as $onegroup_id) {
-                            $gpermHandler->addRight('tdmdownloads_download_item', $lidDownloads, $onegroup_id, $xoopsModule->getVar('mid'));
+                            $grouppermHandler->addRight('tdmdownloads_download_item', $lidDownloads, $onegroup_id, $xoopsModule->getVar('mid'));
                         }
                     }
                 }

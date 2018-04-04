@@ -29,7 +29,7 @@ $adminObject->addInfoBox(_AM_TDMDOWNLOADS_ABOUT_FILEPROTECTION);
 $adminObject->addInfoBoxLine(sprintf($fileProtection, '', '', 'information'), '');
 
 $adminObject->displayNavigation(basename(__FILE__));
-$adminObject->setPaypal('gregory.mage@gmail.com');
+$adminObject::setPaypal('gregory.mage@gmail.com');
 $adminObject->displayAbout(false);
 
 require_once __DIR__ . '/admin_footer.php';

@@ -40,8 +40,8 @@ class Utilities
         $moduleHandler = xoops_getHandler('module');
         $tdmModule     = $moduleHandler->getByDirname($dirname);
         $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-        $gpermHandler  = xoops_getHandler('groupperm');
-        $categories    = $gpermHandler->getItemIds($permtype, $groups, $tdmModule->getVar('mid'));
+        $grouppermHandler  = xoops_getHandler('groupperm');
+        $categories    = $grouppermHandler->getItemIds($permtype, $groups, $tdmModule->getVar('mid'));
 
         return $categories;
     }
