@@ -15,6 +15,7 @@
  */
 
 use XoopsModules\Tdmdownloads;
+
 /** @var Tdmdownloads\Helper $helper */
 $helper = Tdmdownloads\Helper::getInstance();
 
@@ -61,22 +62,22 @@ switch ($op) {
         $erreur         = false;
         $message_erreur = '';
         $donnee         = [];
-        $obj->setVar('title',  Request::getString('type_size','', 'POST')$_POST['title']);
-        $donnee['title'] =  Request::getString('type_size','', 'POST')$_POST['title'];
-        $obj->setVar('cid',  Request::getString('type_size','', 'POST')$_POST['cid']);
-        $donnee['cid'] =  Request::getString('type_size','', 'POST')$_POST['cid'];
-        $obj->setVar('homepage', formatURL( Request::getString('type_size','', 'POST')$_POST['homepage']));
-        $obj->setVar('version',  Request::getString('type_size','', 'POST')$_POST['version']);
-        $obj->setVar('size',  Request::getString('type_size','', 'POST')$_POST['size']);
-        $donnee['type_size'] =  Request::getString('type_size','', 'POST')$_POST['type_size'];
-        $obj->setVar('paypal',  Request::getString('type_size','', 'POST')$_POST['paypal']);
+        $obj->setVar('title', Request::getString('title', '', 'POST'));
+        $donnee['title'] = Request::getString('title', '', 'POST');
+        $obj->setVar('cid', Request::getString('cid', '', 'POST'));
+        $donnee['cid'] = Request::getString('cid', '', 'POST');
+        $obj->setVar('homepage', formatURL(Request::getString('homepage', '', 'POST')));
+        $obj->setVar('version', Request::getString('version', '', 'POST'));
+        $obj->setVar('size', Request::getString('size', '', 'POST'));
+        $donnee['type_size'] = Request::getString('type_size', '', 'POST');
+        $obj->setVar('paypal', Request::getString('paypal', '', 'POST'));
         if (isset($_POST['platform'])) {
-            $obj->setVar('platform', implode('|',  Request::getString('type_size','', 'POST')$_POST['platform']));
+            $obj->setVar('platform', implode('|', Request::getString('platform', '', 'POST')));
         }
-        $obj->setVar('description',  Request::getString('type_size','', 'POST')$_POST['description']);
+        $obj->setVar('description', Request::getString('description', '', 'POST'));
         if (isset($_POST['submitter'])) {
-            $obj->setVar('submitter',  Request::getString('type_size','', 'POST')$_POST['submitter']);
-            $donnee['submitter'] =  Request::getString('type_size','', 'POST')$_POST['submitter'];
+            $obj->setVar('submitter', Request::getString('submitter', '', 'POST'));
+            $donnee['submitter'] = Request::getString('submitter', '', 'POST');
         } else {
             $obj->setVar('submitter', !empty($xoopsUser) ? $xoopsUser->getVar('uid') : 0);
             $donnee['submitter'] = !empty($xoopsUser) ? $xoopsUser->getVar('uid') : 0;
@@ -100,7 +101,7 @@ switch ($op) {
         }
         $donnee['date_update'] = 0;
         // erreur si la taille du fichier n'est pas un nombre
-        if (0 === (int)$_REQUEST['size']) {
+        if (0 === \Xmf\Request::getInt('size', 0, 'REQUEST')) {
             if ('0' === $_REQUEST['size'] || '' === $_REQUEST['size']) {
                 $erreur = false;
             } else {
@@ -209,7 +210,7 @@ switch ($op) {
                         //permission pour t�l�charger
                         if (1 == $helper->getConfig('permission_download')) {
                             $grouppermHandler = xoops_getHandler('groupperm');
-                            $criteria     = new \CriteriaCompo();
+                            $criteria         = new \CriteriaCompo();
                             $criteria->add(new \Criteria('gperm_itemid', $lidDownloads, '='));
                             $criteria->add(new \Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
                             $criteria->add(new \Criteria('gperm_name', 'tdmdownloads_download_item', '='));

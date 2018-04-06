@@ -108,7 +108,7 @@ if (1 == $helper->getConfig('bldate')) {
     $criteria = new \CriteriaCompo();
     $criteria->add(new \Criteria('status', 0, '!='));
     $criteria->add(new \Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
-    $criteria->add(new \Criteria('cid', (int)$_REQUEST['cid']));
+    $criteria->add(new \Criteria('cid', \Xmf\Request::getInt('cid', 0, 'REQUEST')));
     $criteria->setSort('date');
     $criteria->setOrder('DESC');
     $criteria->setLimit($helper->getConfig('nbbl'));
@@ -132,7 +132,7 @@ if (1 == $helper->getConfig('blpop')) {
     $criteria = new \CriteriaCompo();
     $criteria->add(new \Criteria('status', 0, '!='));
     $criteria->add(new \Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
-    $criteria->add(new \Criteria('cid', (int)$_REQUEST['cid']));
+    $criteria->add(new \Criteria('cid', \Xmf\Request::getInt('cid', 0, 'REQUEST')));
     $criteria->setSort('hits');
     $criteria->setOrder('DESC');
     $criteria->setLimit($helper->getConfig('nbbl'));
@@ -155,7 +155,7 @@ if (1 == $helper->getConfig('blrating')) {
     $criteria = new \CriteriaCompo();
     $criteria->add(new \Criteria('status', 0, '!='));
     $criteria->add(new \Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
-    $criteria->add(new \Criteria('cid', (int)$_REQUEST['cid']));
+    $criteria->add(new \Criteria('cid', \Xmf\Request::getInt('cid', 0, 'REQUEST')));
     $criteria->setSort('rating');
     $criteria->setOrder('DESC');
     $criteria->setLimit($helper->getConfig('nbbl'));
@@ -193,7 +193,7 @@ if ($helper->getConfig('perpage') > 0) {
     $criteria = new \CriteriaCompo();
     $criteria->add(new \Criteria('status', 0, '!='));
     $criteria->add(new \Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
-    $criteria->add(new \Criteria('cid', (int)$_REQUEST['cid']));
+    $criteria->add(new \Criteria('cid', \Xmf\Request::getInt('cid', 0, 'REQUEST')));
     $numrows = $downloadsHandler->getCount($criteria);
     $xoopsTpl->assign('lang_thereare', sprintf(_MD_TDMDOWNLOADS_CAT_THEREARE, $numrows));
 
@@ -229,7 +229,7 @@ if ($helper->getConfig('perpage') > 0) {
 
     $downloads_arr = $downloadsHandler->getAll($criteria);
     if ($numrows > $limit) {
-        $pagenav = new \XoopsPageNav($numrows, $limit, $start, 'start', 'limit=' . $limit . '&cid=' . (int)$_REQUEST['cid'] . '&sort=' . $sort . '&order=' . $order);
+        $pagenav = new \XoopsPageNav($numrows, $limit, $start, 'start', 'limit=' . $limit . '&cid=' . \Xmf\Request::getInt('cid', 0, 'REQUEST') . '&sort=' . $sort . '&order=' . $order);
         $pagenav = $pagenav->renderNav(4);
     } else {
         $pagenav = '';

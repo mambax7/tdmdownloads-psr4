@@ -342,7 +342,7 @@ switch ($op) {
         $obj->setVar('cat_title', Request::getString('cat_title', '', 'POST')); //$_POST['cat_title']);
         $obj->setVar('cat_description_main', Request::getString('cat_description_main', '', 'POST')); //$_POST['cat_description_main']);
         $obj->setVar('cat_weight', Request::getInt('cat_weight', 0, 'POST')); //$_POST["cat_weight"]);
-        if (0 === (int)$_REQUEST['cat_weight'] && '0' !== $_REQUEST['cat_weight']) {
+        if (0 === \Xmf\Request::getInt('cat_weight', 0, 'REQUEST') && '0' !== $_REQUEST['cat_weight']) {
             $erreur         = true;
             $message_erreur = _AM_TDMDOWNLOADS_ERREUR_WEIGHT . '<br>';
         }
