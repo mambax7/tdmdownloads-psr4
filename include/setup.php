@@ -9,6 +9,7 @@
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
+use Xmf\Request;
 use XoopsModules\Tdmdownloads;
 
 /**
@@ -63,7 +64,6 @@ $loaderPsr4->registerNamespace('tdmdownloads', dirname(__DIR__) . '/tests');
 require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
 
 $db = \XoopsDatabaseFactory::getDatabaseConnection();
-xoops_load('XoopsRequest');
 
 if (!defined('TDMDOWNLOADS_DIRNAME')) {
     define('TDMDOWNLOADS_DIRNAME', basename(dirname(__DIR__)));//$GLOBALS['xoopsModule']->dirname());

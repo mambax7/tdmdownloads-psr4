@@ -110,7 +110,7 @@ if ($helper->getConfig('check_host')) {
 }
 
 // ajout +1 pour les hits
-$sql = sprintf('UPDATE %s SET hits = hits+1 WHERE lid = %u AND STATUS > 0', $xoopsDB->prefix('tdmdownloads_downloads'), $lid);
+$sql = sprintf('UPDATE `%s` SET hits = hits+1 WHERE lid = %u AND STATUS > 0', $xoopsDB->prefix('tdmdownloads_downloads'), $lid);
 $xoopsDB->queryF($sql);
 
 $url = $view_downloads->getVar('url', 'n');
