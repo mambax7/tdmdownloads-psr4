@@ -68,6 +68,7 @@ class Helper extends \Xmf\Module\Helper
     public function getModules(array $dirnames = null, $otherCriteria = null, $asObj = false)
     {
         // get all dirnames
+        /** @var \XoopsModuleHandler $moduleHandler */
         $moduleHandler = xoops_getHandler('module');
         $criteria      = new \CriteriaCompo();
         if (count($dirnames) > 0) {

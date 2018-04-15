@@ -15,11 +15,12 @@
  */
 
 use XoopsModules\Tdmdownloads;
-/** @var Tdmdownloads\Helper $helper */
-$helper = Tdmdownloads\Helper::getInstance();
 
 //require dirname(__DIR__) . '/include/setup.php';
 require_once __DIR__ . '/admin_header.php';
+
+/** @var Tdmdownloads\Helper $helper */
+$helper = Tdmdownloads\Helper::getInstance();
 
 //On recupere la valeur de l'argument op dans l'URL$
 $op = $utilities->cleanVars($_REQUEST, 'op', 'list', 'string');

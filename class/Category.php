@@ -16,8 +16,6 @@
  */
 
 use XoopsModules\Tdmdownloads;
-/** @var Tdmdownloads\Helper $helper */
-$helper = Tdmdownloads\Helper::getInstance();
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 class Category extends \XoopsObject

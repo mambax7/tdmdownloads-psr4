@@ -15,13 +15,14 @@
  */
 
 use XoopsModules\Tdmdownloads;
-/** @var Tdmdownloads\Helper $helper */
-$helper = Tdmdownloads\Helper::getInstance();
 
 require_once __DIR__ . '/admin_header.php';
 
 xoops_cp_header();
 require_once $GLOBALS['xoops']->path('www/class/xoopsform/grouppermform.php');
+
+/** @var Tdmdownloads\Helper $helper */
+$helper = Tdmdownloads\Helper::getInstance();
 
 $adminObject = \Xmf\Module\Admin::getInstance();
 $adminObject->displayNavigation(basename(__FILE__));

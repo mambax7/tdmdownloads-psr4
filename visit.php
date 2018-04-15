@@ -15,11 +15,12 @@
  */
 
 use XoopsModules\Tdmdownloads;
-/** @var Tdmdownloads\Helper $helper */
-$helper = Tdmdownloads\Helper::getInstance();
 
 error_reporting(0);
 include __DIR__ . '/header.php';
+
+/** @var Tdmdownloads\Helper $helper */
+$helper = Tdmdownloads\Helper::getInstance();
 
 $lid = $utilities->cleanVars($_REQUEST, 'lid', 0, 'int');
 $cid = $utilities->cleanVars($_REQUEST, 'cid', 0, 'int');

@@ -15,13 +15,16 @@
  */
 
 use XoopsModules\Tdmdownloads;
-/** @var Tdmdownloads\Helper $helper */
-$helper = Tdmdownloads\Helper::getInstance();
-
 use XoopsModules\Tdmdownloads\TdmObjectTree;
+
+
 
 //require __DIR__ . '/include/setup.php';
 require_once __DIR__ . '/header.php';
+
+/** @var Tdmdownloads\Helper $helper */
+$helper = Tdmdownloads\Helper::getInstance();
+
 // template d'affichage
 $moduleDirName = basename(__DIR__);
 //$downloadsHandler             = new \XoopsModules\Tdmdownloads\DownloadsHandler($db);
@@ -211,7 +214,7 @@ if ($helper->getConfig('newdownloads') > 0) {
             $logourl = $uploadurl_shots . $logourl;
         }
         $datetime    = formatTimestamp($downloads_arr[$i]->getVar('date'), 's');
-        $submitter   = XoopsUser::getUnameFromId($downloads_arr[$i]->getVar('submitter'));
+        $submitter   = \XoopsUser::getUnameFromId($downloads_arr[$i]->getVar('submitter'));
         $description = $downloads_arr[$i]->getVar('description');
         //permet d'afficher uniquement la description courte
         if (false === strpos($description, '[pagebreak]')) {

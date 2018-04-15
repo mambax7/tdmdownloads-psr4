@@ -16,10 +16,12 @@
 
 use Xmf\Request;
 use XoopsModules\Tdmdownloads;
+
+require_once __DIR__ . '/header.php';
+
 /** @var Tdmdownloads\Helper $helper */
 $helper = Tdmdownloads\Helper::getInstance();
 
-require_once __DIR__ . '/header.php';
 // template d'affichage
 $GLOBALS['xoopsOption']['template_main'] = 'tdmdownloads_modfile.tpl';
 require_once XOOPS_ROOT_PATH . '/header.php';

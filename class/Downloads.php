@@ -1,8 +1,7 @@
 <?php namespace XoopsModules\Tdmdownloads;
 
 use XoopsModules\Tdmdownloads;
-/** @var Tdmdownloads\Helper $helper */
-$helper = Tdmdownloads\Helper::getInstance();
+
 
 //require dirname(__DIR__) . '/include/setup.php';
 /**

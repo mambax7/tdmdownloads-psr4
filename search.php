@@ -16,10 +16,11 @@
 
 use XoopsModules\Tdmdownloads\TdmObjectTree;
 use XoopsModules\Tdmdownloads;
-/** @var Tdmdownloads\Helper $helper */
-$helper = Tdmdownloads\Helper::getInstance();
 
 require_once __DIR__ . '/header.php';
+
+/** @var Tdmdownloads\Helper $helper */
+$helper = Tdmdownloads\Helper::getInstance();
 $moduleDirName = basename(__DIR__);
 
 // template d'affichage

@@ -17,10 +17,11 @@
 use Xmf\Request;
 use XoopsModules\Tdmdownloads\TdmObjectTree;
 use XoopsModules\Tdmdownloads;
-/** @var Tdmdownloads\Helper $helper */
-$helper = Tdmdownloads\Helper::getInstance();
 
 require_once __DIR__ . '/admin_header.php';
+
+/** @var Tdmdownloads\Helper $helper */
+$helper = Tdmdownloads\Helper::getInstance();
 
 $myts = \MyTextSanitizer::getInstance();
 //$thumbnail         = new \XoopsModules\Tdmdownloads\DownloadsHandler();
@@ -176,7 +177,7 @@ switch ($op) {
                 echo '</td>';
                 echo '<td align="left">' . $category . '</td>';
                 echo '<td align="left">' . $downloads_arr[$i]->getVar('title') . '</td>';
-                echo '<td align="left">' . XoopsUser::getUnameFromId($downloads_arr[$i]->getVar('submitter')) . '</td>';
+                echo '<td align="left">' . \XoopsUser::getUnameFromId($downloads_arr[$i]->getVar('submitter')) . '</td>';
                 echo '<td align="center">' . $downloads_arr[$i]->getVar('hits') . '</td>';
                 echo '<td align="center">' . number_format($downloads_arr[$i]->getVar('rating'), 1) . '</td>';
 
@@ -466,7 +467,7 @@ switch ($op) {
         $class = ('even' === $class) ? 'odd' : 'even';
         echo '<tr class="' . $class . '">';
         echo '<td width="30%">' . _AM_TDMDOWNLOADS_FORMPOSTER . ' </td>';
-        echo '<td>' . XoopsUser::getUnameFromId($view_downloads->getVar('submitter')) . '</td>';
+        echo '<td>' . \XoopsUser::getUnameFromId($view_downloads->getVar('submitter')) . '</td>';
         echo '</tr>';
         $class = ('even' === $class) ? 'odd' : 'even';
         echo '<tr class="' . $class . '">';
@@ -540,7 +541,7 @@ switch ($op) {
              . '</b></td></tr>';
         foreach (array_keys($downloadsvotedata_arr) as $i) {
             echo '<tr>';
-            echo '<td>' . XoopsUser::getUnameFromId($downloadsvotedata_arr[$i]->getVar('ratinguser')) . '</td>';
+            echo '<td>' . \XoopsUser::getUnameFromId($downloadsvotedata_arr[$i]->getVar('ratinguser')) . '</td>';
             echo '<td>' . $downloadsvotedata_arr[$i]->getVar('ratinghostname') . '</td>';
             echo '<td align="center">' . $downloadsvotedata_arr[$i]->getVar('rating') . '</td>';
             echo '<td>' . formatTimestamp($downloadsvotedata_arr[$i]->getVar('ratingtimestamp')) . '</td>';

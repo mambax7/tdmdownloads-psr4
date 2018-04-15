@@ -16,8 +16,6 @@
 
 use XoopsModules\Tdmdownloads\TdmObjectTree;
 use XoopsModules\Tdmdownloads;
-/** @var Tdmdownloads\Helper $helper */
-$helper = Tdmdownloads\Helper::getInstance();
 
 //spl_autoload_extensions(".php");
 //spl_autoload_register();
@@ -28,6 +26,10 @@ $helper = Tdmdownloads\Helper::getInstance();
 //use bingo\Tdmdownloads as Bingo;
 
 require_once __DIR__ . '/header.php';
+
+/** @var Tdmdownloads\Helper $helper */
+$helper = Tdmdownloads\Helper::getInstance();
+
 $moduleDirName = basename(__DIR__);
 //file has to be loaded, either directly, via "xoops_load", or via Autoload.
 //xoops_load("constants", $moduleDirName );
@@ -156,7 +158,7 @@ $xoopsTpl->assign('new', $new);
 $xoopsTpl->assign('pop', $pop);
 $xoopsTpl->assign('adminlink', $adminlink);
 $xoopsTpl->assign('date', formatTimestamp($view_downloads->getVar('date'), 's'));
-$xoopsTpl->assign('author', XoopsUser::getUnameFromId($view_downloads->getVar('submitter')));
+$xoopsTpl->assign('author', \XoopsUser::getUnameFromId($view_downloads->getVar('submitter')));
 $xoopsTpl->assign('hits', sprintf(_MD_TDMDOWNLOADS_SINGLEFILE_NBTELECH, $view_downloads->getVar('hits')));
 $xoopsTpl->assign('rating', number_format($view_downloads->getVar('rating'), 1));
 $xoopsTpl->assign('votes', sprintf(_MD_TDMDOWNLOADS_SINGLEFILE_VOTES, $view_downloads->getVar('votes')));
@@ -170,7 +172,7 @@ if (true === $helper->getConfig('use_paypal') && '' !== $view_downloads->getVar(
     $paypal = '<form name="_xclick" action="https://www.paypal.com/cgi-bin/webscr" method="post">
     <input type="hidden" name="cmd" value="_xclick">
     <input type="hidden" name="business" value="' . $view_downloads->getVar('paypal') . '">
-    <input type="hidden" name="item_name" value="' . sprintf(_MD_TDMDOWNLOADS_SINGLEFILE_PAYPAL, $view_downloads->getVar('title')) . ' (' . XoopsUser::getUnameFromId(!empty($xoopsUser) ? $xoopsUser->getVar('uid') : 0) . ')">
+    <input type="hidden" name="item_name" value="' . sprintf(_MD_TDMDOWNLOADS_SINGLEFILE_PAYPAL, $view_downloads->getVar('title')) . ' (' . \XoopsUser::getUnameFromId(!empty($xoopsUser) ? $xoopsUser->getVar('uid') : 0) . ')">
     <input type="hidden" name="currency_code" value="' . $helper->getConfig('currency_paypal') . '">
     <input type="image" src="' . $helper->getConfig('image_paypal') . '" border="0" name="submit" alt="Make payments with PayPal - it\'s fast, free and secure!">
     </form>';

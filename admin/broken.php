@@ -16,10 +16,11 @@
 
 
 use XoopsModules\Tdmdownloads;
-/** @var Tdmdownloads\Helper $helper */
-$helper = Tdmdownloads\Helper::getInstance();
 
 require_once __DIR__ . '/admin_header.php';
+
+/** @var Tdmdownloads\Helper $helper */
+$helper = Tdmdownloads\Helper::getInstance();
 
 //On recupere la valeur de l'argument op dans l'URL$
 $op = $utilities->cleanVars($_REQUEST, 'op', 'list', 'string');
@@ -78,7 +79,7 @@ switch ($op) {
                 $downloads_reportid  = $downloadsbroken_arr[$i]->getVar('reportid');
                 $downloads_title     = $downloadsbroken_arr[$i]->getVar('title');
                 $downloads_cid       = $downloadsbroken_arr[$i]->getVar('cid');
-                $downloads_poster    = XoopsUser::getUnameFromId($downloadsbroken_arr[$i]->getVar('sender'));
+                $downloads_poster    = \XoopsUser::getUnameFromId($downloadsbroken_arr[$i]->getVar('sender'));
                 $downloads_poster_ip = $downloadsbroken_arr[$i]->getVar('ip');
                 echo '<tr class="' . $class . '">';
                 echo '<td align="center">';

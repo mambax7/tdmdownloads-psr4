@@ -14,7 +14,7 @@
  * @author      Gregory Mage (Aka Mage)
  */
 //require dirname(__DIR__) . '/include/setup.php';
-//require_once __DIR__ . '/../autoloader.php';
+//require_once  dirname(__DIR__) . '/autoloader.php';
 require_once __DIR__ . '/admin_header.php';
 
 //require_once dirname(__DIR__) . '/include/functions.folders.php';
@@ -107,12 +107,12 @@ foreach (array_keys($folders) as $i) {
 }
 */
 
-//$helper = Xmf\Module\Helper::getHelper($moduleDirName);
+//$helper = \XoopsModules\AboutHelper::getInstance();
 $helper->loadLanguage('common');
 
 //xoops_loadLanguage('common', $moduleDirName);
 
-$configurator = include __DIR__ . '/../include/config.php';
+$configurator = include  dirname(__DIR__) . '/include/config.php';
 foreach (array_keys($configurator->uploadFolders) as $i) {
     $utility::createFolder($configurator->uploadFolders[$i]);
 
