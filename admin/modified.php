@@ -34,14 +34,14 @@ switch ($op) {
         $modified_admin = \Xmf\Module\Admin::getInstance();
         echo $modified_admin->displayNavigation(basename(__FILE__));
         $criteria = new \CriteriaCompo();
-        if (isset($_REQUEST['limit'])) {
+        if (\Xmf\Request::hasVar('limit', 'REQUEST')) {
             $criteria->setLimit($_REQUEST['limit']);
             $limit = $_REQUEST['limit'];
         } else {
             $criteria->setLimit($helper->getConfig('perpageadmin'));
             $limit = $helper->getConfig('perpageadmin');
         }
-        if (isset($_REQUEST['start'])) {
+        if (\Xmf\Request::hasVar('start', 'REQUEST')) {
             $criteria->setStart($_REQUEST['start']);
             $start = $_REQUEST['start'];
         } else {
@@ -272,7 +272,7 @@ switch ($op) {
     // permet de suprimmer le téléchargment modifié
     case 'del_moddownloads':
         $obj = $modifiedHandler->get($_REQUEST['mod_id']);
-        //        if (isset($_REQUEST['ok']) && $_REQUEST['ok'] === 1) {
+        //        if (\Xmf\Request::hasVar('ok', 'REQUEST') && $_REQUEST['ok'] === 1) {
         if (1 === Request::getInt('ok', 0, 'POST')) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header('downloads.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));

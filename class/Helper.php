@@ -16,7 +16,7 @@
  * @license         GPL 2.0 or later
  * @package         xoalbum
  * @since           2.0.0
- * @author          XOOPS Development Team <name@site.com> - <https://xoops.org>
+ * @author          XOOPS Development Team <https://xoops.org>
  */
 
 //defined('XOOPS_ROOT_PATH') || die('Restricted access');
@@ -57,6 +57,31 @@ class Helper extends \Xmf\Module\Helper
     }
 
     /**
+     * @return string
+     */
+    public function getDirname()
+    {
+        return $this->dirname;
+    }
+
+    /**
+     * Get an Object Handler
+     *
+     * @param string $name name of handler to load
+     *
+     * @return bool|\XoopsObjectHandler|\XoopsPersistableObjectHandler
+     */
+
+    public function getHandler($name)
+    {
+        $ret   = false;
+        $db    = \XoopsDatabaseFactory::getDatabaseConnection();
+        $class = '\\XoopsModules\\' . ucfirst(strtolower(basename(dirname(__DIR__)))) . '\\' . $name . 'Handler';
+        $ret   = new $class($db);
+        return $ret;
+    }
+
+    /**
      * Get modules
      *
      * @param array $dirnames
@@ -90,30 +115,5 @@ class Helper extends \Xmf\Module\Helper
         }
 
         return $dirs;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDirname()
-    {
-        return $this->dirname;
-    }
-
-    /**
-     * Get an Object Handler
-     *
-     * @param string $name name of handler to load
-     *
-     * @return bool|\XoopsObjectHandler|\XoopsPersistableObjectHandler
-     */
-
-    public function getHandler($name)
-    {
-        $ret   = false;
-        $db    = \XoopsDatabaseFactory::getDatabaseConnection();
-        $class = '\\XoopsModules\\' . ucfirst(strtolower(basename(dirname(__DIR__)))) . '\\' . $name . 'Handler';
-        $ret   = new $class($db);
-        return $ret;
     }
 }

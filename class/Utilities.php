@@ -9,28 +9,31 @@
 
 use XoopsModules\Tdmdownloads;
 
-
+/**
+ * Class Utilities
+ * @package XoopsModules\Tdmdownloads
+ */
 class Utilities
 {
     protected $db;
     protected $helper;
 
     /**
-     * @param \XoopsDatabase $db
+     * @param \XoopsDatabase|null $db
      * @param                $helper
      */
-    public function __construct(\XoopsDatabase $db = null, $helper = null)
-    {
-        $this->db     = $db;
-        $this->helper = $helper;
-    }
+//    public static function __construct(\XoopsDatabase $db = null, $helper = null)
+//    {
+//        $this->db     = $db;
+//        $this->helper = $helper;
+//    }
 
     /**
      * @param $permtype
      * @param $dirname
      * @return mixed
      */
-    public function getItemIds($permtype, $dirname)
+    public static function getItemIds($permtype, $dirname)
     {
         global $xoopsUser;
         $permissions = [];
@@ -57,7 +60,7 @@ class Utilities
      * @return int
      */
 
-    public function getNumbersOfEntries($mytree, $categories, $entries, $cid)
+    public static function getNumbersOfEntries($mytree, $categories, $entries, $cid)
     {
         $count     = 0;
         $child_arr = [];
@@ -85,7 +88,7 @@ class Utilities
      * @return string
      */
 
-    public function getStatusImage($time, $status)
+    public static function getStatusImage($time, $status)
     {
         $moduleDirName = basename(dirname(__DIR__));
         /** @var Tdmdownloads\Helper $helper */
@@ -127,7 +130,7 @@ class Utilities
      * @return string
      */
 
-    public function getPopularImage($hits)
+    public static function getPopularImage($hits)
     {
         /** @var Tdmdownloads\Helper $helper */
         $helper = Tdmdownloads\Helper::getInstance();
@@ -156,7 +159,7 @@ class Utilities
      *
      * @return string
      */
-    //    public function convertFileSize($size)
+    //    public static function convertFileSize($size)
     //    {
     //        if ($size > 0) {
     //            $mb = 1024 * 1024;
@@ -182,7 +185,7 @@ class Utilities
      *
      * @return mixed|string
      */
-    public function cleanVars(&$global, $key, $default = '', $type = 'int')
+    public static function cleanVars(&$global, $key, $default = '', $type = 'int')
     {
         switch ($type) {
             case 'string':
@@ -209,7 +212,7 @@ class Utilities
      *
      * @return string
      */
-    public function getPathTree($mytree, $key, $category_array, $title, $prefix = '')
+    public static function getPathTree($mytree, $key, $category_array, $title, $prefix = '')
     {
         $category_parent = $mytree->getAllParent($key);
         $category_parent = array_reverse($category_parent);
@@ -238,7 +241,7 @@ class Utilities
      *
      * @return string
      */
-    public function getPathTreeUrl(
+    public static function getPathTreeUrl(
         $mytree,
         $key,
         $category_array,
@@ -300,7 +303,7 @@ class Utilities
      * @param null $fileTarget
      * @throws \RuntimeException
      */
-    public function createFolder($path, $mode = 0777, $fileSource, $fileTarget = null)
+    public static function createFolder($path, $mode = 0777, $fileSource, $fileTarget = null)
     {
         if (!@mkdir($path, $mode) && !is_dir($path)) {
             throw new \RuntimeException(sprintf('Unable to create the %s directory', $path));
@@ -348,7 +351,7 @@ class Utilities
      * @return void
      * @throws \RuntimeException
      */
-    public function prepareFolder($folder)
+    public static function prepareFolder($folder)
     {
         if (!@mkdir($folder) && !is_dir($folder)) {
             throw new \RuntimeException(sprintf('Unable to create the %s directory', $folder));

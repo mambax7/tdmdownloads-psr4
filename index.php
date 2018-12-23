@@ -19,7 +19,7 @@ use XoopsModules\Tdmdownloads\TdmObjectTree;
 
 
 
-//require __DIR__ . '/include/setup.php';
+//require_once __DIR__ . '/include/setup.php';
 require_once __DIR__ . '/header.php';
 
 /** @var Tdmdownloads\Helper $helper */
@@ -198,8 +198,8 @@ if ($helper->getConfig('newdownloads') > 0) {
     $tblorder[6] = 'ASC';
     $tblorder[7] = 'DESC';
     $tblorder[8] = 'ASC';
-    $sort        = null !==($helper->getConfig('toporder')) ? $helper->getConfig('toporder') : 1;
-    $order       = null !==($helper->getConfig('toporder')) ? $helper->getConfig('toporder') : 1;
+    $sort        = null !== $helper->getConfig('toporder') ? $helper->getConfig('toporder') : 1;
+    $order       = null !== $helper->getConfig('toporder') ? $helper->getConfig('toporder') : 1;
     $criteria->setSort($tblsort[$sort]);
     $criteria->setOrder($tblorder[$order]);
     $downloads_arr = $downloadsHandler->getAll($criteria);
@@ -283,4 +283,4 @@ $xoTheme->addMeta('meta', 'description', strip_tags($xoopsModule->name()));
 $keywords = substr($keywords, 0, -1);
 $xoTheme->addMeta('meta', 'keywords', $keywords);
 
-include XOOPS_ROOT_PATH . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

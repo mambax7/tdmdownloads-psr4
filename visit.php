@@ -17,7 +17,7 @@
 use XoopsModules\Tdmdownloads;
 
 error_reporting(0);
-include __DIR__ . '/header.php';
+require_once __DIR__   . '/header.php';
 
 /** @var Tdmdownloads\Helper $helper */
 $helper = Tdmdownloads\Helper::getInstance();

@@ -18,6 +18,11 @@
 use XoopsModules\Tdmdownloads;
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
+
+/**
+ * Class Category
+ * @package XoopsModules\Tdmdownloads
+ */
 class Category extends \XoopsObject
 {
     // constructor
@@ -168,7 +173,7 @@ class Category extends \XoopsObject
 //    /**
 //     * @param null|object $db
 //     */
-//    public function __construct(\XoopsDatabase $db)
+//    public function __construct(\XoopsDatabase $db = null)
 //    {
 //        parent::__construct($db, "tdmdownloads_cat", 'Category', 'cat_cid', 'cat_title');
 //    }

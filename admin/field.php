@@ -16,7 +16,7 @@
 
 use XoopsModules\Tdmdownloads;
 
-//require dirname(__DIR__) . '/include/setup.php';
+//require_once dirname(__DIR__) . '/include/setup.php';
 require_once __DIR__ . '/admin_header.php';
 
 /** @var Tdmdownloads\Helper $helper */
@@ -133,7 +133,7 @@ switch ($op) {
     case 'del_field':
         global $xoopsModule;
         $obj = $fieldHandler->get($_REQUEST['fid']);
-        if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
+        if (\Xmf\Request::hasVar('ok', 'REQUEST') && 1 == $_REQUEST['ok']) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header('field.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
             }
@@ -163,7 +163,7 @@ switch ($op) {
             if (count($downloads_arr) > 0) {
                 $message .= _AM_TDMDOWNLOADS_DELDATA . '<br>';
                 foreach (array_keys($downloads_arr) as $i) {
-                    $message .= '<span style="color: Red;">' . $downloads_arr[$i]->getVar('data') . '</span><br>';
+                    $message .= '<span style="color: #ff0000;">' . $downloads_arr[$i]->getVar('data') . '</span><br>';
                 }
             }
             //Affichage de la partie haute de l'administration de Xoops
@@ -183,7 +183,7 @@ switch ($op) {
         if (!$GLOBALS['xoopsSecurity']->check()) {
             redirect_header('field.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
         }
-        if (isset($_REQUEST['fid'])) {
+        if (\Xmf\Request::hasVar('fid', 'REQUEST')) {
             $obj = $fieldHandler->get($_REQUEST['fid']);
         } else {
             $obj = $fieldHandler->create();

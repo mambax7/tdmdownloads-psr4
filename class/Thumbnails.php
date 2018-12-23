@@ -139,7 +139,7 @@ class Thumbnails
      */
     public function showErrors($error)
     {
-        echo '<span style="color: red;">Thumbnail class error: ' . $error . '</span>';
+        echo '<span style="color: #ff0000;">Thumbnail class error: ' . $error . '</span>';
 
         //return(array('error' => '1', 'thumbnail' => ''));
         return false;

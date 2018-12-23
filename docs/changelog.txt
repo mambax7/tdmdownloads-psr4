@@ -4,9 +4,17 @@
 - started with conversion to XoopsRequest (mamba)
 - made check for upload folders easier (mamba)
 - some cosmetic changes related to PSR-2 (mamba)
-- experimenting with PSR-4 Autoloading (mamba)
 - shorten class names (mamba)
 - added Preloads with autoloader (geekwright/mamba)
+- namespaces (mamba)
+- class autoloading (mamba)
+- short array syntax (mamba)
+- Yoda notation (mamba)
+- #HEX representation (mamba)
+- started conversion to XMF (mamba)
+    &nbsp;&nbsp;- updated addInfoBoxLine entries (mamba)
+    &nbsp;&nbsp;- displayNavigation(basename(__FILE__))  (mamba)
+    &nbsp;&nbsp;- changed to ->displayButton('left') (mamba)
 
 
 

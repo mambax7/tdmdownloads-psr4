@@ -181,7 +181,7 @@ class Autoloader
         foreach ($this->prefixes[$prefix] as $directory) {
             $filename = $directory . str_replace('\\', '/', $relativePath) . self::PHP_EXTENSION;
 
-            // if the mapped file exists, require it
+            // if the mapped file exists, require_once it
             if ($this->requireFile($filename)) {
                 return $filename;
             }
@@ -192,7 +192,7 @@ class Autoloader
     }
 
     /**
-     * If a file exists, require it from the file system.
+     * If a file exists, require_once it from the file system.
      *
      * @param $filename
      * @return bool True if the file exists, false if not.
@@ -201,7 +201,7 @@ class Autoloader
     protected function requireFile($filename)
     {
         if (is_readable($filename)) {
-            require $filename;
+            require_once $filename;
 
             return true;
         }

@@ -162,4 +162,4 @@ switch ($op) {
 
         break;
 }
-include XOOPS_ROOT_PATH . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

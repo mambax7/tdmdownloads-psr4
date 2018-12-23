@@ -11,24 +11,24 @@
     No special measures necessary, follow the standard installation process
     extract the /TDMDownloas folder into the ../modules directory. Install the module through Admin -> System Module ->
     Modules.
-    <b><b>
+    <br><br>
             Detailed instructions on installing modules are available in the
-            <a href="https://www.gitbook.com/book/xoops/xoops-operations-guide/" target="_blank">XOOPS Operations Manual</a>
+            <a href="https://xoops.gitbook.io/xoops-operations-guide/" target="_blank">XOOPS Operations Manual</a>
 
             <p class="even">
             <h4 class="odd">Operating instructions</h4>
             To set up this module you need to:
-            <b><b>
+            <br><br>
                     i) Configure your preferences for the module (see "Preferences") and
                     optionally the Partners block if you intend to use it (see
                     Blocks)
-                    <b><b>
+                    <br><br>
                             ii) Check that you have given your user groups the necessary module and
                             block access rights to use this module. Group permissions are set through
                             the Administration Menu -> System -> Groups.
-                            <b><b>
+                            <br><br>
                                     Detailed instructions on configuring the access rights for user groups are available in the
-                                    <a href="https://www.gitbook.com/book/xoops/xoops-operations-guide/" target="_blank">XOOPS
+                                    <a href="https://xoops.gitbook.io/xoops-operations-guide/" target="_blank">XOOPS
                                         Operations Manual</a>
                                     </p>
                                     <h4 class="odd">Tutorial</h4>

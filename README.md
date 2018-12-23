@@ -12,7 +12,7 @@
 
 **TdmDownloads** module for [XOOPS CMS](https://xoops.org) creates a downloads section where users can download/submit/rate various files..
 
-[![Tutorial Available](https://xoops.org/images/tutorial-available-blue.svg)](https://www.gitbook.com/book/xoops/tdmdownloads-tutorial/) Tutorial: see [GitBook](https://www.gitbook.com/book/xoops/tdmdownloads-tutorial/).
+[![Tutorial Available](https://xoops.org/images/tutorial-available-blue.svg)](https://xoops.gitbook.io/tdmdownloads-tutorial/) Tutorial: see [GitBook](https://xoops.gitbook.io/tdmdownloads-tutorial/).
 To contribute to the Tutorial, [fork it on GitHub](https://github.com/XoopsDocs/tdmdownloads-tutorial)
 
 [![Translations on Transifex](https://xoops.org/images/translations-transifex-blue.svg)](https://www.transifex.com/xoops)

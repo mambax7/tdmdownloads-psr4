@@ -34,14 +34,14 @@ switch ($op) {
         $broken_admin = \Xmf\Module\Admin::getInstance();
         echo $broken_admin->displayNavigation(basename(__FILE__));
         $criteria = new \CriteriaCompo();
-        if (isset($_REQUEST['limit'])) {
+        if (\Xmf\Request::hasVar('limit', 'REQUEST')) {
             $criteria->setLimit($_REQUEST['limit']);
             $limit = $_REQUEST['limit'];
         } else {
             $criteria->setLimit($helper->getConfig('perpageadmin'));
             $limit = $helper->getConfig('perpageadmin');
         }
-        if (isset($_REQUEST['start'])) {
+        if (\Xmf\Request::hasVar('start', 'REQUEST')) {
             $criteria->setStart($_REQUEST['start']);
             $start = $_REQUEST['start'];
         } else {
@@ -103,7 +103,7 @@ switch ($op) {
     // permet de suprimmer le rapport de téléchargment brisé
     case 'del_brokendownloads':
         $obj = $brokenHandler->get($_REQUEST['broken_id']);
-        if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
+        if (\Xmf\Request::hasVar('ok', 'REQUEST') && 1 == $_REQUEST['ok']) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header('downloads.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
             }

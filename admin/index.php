@@ -13,7 +13,7 @@
  * @license     GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Gregory Mage (Aka Mage)
  */
-//require dirname(__DIR__) . '/include/setup.php';
+//require_once dirname(__DIR__) . '/include/setup.php';
 //require_once  dirname(__DIR__) . '/autoloader.php';
 require_once __DIR__ . '/admin_header.php';
 
@@ -112,7 +112,7 @@ $helper->loadLanguage('common');
 
 //xoops_loadLanguage('common', $moduleDirName);
 
-$configurator = include  dirname(__DIR__) . '/include/config.php';
+$configurator = require_once dirname(__DIR__) . '/include/config.php';
 foreach (array_keys($configurator->uploadFolders) as $i) {
     $utility::createFolder($configurator->uploadFolders[$i]);
 

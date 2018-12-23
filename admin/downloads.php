@@ -49,7 +49,7 @@ switch ($op) {
         if (1 == $statut_menu) {
             $downloadsAdmin->addItemButton(_AM_TDMDOWNLOADS_DOWNLOADS_NEW, 'downloads.php?op=new_downloads', 'add');
             if ($downloads_waiting > 0) {
-                $downloadsAdmin->addItemButton(_AM_TDMDOWNLOADS_DOWNLOADS_WAIT, 'downloads.php?op=list&statut_display=0', 'add', ' (<span style="color: Red;">' . $downloads_waiting . '</span>)');
+                $downloadsAdmin->addItemButton(_AM_TDMDOWNLOADS_DOWNLOADS_WAIT, 'downloads.php?op=list&statut_display=0', 'add', ' (<span style="color: #ff0000;">' . $downloads_waiting . '</span>)');
             }
         } else {
             $downloadsAdmin->addItemButton(_AM_TDMDOWNLOADS_DOWNLOADS_LISTE, 'downloads.php?op=list', 'list');
@@ -212,7 +212,7 @@ switch ($op) {
         echo $downloadsAdmin->displayNavigation(basename(__FILE__));
         $downloadsAdmin->addItemButton(_AM_TDMDOWNLOADS_DOWNLOADS_LISTE, 'downloads.php?op=list', 'list');
         if ($downloads_waiting > 0) {
-            $downloadsAdmin->addItemButton(_AM_TDMDOWNLOADS_DOWNLOADS_WAIT, 'downloads.php?op=list&statut_display=0', 'add', ' (<span style="color: Red;">' . $downloads_waiting . '</span>)');
+            $downloadsAdmin->addItemButton(_AM_TDMDOWNLOADS_DOWNLOADS_WAIT, 'downloads.php?op=list&statut_display=0', 'add', ' (<span style="color: #ff0000;">' . $downloads_waiting . '</span>)');
         }
         echo $downloadsAdmin->displayButton('left');
 
@@ -239,7 +239,7 @@ switch ($op) {
         $downloadsAdmin->addItemButton(_AM_TDMDOWNLOADS_DOWNLOADS_LISTE, 'downloads.php?op=list', 'list');
         $downloadsAdmin->addItemButton(_AM_TDMDOWNLOADS_DOWNLOADS_NEW, 'downloads.php?op=new_downloads', 'add');
         if ($downloads_waiting > 0) {
-            $downloadsAdmin->addItemButton(_AM_TDMDOWNLOADS_DOWNLOADS_WAIT, 'downloads.php?op=list&statut_display=0', 'add', ' (<span style="color: Red;">' . $downloads_waiting . '</span>)');
+            $downloadsAdmin->addItemButton(_AM_TDMDOWNLOADS_DOWNLOADS_WAIT, 'downloads.php?op=list&statut_display=0', 'add', ' (<span style="color: #ff0000;">' . $downloads_waiting . '</span>)');
         }
         echo $downloadsAdmin->displayButton('left');
 
@@ -317,7 +317,7 @@ switch ($op) {
             $downloadsAdmin->addItemButton(_AM_TDMDOWNLOADS_DOWNLOADS_LISTE, 'downloads.php?op=list', 'list');
             $downloadsAdmin->addItemButton(_AM_TDMDOWNLOADS_DOWNLOADS_NEW, 'downloads.php?op=new_downloads', 'add');
             if ($downloads_waiting > 0) {
-                $downloadsAdmin->addItemButton(_AM_TDMDOWNLOADS_DOWNLOADS_WAIT, 'downloads.php?op=list&statut_display=0', 'add', ' (<span style="color: Red;">' . $downloads_waiting . '</span>)');
+                $downloadsAdmin->addItemButton(_AM_TDMDOWNLOADS_DOWNLOADS_WAIT, 'downloads.php?op=list&statut_display=0', 'add', ' (<span style="color: #ff0000;">' . $downloads_waiting . '</span>)');
             }
             echo $downloadsAdmin->displayButton('left');
             xoops_confirm([
@@ -337,7 +337,7 @@ switch ($op) {
         $downloadsAdmin->addItemButton(_AM_TDMDOWNLOADS_DOWNLOADS_LISTE, 'downloads.php?op=list', 'list');
         $downloadsAdmin->addItemButton(_AM_TDMDOWNLOADS_DOWNLOADS_NEW, 'downloads.php?op=new_downloads', 'add');
         if ($downloads_waiting > 0) {
-            $downloadsAdmin->addItemButton(_AM_TDMDOWNLOADS_DOWNLOADS_WAIT, 'downloads.php?op=list&statut_display=0', 'add', ' (<span style="color: Red;">' . $downloads_waiting . '</span>)');
+            $downloadsAdmin->addItemButton(_AM_TDMDOWNLOADS_DOWNLOADS_WAIT, 'downloads.php?op=list&statut_display=0', 'add', ' (<span style="color: #ff0000;">' . $downloads_waiting . '</span>)');
         }
         echo $downloadsAdmin->displayButton('left');
         $downloads_lid = $utilities->cleanVars($_REQUEST, 'downloads_lid', 0, 'int');
@@ -626,12 +626,12 @@ switch ($op) {
         $obj->setVar('size', $_POST['size']);
         $donnee['type_size'] = $_POST['type_size'];
         $obj->setVar('paypal', $_POST['paypal']);
-        if (isset($_POST['platform'])) {
+        if (\Xmf\Request::hasVar('platform', 'POST')) {
             $obj->setVar('platform', implode('|', $_POST['platform']));
         }
         $obj->setVar('description', $_POST['description']);
 
-        if (isset($_POST['submitter'])) {
+        if (\Xmf\Request::hasVar('submitter', 'POST')) {
             $obj->setVar('submitter', $_POST['submitter']);
             $donnee['submitter'] = $_POST['submitter'];
         } else {
@@ -640,7 +640,7 @@ switch ($op) {
         }
         if (Request::hasVar('downloads_modified')) {
             $obj->setVar('date', time());
-            if (isset($_POST['status'])) {
+            if (\Xmf\Request::hasVar('status', 'POST')) {
                 $obj->setVar('status', 1);
                 $donnee['status'] = 1;
             } else {
@@ -650,7 +650,7 @@ switch ($op) {
         } else {
             if ('Y' === $_POST['date_update']) {
                 $obj->setVar('date', strtotime($_POST['date']));
-                if (isset($_POST['status'])) {
+                if (\Xmf\Request::hasVar('status', 'POST')) {
                     $obj->setVar('status', 2);
                     $donnee['status'] = 1;
                 } else {
@@ -658,7 +658,7 @@ switch ($op) {
                     $donnee['status'] = 0;
                 }
             } else {
-                if (isset($_POST['status'])) {
+                if (\Xmf\Request::hasVar('status', 'POST')) {
                     $obj->setVar('status', 1);
                     $donnee['status'] = 1;
                 } else {
@@ -678,7 +678,7 @@ switch ($op) {
             }
         }
         // erreur si la description est vide
-        if (isset($_REQUEST['description'])) {
+        if (\Xmf\Request::hasVar('description', 'REQUEST')) {
             if ('' === $_REQUEST['description']) {
                 $erreur         = true;
                 $message_erreur .= _AM_TDMDOWNLOADS_ERREUR_NODESCRIPTION . '<br>';
@@ -796,7 +796,7 @@ switch ($op) {
                     $criteria->add(new \Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
                     $criteria->add(new \Criteria('gperm_name', 'tdmdownloads_download_item', '='));
                     $grouppermHandler->deleteAll($criteria);
-                    if (isset($_POST['item_download'])) {
+                    if (\Xmf\Request::hasVar('item_download', 'POST')) {
                         foreach ($_POST['item_download'] as $onegroup_id) {
                             $grouppermHandler->addRight('tdmdownloads_download_item', $lidDownloads, $onegroup_id, $xoopsModule->getVar('mid'));
                         }

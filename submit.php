@@ -14,13 +14,77 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
+use Xmf\Request;
 use XoopsModules\Tdmdownloads;
+
+require_once __DIR__ . '/header.php';
+$moduleDirName = basename(__DIR__);
 
 /** @var Tdmdownloads\Helper $helper */
 $helper = Tdmdownloads\Helper::getInstance();
 
-require_once __DIR__ . '/header.php';
-$moduleDirName = basename(__DIR__);
+
+
+
+
+global $xoopsDB;
+$com_itemid = 1; //mb
+
+$sql = 'SELECT title, cid FROM ' . $xoopsDB->prefix('tdmdownloads_downloads') . ' WHERE lid=?';
+
+$conn = $xoopsDB->conn;
+$stmt = $conn->prepare($sql);
+if (false === $stmt) {
+    trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->errno . ' ' . $conn->error, E_USER_ERROR);
+}
+
+$lid = $com_itemid;
+
+/* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
+$stmt->bind_param('i', $lid);
+
+/* Execute statement */
+$stmt->execute();
+
+/* Fetch result to array */
+$result = $stmt->get_result();  //$result = $xoopsDB->query($sql);
+$row        = $xoopsDB->fetchArray($result);
+$result->data_seek(0);
+
+
+
+$sql2    = 'SELECT title, cid FROM ' . $xoopsDB->prefix('tdmdownloads_downloads') . ' WHERE lid=' . $com_itemid;
+$result2 = $xoopsDB->query($sql2);
+$row2    = $xoopsDB->fetchArray($result);
+
+//    while($row = $result->fetch_array(MYSQLI_ASSOC)) {
+//        array_push($a_data, $row);
+//    }
+
+$categories = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);
+
+//if (!in_array($row['cid'], $categories)) {
+//    redirect_header(XOOPS_URL, 2, _NOPERM);
+//}
+$com_replytitle = $row['title'];
+//require_once XOOPS_ROOT_PATH . '/include/comment_new.php';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // template d'affichage
 $GLOBALS['xoopsOption']['template_main'] = 'tdmdownloads_submit.tpl';
@@ -71,11 +135,11 @@ switch ($op) {
         $obj->setVar('size', Request::getString('size', '', 'POST'));
         $donnee['type_size'] = Request::getString('type_size', '', 'POST');
         $obj->setVar('paypal', Request::getString('paypal', '', 'POST'));
-        if (isset($_POST['platform'])) {
+        if (\Xmf\Request::hasVar('platform', 'POST')) {
             $obj->setVar('platform', implode('|', Request::getString('platform', '', 'POST')));
         }
         $obj->setVar('description', Request::getString('description', '', 'POST'));
-        if (isset($_POST['submitter'])) {
+        if (\Xmf\Request::hasVar('submitter', 'POST')) {
             $obj->setVar('submitter', Request::getString('submitter', '', 'POST'));
             $donnee['submitter'] = Request::getString('submitter', '', 'POST');
         } else {
@@ -90,7 +154,7 @@ switch ($op) {
         }
         if ($xoopsUser) {
             if ($xoopsUser->isAdmin($xoopsModule->mid())) {
-                if (isset($_POST['status'])) {
+                if (\Xmf\Request::hasVar('status', 'POST')) {
                     $obj->setVar('status', $_POST['status']);
                     $donnee['status'] = $_POST['status'];
                 } else {
@@ -110,7 +174,7 @@ switch ($op) {
             }
         }
         // erreur si la cat�gorie est vide
-        if (isset($_REQUEST['cid'])) {
+        if (\Xmf\Request::hasVar('cid', 'REQUEST')) {
             if (0 == $_REQUEST['cid']) {
                 $erreur         = true;
                 $message_erreur .= _MD_TDMDOWNLOADS_ERREUR_NOCAT . '<br>';
@@ -215,7 +279,7 @@ switch ($op) {
                             $criteria->add(new \Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
                             $criteria->add(new \Criteria('gperm_name', 'tdmdownloads_download_item', '='));
                             $grouppermHandler->deleteAll($criteria);
-                            if (isset($_POST['item_download'])) {
+                            if (\Xmf\Request::hasVar('item_download', 'POST')) {
                                 foreach ($_POST['item_download'] as $onegroup_id) {
                                     $grouppermHandler->addRight('tdmdownloads_download_item', $lidDownloads, $onegroup_id, $xoopsModule->getVar('mid'));
                                 }
@@ -251,4 +315,4 @@ switch ($op) {
 
         break;
 }
-include XOOPS_ROOT_PATH . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

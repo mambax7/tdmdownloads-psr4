@@ -136,7 +136,7 @@ define('_AM_TDMDOWNLOADS_FORMSIZE', 'File size');
 define('_AM_TDMDOWNLOADS_FORMSTATUS', 'Download Status');
 define('_AM_TDMDOWNLOADS_FORMSTATUS_OK', 'Approved');
 define('_AM_TDMDOWNLOADS_FORMSUBMITTER', 'Posted by');
-define('_AM_TDMDOWNLOADS_FORMSUREDEL', "Are you sure you want to delete: <strong><span style='color:red';> %s </span></strong>");
+define('_AM_TDMDOWNLOADS_FORMSUREDEL', "Are you sure you want to delete: <strong><span style='color:#ff0000';> %s </span></strong>");
 define('_AM_TDMDOWNLOADS_FORMTEXT', 'Description');
 define('_AM_TDMDOWNLOADS_FORMTEXTDOWNLOADS', "Description: <br><br>Use the delimiter '<strong>[pagebreak]</strong>' to define the size of the short description. <br> The short description allows to reduce the text size in the home page of the module and categories.");
 define('_AM_TDMDOWNLOADS_FORMTITLE', 'Title');
@@ -175,9 +175,9 @@ define('_AM_TDMDOWNLOADS_GBYTES', 'GB');
 define('_AM_TDMDOWNLOADS_TBYTES', 'TB');
 
 //directories
-define('_AM_TDMDOWNLOADS_AVAILABLE', "<span style='color : green;'>Available. </span>");
-define('_AM_TDMDOWNLOADS_NOTAVAILABLE', "<span style='color : red;'>is not available. </span>");
-define('_AM_TDMDOWNLOADS_NOTWRITABLE', "<span style='color : red;'>" . ' should have permission ( %1$d ), but it has ( %2$d )' . '</span>');
+define('_AM_TDMDOWNLOADS_AVAILABLE', "<span style='color : #008000;'>Available. </span>");
+define('_AM_TDMDOWNLOADS_NOTAVAILABLE', "<span style='color : #ff0000;'>is not available. </span>");
+define('_AM_TDMDOWNLOADS_NOTWRITABLE', "<span style='color : #ff0000;'>" . ' should have permission ( %1$d ), but it has ( %2$d )' . '</span>');
 define('_AM_TDMDOWNLOADS_CREATETHEDIR', 'Create it');
 define('_AM_TDMDOWNLOADS_SETMPERM', 'Set the permission');
 

@@ -30,7 +30,7 @@ trait VersionChecks
     {
         $moduleDirName = basename(dirname(__DIR__));
         if (null === $module) {
-            $module = XoopsModule::getByDirname($moduleDirName);
+            $module = \XoopsModule::getByDirname($moduleDirName);
         }
         xoops_loadLanguage('admin', $moduleDirName);
 
@@ -59,6 +59,8 @@ trait VersionChecks
      */
     public static function checkVerPhp(\XoopsModule $module)
     {
+        $moduleDirName = basename(dirname(dirname(__DIR__)));
+        $moduleDirNameUpper = strtoupper($moduleDirName);
         xoops_loadLanguage('admin', $module->dirname());
         // check for minimum PHP version
         $success = true;

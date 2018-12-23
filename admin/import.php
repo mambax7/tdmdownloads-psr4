@@ -21,7 +21,7 @@ echo $import_admin->displayNavigation(basename(__FILE__));
 
 //Action dans switch
 $op = 'index';
-if (isset($_REQUEST['op'])) {
+if (\Xmf\Request::hasVar('op', 'REQUEST')) {
     $op = $_REQUEST['op'];
 }
 

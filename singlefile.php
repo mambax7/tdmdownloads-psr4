@@ -321,5 +321,5 @@ $xoTheme->addMeta('meta', 'description', strip_tags($description_short));
 //keywords
 /*$keywords = substr($keywords,0,-1);
 $xoTheme->addMeta( 'meta', 'keywords', $keywords);*/
-include XOOPS_ROOT_PATH . '/include/comment_view.php';
-include XOOPS_ROOT_PATH . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/include/comment_view.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

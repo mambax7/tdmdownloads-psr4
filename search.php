@@ -31,13 +31,13 @@ $xoopsTpl->assign('mydirname', $moduleDirName);
 
 $categories = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);
 
-if (isset($_REQUEST['title'])) {
+if (\Xmf\Request::hasVar('title', 'REQUEST')) {
     '' !== $_REQUEST['title'] ? $title = $_REQUEST['title'] : $title = '';
 } else {
     $title = '';
 }
 
-if (isset($_REQUEST['cat'])) {
+if (\Xmf\Request::hasVar('cat', 'REQUEST')) {
     0 !== $_REQUEST['cat'] ? $cat = $_REQUEST['cat'] : $cat = 0;
 } else {
     $cat = 0;
@@ -67,7 +67,7 @@ $mytree           = new TdmObjectTree($downloadscatArray, 'cat_cid', 'cat_pid');
 $form->addElement($mytree->makeSelectElement('cat', 'cat_title', '--', $cat, true, 0, '', _AM_TDMDOWNLOADS_FORMINCAT), true);
 
 //recherche champ sup.
-//$fieldHandler = xoops_getModuleHandler('Field', $moduleDirName);
+//$fieldHandler = $helper->getHandler('Field', $moduleDirName);
 $criteria = new \CriteriaCompo();
 $criteria->add(new \Criteria('search', 1));
 $criteria->add(new \Criteria('status', 1));
@@ -190,19 +190,19 @@ $tblorder[5] = 'DESC';
 $tblorder[6] = 'ASC';
 $tblorder[7] = 'DESC';
 $tblorder[8] = 'ASC';
-$sort        = null !==($helper->getConfig('searchorder')) ? $helper->getConfig('searchorder') : 1;
-$order       = null !==($helper->getConfig('searchorder')) ? $helper->getConfig('searchorder') : 1;
+$sort        = null !== $helper->getConfig('searchorder') ? $helper->getConfig('searchorder') : 1;
+$order       = null !== $helper->getConfig('searchorder') ? $helper->getConfig('searchorder') : 1;
 $criteria_2->setSort($tblsort[$sort]);
 $criteria_2->setOrder($tblorder[$order]);
 $numrows = $downloadsHandler->getCount($criteria_2);
-if (isset($_REQUEST['limit'])) {
+if (\Xmf\Request::hasVar('limit', 'REQUEST')) {
     $criteria_2->setLimit($_REQUEST['limit']);
     $limit = $_REQUEST['limit'];
 } else {
     $criteria_2->setLimit($helper->getConfig('perpageliste'));
     $limit = $helper->getConfig('perpageliste');
 }
-if (isset($_REQUEST['start'])) {
+if (\Xmf\Request::hasVar('start', 'REQUEST')) {
     $criteria_2->setStart($_REQUEST['start']);
     $start = $_REQUEST['start'];
 } else {
@@ -286,4 +286,4 @@ $xoTheme->addMeta('meta', 'description', strip_tags($xoopsModule->name()));
 $keywords = substr($keywords, 0, -1);
 $xoTheme->addMeta('meta', 'keywords', strip_tags($keywords));
 
-include XOOPS_ROOT_PATH . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

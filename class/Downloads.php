@@ -3,7 +3,7 @@
 use XoopsModules\Tdmdownloads;
 
 
-//require dirname(__DIR__) . '/include/setup.php';
+//require_once dirname(__DIR__) . '/include/setup.php';
 /**
  * TDMDownload
  *
@@ -126,7 +126,7 @@ class Downloads extends \XoopsObject
         //cat�gorie
         $categoryHandler = Tdmdownloads\Helper::getInstance()->getHandler('Category'); //xoops_getModuleHandler('Category', $moduleDirName);
         //        require_once dirname(__DIR__) . '/include/setup.php';
-        $utilities  = new Utilities($db, $helper);
+        $utilities  = new Utilities();
         $categories = $utilities->getItemIds('tdmdownloads_submit', $moduleDirName);
         $criteria   = new \CriteriaCompo();
         $criteria->setSort('cat_weight ASC, cat_title');

@@ -25,55 +25,56 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
 
-include __DIR__ . '/header.php';
+require_once __DIR__   . '/header.php';
 $com_itemid = \Xmf\Request::getInt('com_itemid', 0, 'GET');
-if ($com_itemid > 0) {
+//mb   if ($com_itemid > 0) {
     // Get file title
     //-------------------------------
-    //    $sql    = 'SELECT title, cid FROM ' . $xoopsDB->prefix('tdmdownloads_downloads') . ' WHERE lid=' . $com_itemid;
-    //    $result = $xoopsDB->query($sql);
-    //    if ($result) {
-    //        $categories = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);
-    //        $row        = $xoopsDB->fetchArray($result);
-    //        if (!in_array($row['cid'], $categories)) {
-    //            redirect_header(XOOPS_URL, 2, _NOPERM);
-    //        }
-    //        $com_replytitle = $row['title'];
-    //        include XOOPS_ROOT_PATH . '/include/comment_new.php';
-    //    }
-    //-------------------------------
-    $sql = 'SELECT title, cid FROM ' . $xoopsDB->prefix('tdmdownloads_downloads') . ' WHERE lid=?';
 
-    $conn = $xoopsDB->conn;
-    $stmt = $conn->prepare($sql);
-    if (false === $stmt) {
-        trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->errno . ' ' . $conn->error, E_USER_ERROR);
-    }
-
-    $lid = $com_itemid;
-
-    /* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
-    $stmt->bind_param('is', $lid);
-
-    /* Execute statement */
-    $stmt->execute();
-
-    /* Fetch result to array */
-    $result = $stmt->get_result();  //$result = $xoopsDB->query($sql);
-
-    $sql2    = 'SELECT title, cid FROM ' . $xoopsDB->prefix('tdmdownloads_downloads') . ' WHERE lid=' . $com_itemid;
-    $result2 = $xoopsDB->query($sql2);
-    $row2    = $xoopsDB->fetchArray($result);
-
-    //    while($row = $result->fetch_array(MYSQLI_ASSOC)) {
-    //        array_push($a_data, $row);
-    //    }
-
+$sql    = 'SELECT title, cid FROM ' . $xoopsDB->prefix('tdmdownloads_downloads') . ' WHERE lid=' . $com_itemid;
+$result = $xoopsDB->query($sql);
+if ($result) {
     $categories = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);
     $row        = $xoopsDB->fetchArray($result);
     if (!in_array($row['cid'], $categories)) {
         redirect_header(XOOPS_URL, 2, _NOPERM);
     }
     $com_replytitle = $row['title'];
-    include XOOPS_ROOT_PATH . '/include/comment_new.php';
+    require_once XOOPS_ROOT_PATH . '/include/comment_new.php';
 }
+
+//-------------------------------
+$sql = 'SELECT title, cid FROM ' . $xoopsDB->prefix('tdmdownloads_downloads') . ' WHERE lid=?';
+
+$conn = $xoopsDB->conn;
+$stmt = $conn->prepare($sql);
+if (false === $stmt) {
+    trigger_error('Wrong SQL: ' . $sql . ' Error: ' . $conn->errno . ' ' . $conn->error, E_USER_ERROR);
+}
+
+$lid = $com_itemid;
+
+/* Bind parameters. Types: s = string, i = integer, d = double,  b = blob */
+$stmt->bind_param('is', $lid);
+
+/* Execute statement */
+$stmt->execute();
+
+/* Fetch result to array */
+$result = $stmt->get_result();  //$result = $xoopsDB->query($sql);
+$row    = $xoopsDB->fetchArray($result);
+
+//testing - reset the curson
+$result->data_seek(0);
+$sql2    = 'SELECT title, cid FROM ' . $xoopsDB->prefix('tdmdownloads_downloads') . ' WHERE lid=' . $com_itemid;
+$result2 = $xoopsDB->query($sql2);
+$row2    = $xoopsDB->fetchArray($result);
+
+$categories = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);
+
+//    if (!in_array($row['cid'], $categories)) {
+//        redirect_header(XOOPS_URL, 2, _NOPERM);
+//    }
+$com_replytitle = $row['title'];
+require_once XOOPS_ROOT_PATH . '/include/comment_new.php';
+//mb   }

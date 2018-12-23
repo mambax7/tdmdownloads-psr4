@@ -8,7 +8,7 @@
                     alt="<{$smarty.const._MD_TDMDOWNLOADS_DOWNLOAD}>"/></a>
     </div>
 
-    <{if count($categories) gt 0}>
+    <{if $categories|is_array && count($categories) > 0}>
         <!-- Start Show categories information -->
         <div class="tdmdownloads-categories">
             <table>

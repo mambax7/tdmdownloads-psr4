@@ -17,12 +17,14 @@
 
 use XoopsModules\Tdmdownloads;
 
-// require_once  dirname(__DIR__) . '/class/Helper.php';
 //require_once  dirname(__DIR__) . '/include/common.php';
-$helper = Tdmdownloads\Helper::getInstance();
+/** @var \XoopsModules\Tdmdownloads\Helper $helper */
+$helper = \XoopsModules\Tdmdownloads\Helper::getInstance();
 
 $pathIcon32 = \Xmf\Module\Admin::menuIconPath('');
-$pathModIcon32 = $helper->getModule()->getInfo('modicons32');
+if (is_object($helper->getModule())) {
+    $pathModIcon32 = $helper->getModule()->getInfo('modicons32');
+}
 
 
 $adminmenu[] = [

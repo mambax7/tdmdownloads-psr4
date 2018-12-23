@@ -199,28 +199,28 @@ if ($helper->getConfig('perpage') > 0) {
     $xoopsTpl->assign('lang_thereare', sprintf(_MD_TDMDOWNLOADS_CAT_THEREARE, $numrows));
 
     // Pour un affichage sur plusieurs pages
-    if (isset($_REQUEST['limit'])) {
+    if (\Xmf\Request::hasVar('limit', 'REQUEST')) {
         $criteria->setLimit($_REQUEST['limit']);
         $limit = $_REQUEST['limit'];
     } else {
         $criteria->setLimit($helper->getConfig('perpage'));
         $limit = $helper->getConfig('perpage');
     }
-    if (isset($_REQUEST['start'])) {
+    if (\Xmf\Request::hasVar('start', 'REQUEST')) {
         $criteria->setStart($_REQUEST['start']);
         $start = $_REQUEST['start'];
     } else {
         $criteria->setStart(0);
         $start = 0;
     }
-    if (isset($_REQUEST['sort'])) {
+    if (\Xmf\Request::hasVar('sort', 'REQUEST')) {
         $criteria->setSort($_REQUEST['sort']);
         $sort = $_REQUEST['sort'];
     } else {
         $criteria->setSort('date');
         $sort = 'date';
     }
-    if (isset($_REQUEST['order'])) {
+    if (\Xmf\Request::hasVar('order', 'REQUEST')) {
         $criteria->setOrder($_REQUEST['order']);
         $order = $_REQUEST['order'];
     } else {
@@ -370,4 +370,4 @@ $xoTheme->addMeta('meta', 'description', strip_tags($downloadscatArray[$cid]->ge
 $keywords = substr($keywords, 0, -1);
 $xoTheme->addMeta('meta', 'keywords', $keywords);
 
-include XOOPS_ROOT_PATH . '/footer.php';
+require_once XOOPS_ROOT_PATH . '/footer.php';

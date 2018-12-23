@@ -100,7 +100,8 @@ function xoops_module_install_tdmdownloads(\XoopsModule $module)
     $obj->setVar('status_def', 1);
     $fieldHandler->insert($obj);
 
-    $configurator = include __DIR__ . '/config.php';
+//    $configurator = require_once __DIR__   . '/config.php';
+    $configurator = new Tdmdownloads\Common\Configurator();
 
     // default Permission Settings ----------------------
     global $xoopsModule;

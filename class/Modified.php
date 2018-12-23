@@ -20,6 +20,10 @@ use XoopsModules\Tdmdownloads;
 
 // defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
+/**
+ * Class Modified
+ * @package XoopsModules\Tdmdownloads
+ */
 class Modified extends \XoopsObject
 {
     // constructor

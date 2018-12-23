@@ -20,6 +20,10 @@
 
 use XoopsModules\Tdmdownloads;
 
+/**
+ * @param $items
+ * @return bool|null
+ */
 function TDMDownloads_tag_iteminfo(&$items)
 {
     if (empty($items) || !is_array($items)) {

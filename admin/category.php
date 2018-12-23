@@ -18,7 +18,7 @@ use Xmf\Request;
 use XoopsModules\Tdmdownloads\TdmObjectTree;
 use XoopsModules\Tdmdownloads;
 
-//require dirname(__DIR__) . '/include/setup.php';
+//require_once dirname(__DIR__) . '/include/setup.php';
 require_once __DIR__ . '/admin_header.php';
 
 /** @var Tdmdownloads\Helper $helper */
@@ -121,7 +121,7 @@ switch ($op) {
         global $xoopsModule;
         $downloadscat_cid = $utilities->cleanVars($_REQUEST, 'downloadscat_cid', 0, 'int');
         $obj              = $categoryHandler->get($downloadscat_cid);
-        if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
+        if (\Xmf\Request::hasVar('ok', 'REQUEST') && 1 == $_REQUEST['ok']) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 redirect_header('category.php', 3, implode(',', $GLOBALS['xoopsSecurity']->getErrors()));
             }
@@ -265,7 +265,7 @@ switch ($op) {
             if (count($downloads_arr) > 0) {
                 $message .= _AM_TDMDOWNLOADS_DELDOWNLOADS . '<br>';
                 foreach (array_keys($downloads_arr) as $i) {
-                    $message .= '<span style="color: Red;">' . $downloads_arr[$i]->getVar('title') . '</span><br>';
+                    $message .= '<span style="color: #ff0000;">' . $downloads_arr[$i]->getVar('title') . '</span><br>';
                 }
             }
             $downloadscatArray   = $categoryHandler->getAll();
@@ -274,14 +274,14 @@ switch ($op) {
             if (count($downloads_childcat) > 0) {
                 $message .= _AM_TDMDOWNLOADS_DELSOUSCAT . ' <br><br>';
                 foreach (array_keys($downloads_childcat) as $i) {
-                    $message  .= '<b><span style="color: Red;">' . $downloads_childcat[$i]->getVar('cat_title') . '</span></b><br>';
+                    $message  .= '<b><span style="color: #ff0000;">' . $downloads_childcat[$i]->getVar('cat_title') . '</span></b><br>';
                     $criteria = new \CriteriaCompo();
                     $criteria->add(new \Criteria('cid', $downloads_childcat[$i]->getVar('cat_cid')));
                     $downloads_arr = $downloadsHandler->getAll($criteria);
                     if (count($downloads_arr) > 0) {
                         $message .= _AM_TDMDOWNLOADS_DELDOWNLOADS . '<br>';
                         foreach (array_keys($downloads_arr) as $k) {
-                            $message .= '<span style="color: Red;">' . $downloads_arr[$k]->getVar('title') . '</span><br>';
+                            $message .= '<span style="color: #ff0000;">' . $downloads_arr[$k]->getVar('title') . '</span><br>';
                         }
                     }
                 }
@@ -348,7 +348,7 @@ switch ($op) {
             $erreur         = true;
             $message_erreur = _AM_TDMDOWNLOADS_ERREUR_WEIGHT . '<br>';
         }
-        if (isset($_REQUEST['cat_cid'])) {
+        if (\Xmf\Request::hasVar('cat_cid', 'REQUEST')) {
             if ($cat_cid === Request::getInt('cat_pid', 0, 'POST')) {
                 $erreur         = true;
                 $message_erreur .= _AM_TDMDOWNLOADS_ERREUR_CAT;
@@ -367,7 +367,7 @@ switch ($op) {
                 $criteria->add(new \Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
                 $criteria->add(new \Criteria('gperm_name', 'tdmdownloads_view', '='));
                 $grouppermHandler->deleteAll($criteria);
-                if (isset($_POST['groups_view'])) {
+                if (\Xmf\Request::hasVar('groups_view', 'POST')) {
                     foreach ($_POST['groups_view'] as $onegroup_id) {
                         $grouppermHandler->addRight('tdmdownloads_view', $perm_id, $onegroup_id, $xoopsModule->getVar('mid'));
                     }
@@ -380,7 +380,7 @@ switch ($op) {
                 $criteria->add(new \Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
                 $criteria->add(new \Criteria('gperm_name', 'tdmdownloads_submit', '='));
                 $grouppermHandler->deleteAll($criteria);
-                if (isset($_POST['groups_submit'])) {
+                if (\Xmf\Request::hasVar('groups_submit', 'POST')) {
                     foreach ($_POST['groups_submit'] as $onegroup_id) {
                         $grouppermHandler->addRight('tdmdownloads_submit', $perm_id, $onegroup_id, $xoopsModule->getVar('mid'));
                     }
@@ -394,7 +394,7 @@ switch ($op) {
                     $criteria->add(new \Criteria('gperm_modid', $xoopsModule->getVar('mid'), '='));
                     $criteria->add(new \Criteria('gperm_name', 'tdmdownloads_download', '='));
                     $grouppermHandler->deleteAll($criteria);
-                    if (isset($_POST['groups_download'])) {
+                    if (\Xmf\Request::hasVar('groups_download', 'POST')) {
                         foreach ($_POST['groups_download'] as $onegroup_id) {
                             $grouppermHandler->addRight('tdmdownloads_download', $perm_id, $onegroup_id, $xoopsModule->getVar('mid'));
                         }

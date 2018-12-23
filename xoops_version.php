@@ -27,7 +27,7 @@ $modversion = [
     'name'                => _MI_TDMDOWNLOADS_NAME,
     'version'             => '2.0',
     'module_status'       => 'Alpha 1',
-    'release_date'        => '2017/10/10',
+    'release_date'        => '2018/12/22',
     'description'         => _MI_TDMDOWNLOADS_DESC,
     'credits'             => 'G. Mage, Mamba',
     'author'              => 'G. Mage',
@@ -46,7 +46,7 @@ $modversion = [
     'onUpdate'            => 'include/onupdate.php',
     // ------------------- Min Requirements -------------------
     'min_php'             => '5.5',
-    'min_xoops'           => '2.5.8',
+    'min_xoops'           => '2.5.9',
     'min_admin'           => '1.1',
     'min_db'              => ['mysql' => '5.0.7', 'mysqli' => '5.0.7'],
     // ------------------- Admin Menu -------------------
