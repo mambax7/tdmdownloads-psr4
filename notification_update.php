@@ -13,6 +13,5 @@
  * @license     GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Gregory Mage (Aka Mage)
  */
-
-require_once dirname(dirname(__DIR__)) . '/mainfile.php';
-require_once XOOPS_ROOT_PATH . '/include/notification_update.php';
+require dirname(dirname(__DIR__)) . '/mainfile.php';
+require XOOPS_ROOT_PATH . '/include/notification_update.php';

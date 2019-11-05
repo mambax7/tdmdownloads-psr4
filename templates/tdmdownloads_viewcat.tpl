@@ -5,7 +5,7 @@
         <a title="<{$smarty.const._MD_TDMDOWNLOADS_DOWNLOAD}>"
            href="<{$xoops_url}>/modules/<{$mydirname}>/index.php"><img
                     src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/logo-en.gif"
-                    alt="<{$smarty.const._MD_TDMDOWNLOADS_DOWNLOAD}>"/></a>
+                    alt="<{$smarty.const._MD_TDMDOWNLOADS_DOWNLOAD}>"></a>
     </div>
 
     <!-- Category path -->
@@ -36,7 +36,7 @@
                             <{if $category.image != ""}>
                                 <a class="marg1 pad1" title="<{$category.title}>"
                                    href="<{$xoops_url}>/modules/<{$mydirname}>/viewcat.php?cid=<{$category.id}>"><img
-                                            class="<{$img_float}>" src="<{$category.image}>" alt="<{$category.title}>"/></a>
+                                            class="<{$img_float}>" src="<{$category.image}>" alt="<{$category.title}>"></a>
                             <{/if}>
                             <{$category.description_main}>
                             <div class="endline"></div>
@@ -48,7 +48,7 @@
                         <{/if}>
                     </div>
                 </td>
-                <{if $category.count is div by $nb_catcol}>
+                <{if $category.count % $nb_catcol == 0}>
             </tr>
             <tr>
                 <{/if}>
@@ -63,7 +63,7 @@
         <a title="<{$smarty.const._MD_TDMDOWNLOADS_RSS}>"
            href="<{$xoops_url}>/modules/<{$mydirname}>/rss.php?cid=<{$category_id}>"><img
                     src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/rss.gif"
-                    alt="<{$smarty.const._MD_TDMDOWNLOADS_RSS}>"/></a>
+                    alt="<{$smarty.const._MD_TDMDOWNLOADS_RSS}>"></a>
     </div>
 
     <{if $bl_affichage==1}>
@@ -75,7 +75,7 @@
                     <td class="width33 top">
                         <div class="bold mrag2 pad2">
                             <img src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/icon/date.png"
-                                 alt="<{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLDATE}>"/><{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLDATE}>
+                                 alt="<{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLDATE}>"><{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLDATE}>
                         </div>
                         <div class="mrag2 pad2">
                             <ul>
@@ -93,7 +93,7 @@
                     <td class="width33 top">
                         <div class="bold mrag2 pad2">
                             <img src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/icon/hits.png"
-                                 alt="<{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLPOP}>"/><{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLPOP}>
+                                 alt="<{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLPOP}>"><{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLPOP}>
                         </div>
                         <div class="mrag2 pad2">
                             <ul>
@@ -111,7 +111,7 @@
                     <td class="width33 top">
                         <div class="bold mrag2 pad2">
                             <img src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/icon/votes.png"
-                                 alt="<{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLRATING}>"/><{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLRATING}>
+                                 alt="<{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLRATING}>"><{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLRATING}>
                         </div>
                         <div class="mrag2 pad2">
                             <ul>
@@ -138,7 +138,7 @@
                 <tr>
                     <{foreach item=summary from=$summary}>
                     <td><{$summary.title}></td>
-                    <{if $summary.count is div by 3}>
+                    <{if $summary.count % 3 == 0}>
                 </tr>
                 <tr>
                     <{/if}>
@@ -151,7 +151,7 @@
 
     <div class="tdmdownloads-thereare"><{$lang_thereare}></div>
 
-    <{if $navigation == true}>
+    <{if $navigation === true}>
         <!-- Start navigation -->
         <div class="tdmdownloads-navigation">
             <div class="tdmdownloads-navigation-items">
@@ -162,13 +162,13 @@
                    href="<{$xoops_url}>/modules/<{$mydirname}>/viewcat.php?cid=<{$category_id}>&amp;sort=title&amp;order=ASC">
                     <img src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/up.gif" align="middle"
                          alt="<{$smarty.const._MD_TDMDOWNLOADS_CAT_TITLEATOZ}>"
-                         title="<{$smarty.const._MD_TDMDOWNLOADS_CAT_TITLEATOZ}>"/>
+                         title="<{$smarty.const._MD_TDMDOWNLOADS_CAT_TITLEATOZ}>">
                 </a>
                 <a title="<{$smarty.const._MD_TDMDOWNLOADS_CAT_TITLE}>"
                    href="<{$xoops_url}>/modules/<{$mydirname}>/viewcat.php?cid=<{$category_id}>&amp;sort=title&amp;order=DESC">
                     <img src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/down.gif" align="middle"
                          alt="<{$smarty.const._MD_TDMDOWNLOADS_CAT_TITLEZTOA}>"
-                         title="<{$smarty.const._MD_TDMDOWNLOADS_CAT_TITLEZTOA}>"/>
+                         title="<{$smarty.const._MD_TDMDOWNLOADS_CAT_TITLEZTOA}>">
                 </a>)
             </span>
                 <span>
@@ -177,13 +177,13 @@
                    href="<{$xoops_url}>/modules/<{$mydirname}>/viewcat.php?cid=<{$category_id}>&amp;sort=date&amp;order=ASC">
                     <img src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/up.gif" align="middle"
                          alt="<{$smarty.const._MD_TDMDOWNLOADS_CAT_DATEOLD}>"
-                         title="<{$smarty.const._MD_TDMDOWNLOADS_CAT_DATEOLD}>"/>
+                         title="<{$smarty.const._MD_TDMDOWNLOADS_CAT_DATEOLD}>">
                 </a>
                 <a title="<{$smarty.const._MD_TDMDOWNLOADS_CAT_DATE}>"
                    href="<{$xoops_url}>/modules/<{$mydirname}>/viewcat.php?cid=<{$category_id}>&amp;sort=date&amp;order=DESC">
                     <img src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/down.gif" align="middle"
                          alt="<{$smarty.const._MD_TDMDOWNLOADS_CAT_DATENEW}>"
-                         title="<{$smarty.const._MD_TDMDOWNLOADS_CAT_DATENEW}>"/>
+                         title="<{$smarty.const._MD_TDMDOWNLOADS_CAT_DATENEW}>">
                 </a>)
             </span>
                 <span>
@@ -192,13 +192,13 @@
                    href="<{$xoops_url}>/modules/<{$mydirname}>/viewcat.php?cid=<{$category_id}>&amp;sort=rating&amp;order=ASC">
                     <img src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/up.gif" align="middle"
                          alt="<{$smarty.const._MD_TDMDOWNLOADS_CAT_RATINGLTOH}>"
-                         title="<{$smarty.const._MD_TDMDOWNLOADS_CAT_RATINGLTOH}>"/>
+                         title="<{$smarty.const._MD_TDMDOWNLOADS_CAT_RATINGLTOH}>">
                 </a>
                 <a title="<{$smarty.const._MD_TDMDOWNLOADS_CAT_RATING}>"
                    href="<{$xoops_url}>/modules/<{$mydirname}>/viewcat.php?cid=<{$category_id}>&amp;sort=rating&amp;order=DESC">
                     <img src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/down.gif" align="middle"
                          alt="<{$smarty.const._MD_TDMDOWNLOADS_CAT_RATINGHTOL}>"
-                         title="<{$smarty.const._MD_TDMDOWNLOADS_CAT_RATINGHTOL}>"/>
+                         title="<{$smarty.const._MD_TDMDOWNLOADS_CAT_RATINGHTOL}>">
                 </a>)
             </span>
                 <span>
@@ -207,13 +207,13 @@
                    href="<{$xoops_url}>/modules/<{$mydirname}>/viewcat.php?cid=<{$category_id}>&amp;sort=hits&amp;order=ASC">
                     <img src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/up.gif" align="middle"
                          alt="<{$smarty.const._MD_TDMDOWNLOADS_CAT_POPULARITYLTOM}>"
-                         title="<{$smarty.const._MD_TDMDOWNLOADS_CAT_POPULARITYLTOM}>"/>
+                         title="<{$smarty.const._MD_TDMDOWNLOADS_CAT_POPULARITYLTOM}>">
                 </a>
                 <a title="<{$smarty.const._MD_TDMDOWNLOADS_CAT_POPULARITY}>"
                    href="<{$xoops_url}>/modules/<{$mydirname}>/viewcat.php?cid=<{$category_id}>&amp;sort=hits&amp;order=DESC">
                     <img src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/down.gif" align="middle"
                          alt="<{$smarty.const._MD_TDMDOWNLOADS_CAT_POPULARITYMTOL}>"
-                         title="<{$smarty.const._MD_TDMDOWNLOADS_CAT_POPULARITYMTOL}>"/>
+                         title="<{$smarty.const._MD_TDMDOWNLOADS_CAT_POPULARITYMTOL}>">
                 </a>)
             </span>
             </div>
@@ -232,7 +232,7 @@
                 <td class="col_width<{$nb_dowcol}> top">
                     <{include file="db:tdmdownloads_download.tpl" down=$file[i]}>
                 </td>
-                <{if $file[i].count is div by $nb_dowcol}>
+                <{if $file[i].count % $nb_dowcol == 0}>
             </tr>
             <tr>
                 <{/if}>

@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Tdmdownloads;
+<?php
+
+namespace XoopsModules\Tdmdownloads;
 
 /**
  * TDMDownload
@@ -17,7 +19,7 @@
 
 use XoopsModules\Tdmdownloads;
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
+defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
  * Class Field
@@ -26,12 +28,9 @@ use XoopsModules\Tdmdownloads;
 class Field extends \XoopsObject
 {
     // constructor
-    /**
-     *
-     */
+
     public function __construct()
     {
-        parent::__construct();
         $this->initVar('fid', XOBJ_DTYPE_INT, null, false, 11);
         $this->initVar('title', XOBJ_DTYPE_TXTBOX, null, false);
         $this->initVar('img', XOBJ_DTYPE_TXTBOX, null, false);
@@ -46,12 +45,15 @@ class Field extends \XoopsObject
 
     /**
      * @param null $db
-     * @return mixed
+     * @return int
      */
     public function getNewEnreg($db = null)
     {
+        $newEnreg = 0;
         /** @var \XoopsMySQLDatabase $db */
-        $newEnreg = $db->getInsertId();
+        if (null !== $db) {
+            $newEnreg = $db->getInsertId();
+        }
 
         return $newEnreg;
     }
@@ -97,7 +99,7 @@ class Field extends \XoopsObject
         }
         $imageselect->setExtra("onchange='showImgSelected(\"image3\", \"downloadsfield_img\", \"" . $uploadirectory . '", "", "' . XOOPS_URL . "\")'");
         $imgtray->addElement($imageselect, false);
-        $imgtray->addElement(new \XoopsFormLabel('', "<br><img src='" . XOOPS_URL . '/' . $uploadirectory . '/' . $downloadsfield_img . "' name='image3' id='image3' alt='' /><br>"));
+        $imgtray->addElement(new \XoopsFormLabel('', "<br><img src='" . XOOPS_URL . '/' . $uploadirectory . '/' . $downloadsfield_img . "' name='image3' id='image3' alt=''><br>"));
         $fileseltray = new \XoopsFormElementTray('', '<br>');
         $fileseltray->addElement(new \XoopsFormFile(_AM_TDMDOWNLOADS_FORMUPLOAD, 'attachedfile', $helper->getConfig('maxuploadsize')), false);
         $fileseltray->addElement(new \XoopsFormLabel(''), false);

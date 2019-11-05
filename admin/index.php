@@ -13,12 +13,7 @@
  * @license     GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Gregory Mage (Aka Mage)
  */
-//require_once dirname(__DIR__) . '/include/setup.php';
-//require_once  dirname(__DIR__) . '/autoloader.php';
-require_once __DIR__ . '/admin_header.php';
-
-//require_once dirname(__DIR__) . '/include/functions.folders.php';
-
+require __DIR__ . '/admin_header.php';
 xoops_cp_header();
 
 // compte le nombre de catégories
@@ -38,43 +33,39 @@ $nb_broken = $brokenHandler->getCount();
 $nb_modified = $modifiedHandler->getCount();
 
 $moduleDirName      = basename(dirname(__DIR__));
-$moduleDirNameUpper = strtoupper($moduleDirName);
+$moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
 $adminObject = \Xmf\Module\Admin::getInstance();
-/*
-foreach (array_keys($GLOBALS['uploadFolders']) as $i) {
-    $utilities->prepareFolder($uploadFolders[$i]);
-    $adminObject->addConfigBoxLine($uploadFolders[$i], 'folder');
-    //    $adminObject->addConfigBoxLine(array($folder[$i], '777'), 'chmod');
-}
-*/
-
 $adminObject->addInfoBox(_MI_TDMDOWNLOADS_ADMENU2);
-$adminObject->addInfoBoxLine(sprintf(_AM_TDMDOWNLOADS_INDEX_CATEGORIES, $nb_categories), '');
+if (0 == $nb_categories) {
+    $adminObject->addInfoBoxLine(sprintf(_AM_TDMDOWNLOADS_INDEX_CATEGORIES, '<span class="red" style = "font-weight: bold">' . $nb_categories . '</span>'), '', 'Red');
+} else {
+    $adminObject->addInfoBoxLine(sprintf(_AM_TDMDOWNLOADS_INDEX_CATEGORIES, '<span class="green" style = "font-weight: bold">' . $nb_categories . '</span>'), '', 'Green');
+}
 
 $adminObject->addInfoBox(_MI_TDMDOWNLOADS_ADMENU3);
 $adminObject->addInfoBoxLine(sprintf(_AM_TDMDOWNLOADS_INDEX_DOWNLOADS, $nb_downloads), '');
-
 if (0 == $nb_downloads_waiting) {
-    $adminObject->addInfoBoxLine(sprintf(_AM_TDMDOWNLOADS_INDEX_DOWNLOADSWAITING, $nb_downloads_waiting), '', 'Green');
+    $adminObject->addInfoBoxLine(sprintf(_AM_TDMDOWNLOADS_INDEX_DOWNLOADSWAITING, '<span class="green" style = "font-weight: bold">' . $nb_downloads_waiting . '</span>'), '', 'Green');
 } else {
-    $adminObject->addInfoBoxLine(sprintf(_AM_TDMDOWNLOADS_INDEX_DOWNLOADSWAITING, $nb_downloads_waiting), '', 'Red');
+    $adminObject->addInfoBoxLine(sprintf(_AM_TDMDOWNLOADS_INDEX_DOWNLOADSWAITING, '<span class="red" style = "font-weight: bold">' . $nb_downloads_waiting . '</span>'), '', 'Red');
 }
 
 $adminObject->addInfoBox(_MI_TDMDOWNLOADS_ADMENU4);
-if (0 === $nb_broken) {
-    $adminObject->addInfoBoxLine(sprintf(_AM_TDMDOWNLOADS_INDEX_BROKEN, $nb_broken), '', 'Green');
+if (0 == $nb_broken) {
+    $adminObject->addInfoBoxLine(sprintf(_AM_TDMDOWNLOADS_INDEX_BROKEN, '<span class="green" style = "font-weight: bold">' . $nb_broken . '</span>'), '', 'Green');
 } else {
-    $adminObject->addInfoBoxLine(sprintf(_AM_TDMDOWNLOADS_INDEX_BROKEN, $nb_broken), '', 'Red');
+    $adminObject->addInfoBoxLine(sprintf(_AM_TDMDOWNLOADS_INDEX_BROKEN, '<span class="red" style = "font-weight: bold">' . $nb_broken . '</span>'), '', 'Red');
 }
 
 $adminObject->addInfoBox(_MI_TDMDOWNLOADS_ADMENU5);
 if (0 == $nb_modified) {
-    $adminObject->addInfoBoxLine(sprintf(_AM_TDMDOWNLOADS_INDEX_MODIFIED, $nb_modified), '', 'Green');
+    $adminObject->addInfoBoxLine(sprintf(_AM_TDMDOWNLOADS_INDEX_MODIFIED, '<span class="green" style = "font-weight: bold">' . $nb_modified . '</span>'), '', 'Green');
 } else {
-    $adminObject->addInfoBoxLine(sprintf(_AM_TDMDOWNLOADS_INDEX_MODIFIED, $nb_modified), '', 'Red');
+    $adminObject->addInfoBoxLine(sprintf(_AM_TDMDOWNLOADS_INDEX_MODIFIED, '<span class="red" style = "font-weight: bold">' . $nb_modified . '</span>'), '', 'Red');
 }
 
+//---------------------------
 $adminObject->addConfigBoxLine('');
 $redirectFile = $_SERVER['PHP_SELF'];
 //    global $xoopsModuleConfig, $modversion;
@@ -89,43 +80,52 @@ $languageConstants = [
     _AM_TDMDOWNLOADS_DIRCREATED,
     _AM_TDMDOWNLOADS_DIRNOTCREATED,
     _AM_TDMDOWNLOADS_PERMSET,
-    _AM_TDMDOWNLOADS_PERMNOTSET
+    _AM_TDMDOWNLOADS_PERMNOTSET,
 ];
 
-/*
-foreach (array_keys($folders) as $i) {
-    $path = $folders[$i];
-
-    //set the folder that you're checking
-    //        $pathStatus = FoldersChecker::getDirectoryStatus($path,0777,$folderWords,$redirectFile);
-    //        $pathStatus = call_user_func($className .'::getDirectoryStatus',$path,0777,$folderWords,$redirectFile);
-    //        $adminObject->addConfigBoxLine($pathStatus);
-
-    //        $utilities->createFolder($path, $mode = 0777, $fileSource, $fileTarget = null);
-
-    $adminObject->addConfigBoxLine(FoldersChecker::getDirectoryStatus($path, 0777, $languageConstants, $redirectFile));
-}
-*/
-
-//$helper = \XoopsModules\AboutHelper::getInstance();
+$helper = \XoopsModules\Tdmdownloads\Helper::getInstance();
 $helper->loadLanguage('common');
 
-//xoops_loadLanguage('common', $moduleDirName);
+/** @var \XoopsModules\Tdmdownloads\Common\Configurator $configurator */
+$configurator = new \XoopsModules\Tdmdownloads\Common\Configurator();
 
-$configurator = require_once dirname(__DIR__) . '/include/config.php';
+/** @var \XoopsModules\Tdmdownloads\Utility $utility */
+$utility = new \XoopsModules\Tdmdownloads\Utility();
+
 foreach (array_keys($configurator->uploadFolders) as $i) {
     $utility::createFolder($configurator->uploadFolders[$i]);
-
-    if (is_dir($configurator->uploadFolders[$i])) {
-        $adminObject->addConfigBoxLine('<img src="' . $pathIcon16 . '/1.png"><span class="Green">' . sprintf(constant('CO_' . $moduleDirNameUpper . '_FOLDER_YES'), $configurator->uploadFolders[$i]) . '</span>', '', '');
-    } else {
-        $adminObject->addConfigBoxLine('<label><img src="' . $pathIcon16 . '/0.png"><span class="Red">' . sprintf(constant('CO_' . $moduleDirNameUpper . '_FOLDER_NO'), $configurator->uploadFolders[$i]) . '</span></label>', '', '');
-    }
+    $adminObject->addConfigBoxLine($configurator->uploadFolders[$i], 'folder');
 }
 
 $adminObject->displayNavigation(basename(__FILE__));
+
+
+//check for latest release
+$newRelease = $utility::checkVerModule($helper);
+if (!empty($newRelease)) {
+    $adminObject->addItemButton($newRelease[0], $newRelease[1], 'download', 'style="color : Red"');
+}
+
+//------------- Test Data ----------------------------
+
+if ($helper->getConfig('displaySampleButton')) {
+    xoops_loadLanguage('admin/modulesadmin', 'system');
+    require __DIR__ . '/../testdata/index.php';
+
+    $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'ADD_SAMPLEDATA'), './../testdata/index.php?op=load', 'add');
+
+    $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'SAVE_SAMPLEDATA'), './../testdata/index.php?op=save', 'add');
+
+    //    $adminObject->addItemButton(constant('CO_' . $moduleDirNameUpper . '_' . 'EXPORT_SCHEMA'), './../testdata/index.php?op=exportschema', 'add');
+
+    $adminObject->displayButton('left', '');
+}
+
+//------------- End Test Data ----------------------------
+
 $adminObject->displayIndex();
 
 echo $utility::getServerStats();
 
-require_once __DIR__ . '/admin_footer.php';
+//codeDump(__FILE__);
+require __DIR__ . '/admin_footer.php';

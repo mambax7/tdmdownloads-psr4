@@ -14,16 +14,15 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-
 use XoopsModules\Tdmdownloads;
 
-require_once __DIR__ . '/admin_header.php';
+require __DIR__ . '/admin_header.php';
 
 /** @var Tdmdownloads\Helper $helper */
 $helper = Tdmdownloads\Helper::getInstance();
 
 //On recupere la valeur de l'argument op dans l'URL$
-$op = $utilities->cleanVars($_REQUEST, 'op', 'list', 'string');
+$op = $utility->cleanVars($_REQUEST, 'op', 'list', 'string');
 
 //Les valeurs de op qui vont permettre d'aller dans les differentes parties de la page
 switch ($op) {
@@ -99,7 +98,6 @@ switch ($op) {
             echo '<div class="errorMsg" style="text-align: center;">' . _AM_TDMDOWNLOADS_ERREUR_NOBROKENDOWNLOADS . '</div><br>';
         }
         break;
-
     // permet de suprimmer le rapport de téléchargment brisé
     case 'del_brokendownloads':
         $obj = $brokenHandler->get($_REQUEST['broken_id']);

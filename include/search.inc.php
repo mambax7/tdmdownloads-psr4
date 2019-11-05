@@ -12,13 +12,11 @@
  * @copyright   Gregory Mage (Aka Mage)
  * @license     GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Gregory Mage (Aka Mage)
- *
  * @param $queryarray
  * @param $andor
  * @param $limit
  * @param $offset
  * @param $userid
- *
  * @return array
  */
 //use XoopsModules\Tdmdownloads;
@@ -33,11 +31,10 @@ function tdmdownloads_search($queryarray, $andor, $limit, $offset, $userid)
     if (0 !== $userid) {
         $sql .= ' AND submitter=' . (int)$userid . ' ';
     }
-    //    require_once XOOPS_ROOT_PATH . '/modules/'.$moduleDirName .'/include/functions.php';
-    require_once __DIR__ . '/setup.php';
-    $utilities  = new \XoopsModules\Tdmdownloads\Utilities($db, $helper);
-    $categories = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);
-    if (is_array($categories) && count($categories) > 0) {
+
+    $utility  = new \XoopsModules\Tdmdownloads\Utilities($xoopsDB, $helper);
+    $categories = $utility->getItemIds('tdmdownloads_view', $moduleDirName);
+    if ($categories && is_array($categories)) {
         $sql .= ' AND cid IN (' . implode(',', $categories) . ') ';
     } else {
         return null;

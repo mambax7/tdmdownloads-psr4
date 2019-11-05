@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Tdmdownloads;
+<?php
+
+namespace XoopsModules\Tdmdownloads;
 
 /**
  * TDMDownload
@@ -14,18 +16,17 @@
  * @license     GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Gregory Mage (Aka Mage)
  */
+defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
-
+/**
+ * Class Rating
+ * @package XoopsModules\Tdmdownloads
+ */
 class Rating extends \XoopsObject
 {
     // constructor
-    /**
-     *
-     */
     public function __construct()
     {
-        parent::__construct();
         $this->initVar('ratingid', XOBJ_DTYPE_INT, null, false, 11);
         $this->initVar('lid', XOBJ_DTYPE_INT, null, false, 11);
         $this->initVar('ratinguser', XOBJ_DTYPE_INT, null, false, 11);
@@ -66,7 +67,7 @@ class Rating extends \XoopsObject
             '3'  => '3',
             '2'  => '2',
             '1'  => '1',
-            '0'  => '0'
+            '0'  => '0',
         ];
         $rating->addOptionArray($options);
         $form->addElement($rating, true);
@@ -74,9 +75,9 @@ class Rating extends \XoopsObject
         $form->addElement(new \XoopsFormHidden('op', 'save'));
         $form->addElement(new \XoopsFormHidden('lid', $lid));
         // Submit button
-        $button_tray = new \XoopsFormElementTray('', '');
-        $button_tray->addElement(new \XoopsFormButton('', 'post', _MD_TDMDOWNLOADS_RATEFILE_RATE, 'submit'));
-        $form->addElement($button_tray);
+        $buttonTray = new \XoopsFormElementTray('', '');
+        $buttonTray->addElement(new \XoopsFormButton('', 'post', _MD_TDMDOWNLOADS_RATEFILE_RATE, 'submit'));
+        $form->addElement($buttonTray);
 
         return $form;
     }

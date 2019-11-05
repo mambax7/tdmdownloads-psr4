@@ -1,6 +1,6 @@
 <?php
 
-use XoopsModules\Tdmdownloads\Utility;
+use XoopsModules\Tdmdownloads;
 /**
  * TDMDownload
  *
@@ -16,10 +16,9 @@ use XoopsModules\Tdmdownloads\Utility;
  * @author      Gregory Mage (Aka Mage)
  */
 
-use \XoopsModules\Tdmdownloads;
+use XoopsModules\Tdmdownloads\Utility;
 
 /**
- *
  * Prepares system prior to attempting to install module
  * @param \XoopsModule $module {@link XoopsModule}
  *
@@ -27,7 +26,7 @@ use \XoopsModules\Tdmdownloads;
  */
 function xoops_module_pre_install_tdmdownloads(\XoopsModule $module)
 {
-    require_once  dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
+    require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
     require_once __DIR__ . '/common.php';
 
     /** @var \XoopsModules\Tdmdownloads\Utility $utility */
@@ -40,25 +39,25 @@ function xoops_module_pre_install_tdmdownloads(\XoopsModule $module)
     $phpSuccess  = $utility::checkVerPhp($module);
 
     if (false !== $xoopsSuccess && false !== $phpSuccess) {
-        $mod_tables =& $module->getInfo('tables');
+        $mod_tables = &$module->getInfo('tables');
         foreach ($mod_tables as $table) {
             $GLOBALS['xoopsDB']->queryF('DROP TABLE IF EXISTS ' . $GLOBALS['xoopsDB']->prefix($table) . ';');
         }
     }
+
     return $xoopsSuccess && $phpSuccess;
 }
 
 /**
- *
  * Performs tasks required during installation of the module
- * @param XoopsModule $module {@link XoopsModule}
+ * @param \XoopsModule $module {@link XoopsModule}
  *
  * @return bool true if installation successful, false if not
  */
 function xoops_module_install_tdmdownloads(\XoopsModule $module)
 {
-    require_once  dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
-    require_once  dirname(__DIR__) . '/include/config.php';
+    require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
+    require_once dirname(__DIR__) . '/include/config.php';
     require_once __DIR__ . '/common.php';
     $moduleDirName = basename(dirname(__DIR__));
     /** @var Tdmdownloads\Utility $utility */
@@ -100,7 +99,7 @@ function xoops_module_install_tdmdownloads(\XoopsModule $module)
     $obj->setVar('status_def', 1);
     $fieldHandler->insert($obj);
 
-//    $configurator = require_once __DIR__   . '/config.php';
+    //    $configurator = require_once __DIR__   . '/config.php';
     $configurator = new Tdmdownloads\Common\Configurator();
 
     // default Permission Settings ----------------------
@@ -125,7 +124,7 @@ function xoops_module_install_tdmdownloads(\XoopsModule $module)
 
     //  ---  COPY blank.png FILES ---------------
     if (count($configurator->copyBlankFiles) > 0) {
-        $file =  dirname(__DIR__) . '/assets/images/blank.png';
+        $file = dirname(__DIR__) . '/assets/images/blank.png';
         foreach (array_keys($configurator->copyBlankFiles) as $i) {
             $dest = $configurator->copyBlankFiles[$i] . '/blank.png';
             $utility::copyFile($file, $dest);

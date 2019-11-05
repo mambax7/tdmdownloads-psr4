@@ -15,37 +15,30 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-//use XoopsModules\Tdmdownloads;
-use XoopsModules\Tdmdownloads\TdmObjectTree;
-
 /**
  * @return array
  */
 function b_tdmdownloads_search_show()
 {
-    $moduleHandler = xoops_getHandler('module');
-    // get the name of the file's directory to get the "owner" of the block, i.e. its module, and not the "user", where it is currently
-    //$mydir          = basename(dirname(__DIR__));
+    require dirname(__DIR__) . '/include/common.php';
     $moduleDirName = basename(dirname(__DIR__));
-    $module        = $moduleHandler->getByDirname($moduleDirName);
-    $db            = $helper = null;
-    //    require_once XOOPS_ROOT_PATH . '/modules/' . $moduleDirName . '/include/setup.php';
-    //    require_once XOOPS_ROOT_PATH . "/modules/$moduleDirName/include/functions.php";
 
     require_once XOOPS_ROOT_PATH . '/class/xoopsformloader.php';
     require_once XOOPS_ROOT_PATH . '/class/tree.php';
+    $db = null;
+
+    /** @var \XoopsModules\Tdmdownloads\Helper $helper */
+    $helper = \XoopsModules\Tdmdownloads\Helper::getInstance();
+
     //appel des class
-    //    $categoryHandler       = xoops_getModuleHandler('Category', $moduleDirName);
-    //    $downloadsHandler          = xoops_getModuleHandler('tdmdownloads_downloads', $moduleDirName);
-    //    $fieldHandler     = xoops_getModuleHandler('Field', $moduleDirName);
-    //    $fielddataHandler = xoops_getModuleHandler('Fielddata', $moduleDirName);
     //appel des fichiers de langues
-    xoops_loadLanguage('main', $moduleDirName);
-    xoops_loadLanguage('admin', $moduleDirName);
-    $categoryHandler  = new \XoopsModules\Tdmdownloads\CategoryHandler(null);
-    $utilities        = new \XoopsModules\Tdmdownloads\Utilities($db, $helper);
-    $downloadsHandler = new \XoopsModules\Tdmdownloads\DownloadsHandler($db);
-    $categories       = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);
+    $helper->loadLanguage('admin');
+    $helper->loadLanguage('main');
+    $helper->loadLanguage('common');
+
+    /** @var \XoopsModules\Tdmdownloads\Utility $utility */
+    $utility    = new \XoopsModules\Tdmdownloads\Utility();
+    $categories = $utility->getItemIds('tdmdownloads_view', $moduleDirName);
 
     $block = [];
 
@@ -54,23 +47,21 @@ function b_tdmdownloads_search_show()
     $form->setExtra('enctype="multipart/form-data"');
     //recherche par titre
     $form->addElement(new \XoopsFormText(_MD_TDMDOWNLOADS_SEARCH_TITLE, 'title', 25, 255, ''));
-    //recherche par cat�gorie
+    //recherche par catégorie
     $criteria = new \CriteriaCompo();
     $criteria->setSort('cat_weight ASC, cat_title');
     $criteria->setOrder('ASC');
     $criteria->add(new \Criteria('cat_cid', '(' . implode(',', $categories) . ')', 'IN'));
     $downloadscatArray = $categoryHandler->getAll($criteria);
-    $mytree           = new TdmObjectTree($downloadscatArray, 'cat_cid', 'cat_pid');
-    //$form->addElement(new \XoopsFormLabel(_AM_TDMDOWNLOADS_FORMINCAT, $mytree->makeSelBox('cat', 'cat_title', '--', '', true)));
+    $mytree            = new \XoopsModules\Tdmdownloads\Tree($downloadscatArray, 'cat_cid', 'cat_pid');
     $form->addElement($mytree->makeSelectElement('cat', 'cat_title', '--', '', true, 0, '', _AM_TDMDOWNLOADS_FORMINCAT), true);
     //recherche champ sup.
-    //    $fieldHandler = xoops_getModuleHandler('Field', $moduleDirName);
-    $criteria = new \CriteriaCompo();
+    $fieldHandler = \XoopsModules\Tdmdownloads\Helper::getInstance()->getHandler('Field');
+    $criteria     = new \CriteriaCompo();
     $criteria->add(new \Criteria('search', 1));
     $criteria->add(new \Criteria('status', 1));
     $criteria->setSort('weight ASC, title');
     $criteria->setOrder('ASC');
-    $fieldHandler    = new \XoopsModules\Tdmdownloads\fieldHandler();
     $downloads_field = $fieldHandler->getAll($criteria);
     foreach (array_keys($downloads_field) as $i) {
         $title_sup                                          = '';
@@ -101,14 +92,8 @@ function b_tdmdownloads_search_show()
             }
             if (4 == $downloads_field[$i]->getVar('fid')) {
                 //platform
-                $title_sup = _AM_TDMDOWNLOADS_FORMPLATFORM;
-                //                $platform_array = explode('|', $GLOBALS['xoopsModuleConfig']['platform']);
-                $moduleHandler = xoops_getHandler('module');
-                $module        = $moduleHandler->getByDirname($moduleDirName);
-                $configHandler = xoops_getHandler('config');
-                $moduleConfig  = $configHandler->getConfigsByCat(0, $module->getVar('mid'));
-                //                echo 'The  current value of \'foo\' is: ' . $moduleConfig['platform'];
-                $platform_array = explode('|', $moduleConfig['platform']);
+                $title_sup      = _AM_TDMDOWNLOADS_FORMPLATFORM;
+                $platform_array = explode('|', xoops_getModuleOption('platform', $moduleDirName));
                 foreach ($platform_array as $platform) {
                     $contenu_arr[$platform] = $platform;
                 }
@@ -124,12 +109,11 @@ function b_tdmdownloads_search_show()
             $criteria->add(new \Criteria('fid', $downloads_field[$i]->getVar('fid')));
             $criteria->setSort('data');
             $criteria->setOrder('ASC');
-            $fielddataHandler = new \XoopsModules\Tdmdownloads\fielddataHandler();
             $tdmdownloads_arr = $fielddataHandler->getAll($criteria);
             foreach (array_keys($tdmdownloads_arr) as $j) {
                 $contenu_arr[$tdmdownloads_arr[$j]->getVar('data', 'n')] = $tdmdownloads_arr[$j]->getVar('data');
             }
-            if ('' !== $champ_contenu[$downloads_field[$i]->getVar('fid')]) {
+            if ('' != $champ_contenu[$downloads_field[$i]->getVar('fid')]) {
                 $criteria_1 = new \CriteriaCompo();
                 $criteria_1->add(new \Criteria('data', $champ_contenu[$downloads_field[$i]->getVar('fid')]));
                 $data_arr = $fielddataHandler->getAll($criteria_1);
@@ -146,9 +130,9 @@ function b_tdmdownloads_search_show()
         unset($select_sup);
     }
     //bouton validation
-    $button_tray = new \XoopsFormElementTray('', '');
-    $button_tray->addElement(new \XoopsFormButton('', 'submit', _MD_TDMDOWNLOADS_SEARCH_BT, 'submit'));
-    $form->addElement($button_tray);
+    $buttonTray = new \XoopsFormElementTray('', '');
+    $buttonTray->addElement(new \XoopsFormButton('', 'submit', _MD_TDMDOWNLOADS_SEARCH_BT, 'submit'));
+    $form->addElement($buttonTray);
     $block['form'] = $form->render();
 
     return $block;

@@ -9,7 +9,6 @@
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 */
 
-use Xmf\Request;
 use XoopsModules\Tdmdownloads;
 
 /**
@@ -21,7 +20,6 @@ use XoopsModules\Tdmdownloads;
  * @package         tdmdownloads
  * @author          XOOPS Module Dev Team (https://xoops.org)
  */
-
 require_once dirname(__DIR__) . '/class/Autoloader.php';
 // true param for auto-registration in spl_autoload_register() function.
 $loaderPsr4 = new \XoopsModules\Tdmdownloads\Autoloader(true);
@@ -66,7 +64,7 @@ require_once dirname(dirname(dirname(__DIR__))) . '/mainfile.php';
 $db = \XoopsDatabaseFactory::getDatabaseConnection();
 
 if (!defined('TDMDOWNLOADS_DIRNAME')) {
-    define('TDMDOWNLOADS_DIRNAME', basename(dirname(__DIR__)));//$GLOBALS['xoopsModule']->dirname());
+    define('TDMDOWNLOADS_DIRNAME', basename(dirname(__DIR__))); //$GLOBALS['xoopsModule']->dirname());
     define('TDMDOWNLOADS_PATH', XOOPS_ROOT_PATH . '/modules/' . TDMDOWNLOADS_DIRNAME);
     define('TDMDOWNLOADS_URL', XOOPS_URL . '/modules/' . TDMDOWNLOADS_DIRNAME);
     define('TDMDOWNLOADS_ADMIN', TDMDOWNLOADS_URL . '/admin/index.php');
@@ -83,9 +81,9 @@ define('TDMDOWNLOADS_UPLOAD_PATH', XOOPS_UPLOAD_PATH . '/' . TDMDOWNLOADS_DIRNAM
 $helper = Tdmdownloads\Helper::getInstance(false);
 //$helper      = & Helper::getInstance();
 $utilities   = new \XoopsModules\Tdmdownloads\Utilities($db, $helper);
-$mainLang    = '_MD_' . strtoupper($helper->getDirname());
-$modinfoLang = '_MI_' . strtoupper($helper->getDirname());
-$adminLang   = '_AM_' . strtoupper($helper->getDirname());
+$mainLang    = '_MD_' . mb_strtoupper($helper->getDirname());
+$modinfoLang = '_MI_' . mb_strtoupper($helper->getDirname());
+$adminLang   = '_AM_' . mb_strtoupper($helper->getDirname());
 //define('MODINFO_LANG', 'MI');
 //define('ADMIN_LANG', 'AM');
 //define('MAIN_LANG', 'MD');
@@ -98,14 +96,14 @@ $uploadFolders = [
     TDMDOWNLOADS_UPLOAD_PATH . '/images',
     TDMDOWNLOADS_UPLOAD_PATH . '/images/cats',
     TDMDOWNLOADS_UPLOAD_PATH . '/images/field',
-    TDMDOWNLOADS_UPLOAD_PATH . '/images/shots'
+    TDMDOWNLOADS_UPLOAD_PATH . '/images/shots',
 ];
 
 //$xoopsTpl->assign('uploadFolders', $uploadFolders);
 
 // module information
 $mod_copyright = "<a href='https://xoops.org' title='XOOPS Project' target='_blank'>
-                     <img src='" . TDMDOWNLOADS_AUTHOR_LOGOIMG . " alt='XOOPS Project' /></a>";
+                     <img src='" . TDMDOWNLOADS_AUTHOR_LOGOIMG . " alt='XOOPS Project'></a>";
 
 //$categoryHandler              = new \XoopsModules\Tdmdownloads\CategoryHandler($db);
 //$downloadsHandler             = new \XoopsModules\Tdmdownloads\DownloadsHandler($db);

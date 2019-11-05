@@ -18,25 +18,40 @@
  */
 
 use XoopsModules\Tdmdownloads;
-require_once dirname(__DIR__) . '/preloads/autoloader.php';
 
-$moduleDirName = basename(dirname(__DIR__));
-$moduleDirNameUpper   = strtoupper($moduleDirName); //$capsDirName
+require dirname(__DIR__) . '/preloads/autoloader.php';
 
+$moduleDirName      = basename(dirname(__DIR__));
+$moduleDirNameUpper = mb_strtoupper($moduleDirName); //$capsDirName
 
 /** @var \XoopsDatabase $db */
-/** @var Tdmdownloads\Helper $helper */
-/** @var Tdmdownloads\Utility $utility */
+/** @var \XoopsModules\Tdmdownloads\Helper $helper */
+/** @var \XoopsModules\Tdmdownloads\Utility $utility */
 $db      = \XoopsDatabaseFactory::getDatabaseConnection();
-$helper  = Tdmdownloads\Helper::getInstance();
-$utility = new Tdmdownloads\Utility();
+$debug   = false;
+$helper  = \XoopsModules\Tdmdownloads\Helper::getInstance($debug);
+$utility = new \XoopsModules\Tdmdownloads\Utility();
 //$configurator = new Tdmdownloads\Common\Configurator();
 
 $helper->loadLanguage('common');
 
 //handlers
-//$categoryHandler     = new xxxxx\CategoryHandler($db);
-//$downloadHandler     = new xxxxx\DownloadHandler($db);
+//appel des class
+$categoryHandler     = \XoopsModules\Tdmdownloads\Helper::getInstance()->getHandler('Category');
+$downloadsHandler    = \XoopsModules\Tdmdownloads\Helper::getInstance()->getHandler('Downloads');
+$ratingHandler       = \XoopsModules\Tdmdownloads\Helper::getInstance()->getHandler('Rating');
+$fieldHandler        = \XoopsModules\Tdmdownloads\Helper::getInstance()->getHandler('Field');
+$fielddataHandler    = \XoopsModules\Tdmdownloads\Helper::getInstance()->getHandler('Fielddata');
+$brokenHandler       = \XoopsModules\Tdmdownloads\Helper::getInstance()->getHandler('Broken');
+$modifiedHandler     = \XoopsModules\Tdmdownloads\Helper::getInstance()->getHandler('Modified');
+$modifieddataHandler = \XoopsModules\Tdmdownloads\Helper::getInstance()->getHandler('Modifiedfielddata');
+
+$pathIcon16 = \Xmf\Module\Admin::iconUrl('', 16);
+$pathIcon32 = \Xmf\Module\Admin::iconUrl('', 32);
+if (is_object($helper->getModule())) {
+    $pathModIcon16 = $helper->getModule()->getInfo('modicons16');
+    $pathModIcon32 = $helper->getModule()->getInfo('modicons32');
+}
 
 if (!defined($moduleDirNameUpper . '_CONSTANTS_DEFINED')) {
     define($moduleDirNameUpper . '_DIRNAME', basename(dirname(__DIR__)));
@@ -48,49 +63,41 @@ if (!defined($moduleDirNameUpper . '_CONSTANTS_DEFINED')) {
     define($moduleDirNameUpper . '_ADMIN_URL', constant($moduleDirNameUpper . '_URL') . '/admin/');
     define($moduleDirNameUpper . '_ADMIN_PATH', constant($moduleDirNameUpper . '_ROOT_PATH') . '/admin/');
     define($moduleDirNameUpper . '_ADMIN', constant($moduleDirNameUpper . '_URL') . '/admin/index.php');
-    define($moduleDirNameUpper . '_AUTHOR_LOGOIMG', constant($moduleDirNameUpper . '_URL') . '/assets/images/logoModule.png');
+    //    define($moduleDirNameUpper . '_AUTHOR_LOGOIMG', constant($moduleDirNameUpper . '_URL') . '/assets/images/logoModule.png');
     define($moduleDirNameUpper . '_UPLOAD_URL', XOOPS_UPLOAD_URL . '/' . $moduleDirName); // WITHOUT Trailing slash
     define($moduleDirNameUpper . '_UPLOAD_PATH', XOOPS_UPLOAD_PATH . '/' . $moduleDirName); // WITHOUT Trailing slash
+    define($moduleDirNameUpper . '_AUTHOR_LOGOIMG', $pathIcon32 . '/xoopsmicrobutton.gif');
     define($moduleDirNameUpper . '_CONSTANTS_DEFINED', 1);
 }
 
-
-/** @var \XoopsObjectHandler $categoryHandler */
-//$sbcolumnsHandler = xoops_getModuleHandler('sbcolumns', $moduleDirName);
-
-//$categoryHandler = new Tdmdownloads\CategoryHandler($db);
-
-/** @var \XoopsObjectHandler $downloadsHandler */
-//$sbarticlesHandler = xoops_getModuleHandler('sbarticles', $moduleDirName);
-//$downloadsHandler = new Tdmdownloads\DownloadsHandler($db);
-
-/** @var \XoopsObjectHandler $brokenHandler */
-//$sbvotedataHandler = xoops_getModuleHandler('sbvotedata', $moduleDirName);
-//$brokenHandler = new Tdmdownloads\DownloadsbrokenHandler($db);
-
-/** @var \XoopsObjectHandler $testHandler */
-//$testHandler = xoops_getModuleHandler('test', $moduleDirName);
-//$testHandler = new Tdmdownloads\TestHandler($db);
-
-//$helper                   = Tdmdownloads\Helper::getInstance();
-//$utility                  = new Tdmdownloads\Utility();
-$utilities                = new Tdmdownloads\Utilities();
-$brokenHandler            = new Tdmdownloads\BrokenHandler($db);
-$categoryHandler          = new Tdmdownloads\CategoryHandler($db);
-$downlimitHandler         = new Tdmdownloads\DownlimitHandler($db);
-$downloadsHandler         = new Tdmdownloads\DownloadsHandler($db);
-$fielddataHandler         = new Tdmdownloads\FielddataHandler($db);
-$fieldHandler             = new Tdmdownloads\FieldHandler($db);
-$modifiedfielddataHandler = new Tdmdownloads\ModifiedfielddataHandler($db);
-$modifiedHandler          = new Tdmdownloads\ModifiedHandler($db);
-$ratingHandler            = new Tdmdownloads\RatingHandler($db);
+$icons = [
+    'edit'    => "<img src='" . $pathIcon16 . "/edit.png'  alt=" . _EDIT . "' align='middle'>",
+    'delete'  => "<img src='" . $pathIcon16 . "/delete.png' alt='" . _DELETE . "' align='middle'>",
+    'clone'   => "<img src='" . $pathIcon16 . "/editcopy.png' alt='" . _CLONE . "' align='middle'>",
+    'preview' => "<img src='" . $pathIcon16 . "/view.png' alt='" . _PREVIEW . "' align='middle'>",
+    'print'   => "<img src='" . $pathIcon16 . "/printer.png' alt='" . _CLONE . "' align='middle'>",
+    'pdf'     => "<img src='" . $pathIcon16 . "/pdf.png' alt='" . _CLONE . "' align='middle'>",
+    'add'     => "<img src='" . $pathIcon16 . "/add.png' alt='" . _ADD . "' align='middle'>",
+    '0'       => "<img src='" . $pathIcon16 . "/0.png' alt='" . 0 . "' align='middle'>",
+    '1'       => "<img src='" . $pathIcon16 . "/1.png' alt='" . 1 . "' align='middle'>",
+];
 
 $debug = false;
 
+// MyTextSanitizer object
+$myts = \MyTextSanitizer::getInstance();
+
 if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof \XoopsTpl)) {
-    require_once $GLOBALS['xoops']->path('class/template.php');
-    $xoopsTpl = new \XoopsTpl();
+    require $GLOBALS['xoops']->path('class/template.php');
+    $GLOBALS['xoopsTpl'] = new \XoopsTpl();
 }
 
-$moduleDirName = basename(dirname(__DIR__));
 $GLOBALS['xoopsTpl']->assign('mod_url', XOOPS_URL . '/modules/' . $moduleDirName);
+// Local icons path
+if (is_object($helper->getModule())) {
+    $pathModIcon16 = $helper->getModule()->getInfo('modicons16');
+    $pathModIcon32 = $helper->getModule()->getInfo('modicons32');
+
+    $GLOBALS['xoopsTpl']->assign('pathModIcon16', XOOPS_URL . '/modules/' . $moduleDirName . '/' . $pathModIcon16);
+    $GLOBALS['xoopsTpl']->assign('pathModIcon32', $pathModIcon32);
+}

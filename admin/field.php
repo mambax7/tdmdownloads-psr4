@@ -16,15 +16,14 @@
 
 use XoopsModules\Tdmdownloads;
 
-//require_once dirname(__DIR__) . '/include/setup.php';
-require_once __DIR__ . '/admin_header.php';
+require __DIR__ . '/admin_header.php';
 
 /** @var Tdmdownloads\Helper $helper */
 $helper = Tdmdownloads\Helper::getInstance();
 
 //On recupere la valeur de l'argument op dans l'URL$
-$op = $utilities->cleanVars($_REQUEST, 'op', 'list', 'string');
-//$fieldHandler = new \XoopsModules\Tdmdownloads\FieldHandler($db);
+$op = $utility->cleanVars($_REQUEST, 'op', 'list', 'string');
+
 //Les valeurs de op qui vont permettre d'aller dans les differentes parties de la page
 switch ($op) {
     // Vue liste
@@ -76,7 +75,6 @@ switch ($op) {
             echo '</table>';
         }
         break;
-
     case 'update_status':
         $obj = $fieldHandler->get($_REQUEST['fid']);
 
@@ -86,7 +84,6 @@ switch ($op) {
         }
         echo $obj->getHtmlErrors();
         break;
-
     case 'update_search':
         $obj = $fieldHandler->get($_REQUEST['fid']);
 
@@ -96,8 +93,6 @@ switch ($op) {
         }
         echo $obj->getHtmlErrors();
         break;
-    //
-
     // vue création
     case 'new_field':
         //Affichage de la partie haute de l'administration de Xoops
@@ -109,10 +104,10 @@ switch ($op) {
 
         //Affichage du formulaire de création des champs
         $obj  = $fieldHandler->create();
+        /** @var \XoopsThemeForm $form */
         $form = $obj->getForm();
         $form->display();
         break;
-
     // Pour éditer un champ
     case 'edit_field':
         //Affichage de la partie haute de l'administration de Xoops
@@ -125,10 +120,10 @@ switch ($op) {
 
         //Affichage du formulaire de création des champs
         $obj  = $fieldHandler->get($_REQUEST['fid']);
+        /** @var \XoopsThemeForm $form */
         $form = $obj->getForm();
         $form->display();
         break;
-
     // Pour supprimer un champ
     case 'del_field':
         global $xoopsModule;
@@ -177,7 +172,6 @@ switch ($op) {
         }
 
         break;
-
     // Pour sauver un champ
     case 'save_field':
         if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -198,14 +192,14 @@ switch ($op) {
             'image/jpeg',
             'image/pjpeg',
             'image/x-png',
-            'image/png'
+            'image/png',
         ], $helper->getConfig('maxuploadsize'), 16, null);
         if ($uploader->fetchMedia($_POST['xoops_upload_file'][0])) {
             $uploader->setPrefix('downloads_');
             $uploader->fetchMedia($_POST['xoops_upload_file'][0]);
             if (!$uploader->upload()) {
                 $errors = $uploader->getErrors();
-                redirect_header('javascript:history.go(-1)', 3, $errors);
+                redirect_header('<script>javascript:history.go(-1)</script>', 3, $errors);
             } else {
                 $obj->setVar('img', $uploader->getSavedFileName());
             }
@@ -231,6 +225,7 @@ switch ($op) {
             }
             echo $obj->getHtmlErrors();
         }
+        /** @var \XoopsThemeForm $form */
         $form = $obj->getForm();
         $form->display();
         break;

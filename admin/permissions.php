@@ -16,7 +16,7 @@
 
 use XoopsModules\Tdmdownloads;
 
-require_once __DIR__ . '/admin_header.php';
+require __DIR__ . '/admin_header.php';
 
 xoops_cp_header();
 require_once $GLOBALS['xoops']->path('www/class/xoopsform/grouppermform.php');
@@ -32,7 +32,7 @@ $tab_perm   = [
     1 => _AM_TDMDOWNLOADS_PERM_VIEW,
     2 => _AM_TDMDOWNLOADS_PERM_SUBMIT,
     3 => _AM_TDMDOWNLOADS_PERM_DOWNLOAD,
-    4 => _AM_TDMDOWNLOADS_PERM_AUTRES
+    4 => _AM_TDMDOWNLOADS_PERM_AUTRES,
 ];
 echo "<form method='post' name='fselperm' action='permissions.php'>\n";
 echo "<table border='0'>\n<tr>\n<td>\n";
@@ -82,7 +82,7 @@ switch ($permission) {
             '8'  => _AM_TDMDOWNLOADS_PERMISSIONS_8,
             '16' => _AM_TDMDOWNLOADS_PERMISSIONS_16,
             '32' => _AM_TDMDOWNLOADS_PERMISSIONS_32,
-            '64' => _AM_TDMDOWNLOADS_PERMISSIONS_64
+            '64' => _AM_TDMDOWNLOADS_PERMISSIONS_64,
         ];
         break;
 }
@@ -111,7 +111,7 @@ if (4 === $permission) {
         }
     }
 }
-//$categoryHandler          = new \XoopsModules\Tdmdownloads\CategoryHandler($db);
+
 if ($categoryHandler->getCount()) {
     echo $permissionsForm->render();
 } else {
@@ -121,4 +121,4 @@ if ($categoryHandler->getCount()) {
 echo "<br><br><br><br>\n";
 unset($permissionsForm);
 
-require_once __DIR__ . '/admin_footer.php';
+require __DIR__ . '/admin_footer.php';

@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Tdmdownloads;
+<?php
+
+namespace XoopsModules\Tdmdownloads;
 
 /**
  * TDMDownload
@@ -14,15 +16,16 @@
  * @license     GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Gregory Mage (Aka Mage)
  */
+defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
-
+/**
+ * Class Broken
+ * @package XoopsModules\Tdmdownloads
+ */
 class Broken extends \XoopsObject
 {
     // constructor
-    /**
-     *
-     */
+
     public function __construct()
     {
         parent::__construct();
@@ -54,9 +57,9 @@ class Broken extends \XoopsObject
         $form->addElement(new \XoopsFormHidden('op', 'save'));
         $form->addElement(new \XoopsFormHidden('lid', $lid));
         // Submit button
-        $button_tray = new \XoopsFormElementTray(_MD_TDMDOWNLOADS_BROKENFILE_REPORTBROKEN, '', '');
-        $button_tray->addElement(new \XoopsFormButton('', 'post', _MD_TDMDOWNLOADS_BROKENFILE_REPORTBROKEN, 'submit'));
-        $form->addElement($button_tray);
+        $buttonTray = new \XoopsFormElementTray(_MD_TDMDOWNLOADS_BROKENFILE_REPORTBROKEN, '', '');
+        $buttonTray->addElement(new \XoopsFormButton('', 'post', _MD_TDMDOWNLOADS_BROKENFILE_REPORTBROKEN, 'submit'));
+        $form->addElement($buttonTray);
 
         return $form;
     }

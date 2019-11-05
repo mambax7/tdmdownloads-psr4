@@ -1,8 +1,22 @@
-<?php namespace XoopsModules\Tdmdownloads;
+<?php
 
-use XoopsModules\Tdmdownloads\Common;
+namespace XoopsModules\Tdmdownloads;
+
+/*
+ Utility Class Definition
+
+ You may not change or alter any portion of this comment or credits of
+ supporting developers from this source code or any supporting source code
+ which is considered copyrighted (c) material of the original comment or credit
+ authors.
+
+ This program is distributed in the hope that it will be useful, but
+ WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+use Xmf\Request;
 use XoopsModules\Tdmdownloads;
-
 
 /**
  * Class Utility
@@ -16,10 +30,114 @@ class Utility extends \XoopsObject
     use Common\FilesManagement; // Files Management Trait
 
     /**
+     * truncateHtml can truncate a string up to a number of characters while preserving whole words and HTML tags
+     * www.gsdesign.ro/blog/cut-html-string-without-breaking-the-tags
+     * www.cakephp.org
+     *
+     * @param string $text         String to truncate.
+     * @param int    $length       Length of returned string, including ellipsis.
+     * @param string $ending       Ending to be appended to the trimmed string.
+     * @param bool   $exact        If false, $text will not be cut mid-word
+     * @param bool   $considerHtml If true, HTML tags would be handled correctly
+     *
+     * @return string Trimmed string.
+     */
+    public static function truncateHtml($text, $length = 100, $ending = '...', $exact = false, $considerHtml = true)
+    {
+        if ($considerHtml) {
+            // if the plain text is shorter than the maximum length, return the whole text
+            if (mb_strlen(preg_replace('/<.*?' . '>/', '', $text)) <= $length) {
+                return $text;
+            }
+            // splits all html-tags to scanable lines
+            preg_match_all('/(<.+?' . '>)?([^<>]*)/s', $text, $lines, PREG_SET_ORDER);
+            $total_length = mb_strlen($ending);
+            $open_tags    = [];
+            $truncate     = '';
+            foreach ($lines as $line_matchings) {
+                // if there is any html-tag in this line, handle it and add it (uncounted) to the output
+                if (!empty($line_matchings[1])) {
+                    // if it's an "empty element" with or without xhtml-conform closing slash
+                    if (preg_match('/^<(\s*.+?\/\s*|\s*(img|br|input|hr|area|base|basefont|col|frame|isindex|link|meta|param)(\s.+?)?)>$/is', $line_matchings[1])) {
+                        // do nothing
+                        // if tag is a closing tag
+                    } elseif (preg_match('/^<\s*\/([^\s]+?)\s*>$/s', $line_matchings[1], $tag_matchings)) {
+                        // delete tag from $open_tags list
+                        $pos = array_search($tag_matchings[1], $open_tags, true);
+                        if (false !== $pos) {
+                            unset($open_tags[$pos]);
+                        }
+                        // if tag is an opening tag
+                    } elseif (preg_match('/^<\s*([^\s>!]+).*?' . '>$/s', $line_matchings[1], $tag_matchings)) {
+                        // add tag to the beginning of $open_tags list
+                        array_unshift($open_tags, mb_strtolower($tag_matchings[1]));
+                    }
+                    // add html-tag to $truncate'd text
+                    $truncate .= $line_matchings[1];
+                }
+                // calculate the length of the plain text part of the line; handle entities as one character
+                $content_length = mb_strlen(preg_replace('/&[0-9a-z]{2,8};|&#[0-9]{1,7};|[0-9a-f]{1,6};/i', ' ', $line_matchings[2]));
+                if ($total_length + $content_length > $length) {
+                    // the number of characters which are left
+                    $left            = $length - $total_length;
+                    $entities_length = 0;
+                    // search for html entities
+                    if (preg_match_all('/&[0-9a-z]{2,8};|&#[0-9]{1,7};|[0-9a-f]{1,6};/i', $line_matchings[2], $entities, PREG_OFFSET_CAPTURE)) {
+                        // calculate the real length of all entities in the legal range
+                        foreach ($entities[0] as $entity) {
+                            if ($left >= $entity[1] + 1 - $entities_length) {
+                                $left--;
+                                $entities_length += mb_strlen($entity[0]);
+                            } else {
+                                // no more characters left
+                                break;
+                            }
+                        }
+                    }
+                    $truncate .= mb_substr($line_matchings[2], 0, $left + $entities_length);
+                    // maximum lenght is reached, so get off the loop
+                    break;
+                }
+                $truncate     .= $line_matchings[2];
+                $total_length += $content_length;
+
+                // if the maximum length is reached, get off the loop
+                if ($total_length >= $length) {
+                    break;
+                }
+            }
+        } else {
+            if (mb_strlen($text) <= $length) {
+                return $text;
+            }
+            $truncate = mb_substr($text, 0, $length - mb_strlen($ending));
+        }
+        // if the words shouldn't be cut in the middle...
+        if (!$exact) {
+            // ...search the last occurance of a space...
+            $spacepos = mb_strrpos($truncate, ' ');
+            if (isset($spacepos)) {
+                // ...and cut the text in this position
+                $truncate = mb_substr($truncate, 0, $spacepos);
+            }
+        }
+        // add the defined ending to the text
+        $truncate .= $ending;
+        if ($considerHtml) {
+            // close all unclosed html-tags
+            foreach ($open_tags as $tag) {
+                $truncate .= '</' . $tag . '>';
+            }
+        }
+
+        return $truncate;
+    }
+
+    /**
      * getHandler()
      *
      * @param         $name
-     * @param boolean $optional
+     * @param bool    $optional
      *
      * @return bool
      */
@@ -27,7 +145,7 @@ class Utility extends \XoopsObject
     {
         global $handlers, $xoopsModule;
 
-        $name = strtolower(trim($name));
+        $name = mb_strtolower(trim($name));
         if (!isset($handlers[$name])) {
             if (file_exists($hnd_file = XOOPS_ROOT_PATH . '/modules/' . $xoopsModule->getVar('dirname') . '/class/class_' . $name . '.php')) {
                 require_once $hnd_file;
@@ -56,7 +174,7 @@ class Utility extends \XoopsObject
     {
         global $xoopsUser, $xoopsModule;
 
-        $groups       = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+        $groups           = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
         $grouppermHandler = xoops_getHandler('groupperm');
         if (!$grouppermHandler->checkRight($permType, $cid, $groups, $xoopsModule->getVar('mid'))) {
             if (false === $redirect) {
@@ -117,7 +235,7 @@ class Utility extends \XoopsObject
             return false;
         }
         $ret['uservotes'] = $xoopsDB->getRowsNum($result);
-        while (false !== (list($rating) = $xoopsDB->fetchRow($result))) {
+        while (list($rating) = $xoopsDB->fetchRow($result)) {
             $ret['useravgrating'] += (int)$rating;
         }
         if ($ret['useravgrating'] > 0) {
@@ -155,7 +273,7 @@ class Utility extends \XoopsObject
                     if (true === $strict) {
                         $value = preg_replace('/\W/', '', trim($value));
                     }
-                    $value = strtolower((string)$value);
+                    $value = mb_strtolower((string)$value);
                 }
                 $globals[$k] = $value;
             }
@@ -173,7 +291,7 @@ class Utility extends \XoopsObject
             if (true === $strict) {
                 $value = preg_replace('/\W/', '', trim($value));
             }
-            $value = strtolower((string)$value);
+            $value = mb_strtolower((string)$value);
         }
 
         return $value;
@@ -181,6 +299,7 @@ class Utility extends \XoopsObject
 
     // toolbar()
     // @return
+
     /**
      * @param int $cid
      *
@@ -197,12 +316,12 @@ class Utility extends \XoopsObject
         return $toolbar;
     }
 
-
     // displayicons()
     // @param  $time
     // @param integer $status
     // @param integer $counter
     // @return
+
     /**
      * @param     $time
      * @param int $status
@@ -212,7 +331,7 @@ class Utility extends \XoopsObject
      */
     public static function displayIcons($time, $status = 0, $counter = 0)
     {
-        global  $xoopsModule;
+        global $xoopsModule;
         /** @var Tdmdownloads\Helper $helper */
         $helper = Tdmdownloads\Helper::getInstance();
 
@@ -256,11 +375,10 @@ class Utility extends \XoopsObject
         return $icons;
     }
 
-
-
     // updaterating()
     // @param  $sel_id
     // @return updates rating data in itemtable for a given item
+
     /**
      * @param $sel_id
      */
@@ -271,7 +389,7 @@ class Utility extends \XoopsObject
         $voteresult  = $xoopsDB->query($sql);
         $votesDB     = $xoopsDB->getRowsNum($voteresult);
         $totalrating = 0;
-        while (false !== (list($rating) = $xoopsDB->fetchRow($voteresult))) {
+        while (list($rating) = $xoopsDB->fetchRow($voteresult)) {
             $totalrating += $rating;
         }
         $finalrating = $totalrating / $votesDB;
@@ -283,6 +401,7 @@ class Utility extends \XoopsObject
     // totalcategory()
     // @param integer $pid
     // @return
+
     /**
      * @param int $pid
      *
@@ -298,7 +417,7 @@ class Utility extends \XoopsObject
         }
         $result     = $xoopsDB->query($sql);
         $catlisting = 0;
-        while (false !== (list($cid) = $xoopsDB->fetchRow($result))) {
+        while (list($cid) = $xoopsDB->fetchRow($result)) {
             if (static::checkGroups($cid)) {
                 ++$catlisting;
             }
@@ -312,6 +431,7 @@ class Utility extends \XoopsObject
     // @param integer $get_child
     // @param integer $return_sql
     // @return
+
     /**
      * @param int $sel_id
      * @param int $get_child
@@ -352,7 +472,7 @@ class Utility extends \XoopsObject
 
         $items  = [];
         $result = $xoopsDB->query($sql);
-        while (false !== (list($lid, $cid, $published) = $xoopsDB->fetchRow($result))) {
+        while (list($lid, $cid, $published) = $xoopsDB->fetchRow($result)) {
             if (true === static::checkGroups()) {
                 ++$count;
                 $published_date = ($published > $published_date) ? $published : $published_date;
@@ -381,7 +501,7 @@ class Utility extends \XoopsObject
                           . ')) ';
 
                 $result2 = $xoopsDB->query($query2);
-                while (false !== (list($lid, $published) = $xoopsDB->fetchRow($result2))) {
+                while (list($lid, $published) = $xoopsDB->fetchRow($result2)) {
                     if (0 == $published) {
                         continue;
                     }
@@ -500,7 +620,7 @@ class Utility extends \XoopsObject
             'W',
             'X',
             'Y',
-            'Z'
+            'Z',
         ];
         $num          = count($alphabet) - 1;
         $counter      = 0;
@@ -562,7 +682,7 @@ class Utility extends \XoopsObject
      */
     public static function searchString($haystack, $needle)
     {
-        return substr($haystack, 0, strpos($haystack, $needle) + 1);
+        return mb_substr($haystack, 0, mb_strpos($haystack, $needle) + 1);
     }
 
     /**
@@ -602,9 +722,9 @@ class Utility extends \XoopsObject
         $redirecturl = 'index.php',
         $num = 0,
         $redirect = 0,
-        $usertype = 1
-    ) {
-        global $FILES ;
+        $usertype = 1)
+    {
+        global $FILES;
         /** @var Tdmdownloads\Helper $helper */
         $helper = Tdmdownloads\Helper::getInstance();
 
@@ -631,8 +751,8 @@ class Utility extends \XoopsObject
                     redirect_header($redirecturl, 1, _AM_WFL_UPLOADFILE);
                 } else {
                     if (is_file($uploader->savedDestination)) {
-                        $down['url']  = XOOPS_URL . '/' . $uploaddir . '/' . strtolower($uploader->savedFileName);
-                        $down['size'] = filesize(XOOPS_ROOT_PATH . '/' . $uploaddir . '/' . strtolower($uploader->savedFileName));
+                        $down['url']  = XOOPS_URL . '/' . $uploaddir . '/' . mb_strtolower($uploader->savedFileName);
+                        $down['size'] = filesize(XOOPS_ROOT_PATH . '/' . $uploaddir . '/' . mb_strtolower($uploader->savedFileName));
                     }
 
                     return $down;
@@ -662,7 +782,7 @@ class Utility extends \XoopsObject
         } else {
             $result = $xoopsDB->query('SELECT forum_name, forum_id FROM ' . $xoopsDB->prefix('bbex_forums') . ' ORDER BY forum_id');
         }
-        while (false !== (list($forum_name, $forum_id) = $xoopsDB->fetchRow($result))) {
+        while (list($forum_name, $forum_id) = $xoopsDB->fetchRow($result)) {
             $opt_selected = '';
             if ($forum_id == $forumid) {
                 $opt_selected = 'selected';
@@ -700,7 +820,7 @@ class Utility extends \XoopsObject
      */
     public static function getLinkListBody($published)
     {
-        global $wfmyts, $imageArray,  $xoopsModule;
+        global $wfmyts, $imageArray, $xoopsModule;
         /** @var Tdmdownloads\Helper $helper */
         $helper = Tdmdownloads\Helper::getInstance();
 
@@ -833,14 +953,14 @@ class Utility extends \XoopsObject
      */
     public static function getWysiwygForm($caption, $name, $value)
     {
-        global  $xoopsUser, $xoopsModule;
+        global $xoopsUser, $xoopsModule;
         /** @var Tdmdownloads\Helper $helper */
         $helper = Tdmdownloads\Helper::getInstance();
 
         $editor = false;
         $x22    = false;
         $xv     = str_replace('XOOPS ', '', XOOPS_VERSION);
-        if ('2' == substr($xv, 2, 1)) {
+        if ('2' == mb_substr($xv, 2, 1)) {
             $x22 = true;
         }
         $editor_configs           = [];
@@ -876,7 +996,6 @@ class Utility extends \XoopsObject
                     $editor = new \XoopsFormEditor($caption, 'fckeditor', $editor_configs);
                 }
                 break;
-
             case 'htmlarea':
                 if (!$x22) {
                     if (is_readable(XOOPS_ROOT_PATH . '/class/htmlarea/formhtmlarea.php')) {
@@ -887,7 +1006,6 @@ class Utility extends \XoopsObject
                     $editor = new \XoopsFormEditor($caption, 'htmlarea', $editor_configs);
                 }
                 break;
-
             case 'dhtml':
                 if (!$x22) {
                     $editor = new \XoopsFormDhtmlTextArea($caption, $name, $value, 20, 60);
@@ -895,11 +1013,9 @@ class Utility extends \XoopsObject
                     $editor = new \XoopsFormEditor($caption, 'dhtmltextarea', $editor_configs);
                 }
                 break;
-
             case 'textarea':
                 $editor = new \XoopsFormTextArea($caption, $name, $value);
                 break;
-
             case 'koivi':
                 if (!$x22) {
                     if (is_readable(XOOPS_ROOT_PATH . '/class/xoopseditor/koivi/formwysiwygtextarea.php')) {
@@ -916,7 +1032,6 @@ class Utility extends \XoopsObject
                     $editor = new \XoopsFormEditor($caption, 'koivi', $editor_configs);
                 }
                 break;
-
             case 'tinyeditor':
                 if (!$x22) {
                     if (is_readable(XOOPS_ROOT_PATH . '/class/xoopseditor/tinyeditor/formtinyeditortextarea.php')) {
@@ -926,7 +1041,7 @@ class Utility extends \XoopsObject
                                                                        'name'    => $name,
                                                                        'value'   => $value,
                                                                        'width'   => '100%',
-                                                                       'height'  => '400px'
+                                                                       'height'  => '400px',
                                                                    ]);
                     } else {
                         if ($dhtml) {
@@ -939,7 +1054,6 @@ class Utility extends \XoopsObject
                     $editor = new \XoopsFormEditor($caption, 'tinyeditor', $editor_configs);
                 }
                 break;
-
             case 'dhtmlext':
                 if (!$x22) {
                     if (is_readable(XOOPS_ROOT_PATH . '/class/xoopseditor/dhtmlext/dhtmlext.php')) {
@@ -956,7 +1070,6 @@ class Utility extends \XoopsObject
                     $editor = new \XoopsFormEditor($caption, 'dhtmlext', $editor_configs);
                 }
                 break;
-
             case 'tinymce':
                 if (!$x22) {
                     if (is_readable(XOOPS_ROOT_PATH . '/class/xoopseditor/tinymce/formtinymce.php')) {
@@ -966,7 +1079,7 @@ class Utility extends \XoopsObject
                                                             'name'    => $name,
                                                             'value'   => $value,
                                                             'width'   => '100%',
-                                                            'height'  => '400px'
+                                                            'height'  => '400px',
                                                         ]);
                     } elseif (is_readable(XOOPS_ROOT_PATH . '/editors/tinymce/formtinymce.php')) {
                         require_once XOOPS_ROOT_PATH . '/editors/tinymce/formtinymce.php';
@@ -975,7 +1088,7 @@ class Utility extends \XoopsObject
                                                             'name'    => $name,
                                                             'value'   => $value,
                                                             'width'   => '100%',
-                                                            'height'  => '400px'
+                                                            'height'  => '400px',
                                                         ]);
                     } else {
                         if ($dhtml) {
@@ -1257,7 +1370,7 @@ class Utility extends \XoopsObject
             'ZA' => 'South Africa',
             'ZM' => 'Zambia',
             'ZR' => 'Zaire',             // Removed from iso list
-            'ZW' => 'Zimbabwe'
+            'ZW' => 'Zimbabwe',
         ];
 
         return $country_array[$countryn];
@@ -1283,14 +1396,14 @@ class Utility extends \XoopsObject
             "'&(iexcl|#161);'i",
             "'&(cent|#162);'i",
             "'&(pound|#163);'i",
-            "'&(copy|#169);'i"
+            "'&(copy|#169);'i",
         ]; // evaluate as php
 
         $replace = [
             '',
             '',
             '',
-            "\\1",
+            '\\1',
             '"',
             '&',
             '<',
@@ -1314,6 +1427,7 @@ class Utility extends \XoopsObject
     //    Start functions for Google PageRank
     //    Source: http://www.sws-tech.com/scripts/googlepagerank.php
     //    This code is released under the public domain
+
     /**
      * @param $a
      * @param $b
@@ -1456,8 +1570,8 @@ class Utility extends \XoopsObject
      */
     public static function strord($string)
     {
-        for ($i = 0, $iMax = strlen($string); $i < $iMax; ++$i) {
-            $result[$i] = ord($string{$i});
+        for ($i = 0, $iMax = mb_strlen($string); $i < $iMax; ++$i) {
+            $result[$i] = ord($string[$i]);
         }
 
         return $result;
@@ -1484,10 +1598,10 @@ class Utility extends \XoopsObject
 
             while (!feof($fp)) {
                 $data = fgets($fp, 128);
-                $pos  = strpos($data, 'Rank_');
+                $pos  = mb_strpos($data, 'Rank_');
                 if (false === $pos) {
                 } else {
-                    $pagerank = substr($data, $pos + 9);
+                    $pagerank = mb_substr($data, $pos + 9);
                 }
             }
             fclose($fp);
@@ -1499,6 +1613,7 @@ class Utility extends \XoopsObject
     //  End functions for Google PageRank
 
     // Check if Tag module is installed
+
     /**
      * @return bool
      */
@@ -1564,12 +1679,12 @@ class Utility extends \XoopsObject
     {
         ###### Hack by www.stefanosilvestrini.com ######
         global $xoopsConfig;
+        /** @var \XoopsMySQLDatabase $db */
         $db      = \XoopsDatabaseFactory::getDatabaseConnection();
         $bresult = $db->query('SELECT COUNT(*) FROM ' . $db->prefix('banner') . ' WHERE bid=' . $banner_id);
         list($numrows) = $db->fetchRow($bresult);
         if ($numrows > 1) {
             --$numrows;
-            mt_srand((double)microtime() * 1000000);
             $bannum = mt_rand(0, $numrows);
         } else {
             $bannum = 0;
@@ -1593,7 +1708,7 @@ class Utility extends \XoopsObject
                 $bannerobject = $htmlcode;
             } else {
                 $bannerobject = '<div align="center"><a href="' . XOOPS_URL . '/banners.php?op=click&bid=' . $bid . '" target="_blank">';
-                if (false !== stripos($imageurl, '.swf')) {
+                if (false !== mb_stripos($imageurl, '.swf')) {
                     $bannerobject = $bannerobject
                                     . '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" width="468" height="60">'
                                     . '<param name="movie" value="'
@@ -1626,12 +1741,12 @@ class Utility extends \XoopsObject
     {
         ###### Hack by www.stefanosilvestrini.com ######
         global $xoopsConfig;
+        /** @var \XoopsMySQLDatabase $db */
         $db      = \XoopsDatabaseFactory::getDatabaseConnection();
         $bresult = $db->query('SELECT COUNT(*) FROM ' . $db->prefix('banner') . ' WHERE cid=' . $client_id);
         list($numrows) = $db->fetchRow($bresult);
         if ($numrows > 1) {
             --$numrows;
-            mt_srand((double)microtime() * 1000000);
             $bannum = mt_rand(0, $numrows);
         } else {
             $bannum = 0;
@@ -1655,7 +1770,7 @@ class Utility extends \XoopsObject
                 $bannerobject = $htmlcode;
             } else {
                 $bannerobject = '<div align="center"><a href="' . XOOPS_URL . '/banners.php?op=click&bid=' . $bid . '" target="_blank">';
-                if (false !== stripos($imageurl, '.swf')) {
+                if (false !== mb_stripos($imageurl, '.swf')) {
                     $bannerobject = $bannerobject
                                     . '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0" width="468" height="60">'
                                     . '<param name="movie" value="'
@@ -1736,22 +1851,22 @@ class Utility extends \XoopsObject
     public static function getSubstring($str, $start, $length, $trimmarker = '...')
     {
         $hasML = false;
-//        $configHandler          = xoops_getHandler('config');
-//        $im_multilanguageConfig = $configHandler->getConfigsByCat(IM_CONF_MULILANGUAGE);
-//
-//        if ($im_multilanguageConfig['ml_enable']) {
-//            $tags  = explode(',', $im_multilanguageConfig['ml_tags']);
-//            $strs  = [];
-//            $hasML = false;
-//            foreach ($tags as $tag) {
-//                if (preg_match("/\[" . $tag . "](.*)\[\/" . $tag . "\]/sU", $str, $matches)) {
-//                    if (count($matches) > 0) {
-//                        $hasML  = true;
-//                        $strs[] = $matches[1];
-//                    }
-//                }
-//            }
-//        }
+        //        $configHandler          = xoops_getHandler('config');
+        //        $im_multilanguageConfig = $configHandler->getConfigsByCat(IM_CONF_MULILANGUAGE);
+        //
+        //        if ($im_multilanguageConfig['ml_enable']) {
+        //            $tags  = explode(',', $im_multilanguageConfig['ml_tags']);
+        //            $strs  = [];
+        //            $hasML = false;
+        //            foreach ($tags as $tag) {
+        //                if (preg_match("/\[" . $tag . "](.*)\[\/" . $tag . "\]/sU", $str, $matches)) {
+        //                    if (count($matches) > 0) {
+        //                        $hasML  = true;
+        //                        $strs[] = $matches[1];
+        //                    }
+        //                }
+        //            }
+        //        }
 
         if (!$hasML) {
             $strs = [$str];
@@ -1759,11 +1874,11 @@ class Utility extends \XoopsObject
 
         for ($i = 0; $i <= count($strs) - 1; ++$i) {
             if (!XOOPS_USE_MULTIBYTES) {
-                $strs[$i] = (strlen($strs[$i]) - $start <= $length) ? substr($strs[$i], $start, $length) : substr($strs[$i], $start, $length - strlen($trimmarker)) . $trimmarker;
+                $strs[$i] = (mb_strlen($strs[$i]) - $start <= $length) ? mb_substr($strs[$i], $start, $length) : mb_substr($strs[$i], $start, $length - mb_strlen($trimmarker)) . $trimmarker;
             }
 
             if (function_exists('mb_internal_encoding') && @mb_internal_encoding(_CHARSET)) {
-                $str2     = mb_strcut($strs[$i], $start, $length - strlen($trimmarker));
+                $str2     = mb_strcut($strs[$i], $start, $length - mb_strlen($trimmarker));
                 $strs[$i] = $str2 . (mb_strlen($strs[$i]) != mb_strlen($str2) ? $trimmarker : '');
             }
 
@@ -1771,8 +1886,8 @@ class Utility extends \XoopsObject
             $DEP_CHAR = 127;
             $pos_st   = 0;
             $action   = false;
-            for ($pos_i = 0, $pos_iMax = strlen($strs[$i]); $pos_i < $pos_iMax; ++$pos_i) {
-                if (ord(substr($strs[$i], $pos_i, 1)) > 127) {
+            for ($pos_i = 0, $pos_iMax = mb_strlen($strs[$i]); $pos_i < $pos_iMax; ++$pos_i) {
+                if (ord(mb_substr($strs[$i], $pos_i, 1)) > 127) {
                     ++$pos_i;
                 }
                 if ($pos_i <= $start) {
@@ -1783,7 +1898,7 @@ class Utility extends \XoopsObject
                     break;
                 }
             }
-            $strs[$i] = $action ? substr($strs[$i], $pos_st, $pos_i - $pos_st - strlen($trimmarker)) . $trimmarker : $strs[$i];
+            $strs[$i] = $action ? mb_substr($strs[$i], $pos_st, $pos_i - $pos_st - mb_strlen($trimmarker)) . $trimmarker : $strs[$i];
 
             $strs[$i] = $hasML ? '[' . $tags[$i] . ']' . $strs[$i] . '[/' . $tags[$i] . ']' : $strs[$i];
         }
@@ -1791,10 +1906,12 @@ class Utility extends \XoopsObject
 
         return $str;
     }
+
     // Reusable Link Sorting Functions
     // convertOrderByIn()
     // @param  $orderby
     // @return
+
     /**
      * @param $orderby
      *
@@ -1884,7 +2001,6 @@ class Utility extends \XoopsObject
      *
      * @return string
      */
-
     public static function convertOrderByOut($orderby)
     {
         if ('title ASC' === $orderby) {
@@ -1923,4 +2039,59 @@ class Utility extends \XoopsObject
 
         return $orderby;
     }
+
+    /**
+     * @param $permtype
+     * @param $dirname
+     * @return mixed
+     */
+    public static function getItemIds($permtype, $dirname)
+    {
+        global $xoopsUser;
+        $permissions = [];
+        if (is_array($permissions) && array_key_exists($permtype, $permissions)) {
+            return $permissions[$permtype];
+        }
+        $moduleHandler    = xoops_getHandler('module');
+        $tdmModule        = $moduleHandler->getByDirname($dirname);
+        $groups           = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+        $grouppermHandler = xoops_getHandler('groupperm');
+        $categories       = $grouppermHandler->getItemIds($permtype, $groups, $tdmModule->getVar('mid'));
+
+        return $categories;
+    }
+
+    /**
+     * returns the number of updates downloads in the categories of children category
+     *
+     * @param $mytree
+     * @param $categories
+     * @param $entries
+     * @param $cid
+     *
+     * @return int
+     */
+    public static function getNumbersOfEntries($mytree, $categories, $entries, $cid)
+    {
+        $count     = 0;
+        $child_arr = [];
+        if (in_array($cid, $categories)) {
+            $child = $mytree->getAllChild($cid);
+            foreach (array_keys($entries) as $i) {
+                if ($entries[$i]->getVar('cid') === $cid) {
+                    ++$count;
+                }
+                foreach (array_keys($child) as $j) {
+                    if ($entries[$i]->getVar('cid') === $j) {
+                        ++$count;
+                    }
+                }
+            }
+        }
+
+        return $count;
+    }
+
+
+
 }

@@ -14,46 +14,48 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-//use XoopsModules\Tdmdownloads;
-//use XoopsModules\Tdmdownloads\TdmObjectTree;
-
-//require_once dirname(__DIR__) . '/include/setup.php';
-
-require_once  dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
+// Include xoops admin header
+require_once dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
 require_once $GLOBALS['xoops']->path('www/class/xoopsformloader.php');
 
 //require_once  dirname(dirname(dirname(__DIR__))) . '/class/xoopsformloader.php';
-// require_once  dirname(__DIR__) . '/class/Utility.php';
-require_once  dirname(__DIR__) . '/include/common.php';
+
+require dirname(__DIR__) . '/include/common.php';
 
 $moduleDirName = basename(dirname(__DIR__));
 
-/** @var Xmf\Module\Admin $adminObject */
+/** @var \XoopsModules\Tdmdownloads\Helper $helper */
+$helper = \XoopsModules\Tdmdownloads\Helper::getInstance();
+
+/** @var \Xmf\Module\Admin $adminObject */
 $adminObject = \Xmf\Module\Admin::getInstance();
 
 $myts = \MyTextSanitizer::getInstance();
+
+if ($xoopsUser) {
+    $xoopsModule = \XoopsModule::getByDirname($moduleDirName);
+    if (!$xoopsUser->isAdmin($xoopsModule->mid())) {
+        redirect_header(XOOPS_URL . '/', 3, _NOPERM);
+    }
+} else {
+    redirect_header(XOOPS_URL . '/', 3, _NOPERM);
+}
 
 if (!isset($GLOBALS['xoopsTpl']) || !($GLOBALS['xoopsTpl'] instanceof XoopsTpl)) {
     require_once $GLOBALS['xoops']->path('class/template.php');
     $xoopsTpl = new \XoopsTpl();
 }
 
-$pathIcon16    = Xmf\Module\Admin::iconUrl('', 16);
-$pathIcon32    = Xmf\Module\Admin::iconUrl('', 32);
-$pathModIcon32 = $helper->getModule()->getInfo('modicons32');
-
-// Local icons path
-$xoopsTpl->assign('pathModIcon16', $pathIcon16);
-$xoopsTpl->assign('pathModIcon32', $pathIcon32);
-
+// Include language file
+xoops_loadLanguage('admin', 'system');
 // Load language files
 $helper->loadLanguage('admin');
 $helper->loadLanguage('modinfo');
 $helper->loadLanguage('main');
 $helper->loadLanguage('common');
 
-//param�tres:
-// pour les images des cat�gories:
+//paramétres:
+// pour les images des catégories:
 $uploaddir = XOOPS_ROOT_PATH . '/uploads/' . $moduleDirName . '/images/cats/';
 $uploadurl = XOOPS_URL . '/uploads/' . $moduleDirName . '/images/cats/';
 // pour les fichiers
@@ -65,4 +67,3 @@ $uploadurl_shots = XOOPS_URL . '/uploads/' . $moduleDirName . '/images/shots/';
 // pour les images des champs:
 $uploaddir_field = XOOPS_ROOT_PATH . '/uploads/' . $moduleDirName . '/images/field/';
 $uploadurl_field = XOOPS_URL . '/uploads/' . $moduleDirName . '/images/field/';
-/////////////

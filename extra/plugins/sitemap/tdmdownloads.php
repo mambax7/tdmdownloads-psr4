@@ -13,7 +13,6 @@
  * @license     GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Gregory Mage (Aka Mage)
  */
-
 function b_sitemap_tdmdownloads()
 {
     $xoopsDB = \XoopsDatabaseFactory::getDatabaseConnection();

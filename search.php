@@ -14,13 +14,12 @@
  * @author      Gregory Mage (Aka Mage)
  */
 
-use XoopsModules\Tdmdownloads\TdmObjectTree;
 use XoopsModules\Tdmdownloads;
 
 require_once __DIR__ . '/header.php';
 
 /** @var Tdmdownloads\Helper $helper */
-$helper = Tdmdownloads\Helper::getInstance();
+$helper        = Tdmdownloads\Helper::getInstance();
 $moduleDirName = basename(__DIR__);
 
 // template d'affichage
@@ -29,7 +28,7 @@ require_once XOOPS_ROOT_PATH . '/header.php';
 $xoTheme->addStylesheet(XOOPS_URL . '/modules/' . $moduleDirName . '/assets/css/styles.css', null);
 $xoopsTpl->assign('mydirname', $moduleDirName);
 
-$categories = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);
+$categories = $utility->getItemIds('tdmdownloads_view', $moduleDirName);
 
 if (\Xmf\Request::hasVar('title', 'REQUEST')) {
     '' !== $_REQUEST['title'] ? $title = $_REQUEST['title'] : $title = '';
@@ -52,7 +51,7 @@ $form = new \XoopsThemeForm(_MD_TDMDOWNLOADS_SEARCH, 'search', 'search.php', 'po
 $form->setExtra('enctype="multipart/form-data"');
 //recherche par titre
 $form->addElement(new \XoopsFormText(_MD_TDMDOWNLOADS_SEARCH_TITLE, 'title', 25, 255, $title));
-//recherche par cat�gorie
+//recherche par catégorie
 $criteria = new \CriteriaCompo();
 $criteria->setSort('cat_weight ASC, cat_title');
 $criteria->setOrder('ASC');
@@ -62,12 +61,11 @@ $cat_select->addOption(0,_MD_TDMDOWNLOADS_SEARCH_ALL2);
 $cat_select->addOptionArray($categoryHandler->getList($criteria ));
 $form->addElement($cat_select);*/
 $downloadscatArray = $categoryHandler->getAll($criteria);
-$mytree           = new TdmObjectTree($downloadscatArray, 'cat_cid', 'cat_pid');
-//$form->addElement(new \XoopsFormLabel(_AM_TDMDOWNLOADS_FORMINCAT, $mytree->makeSelBox('cat', 'cat_title', '--', $cat, true)));
+$mytree            = new \XoopsModules\Tdmdownloads\Tree($downloadscatArray, 'cat_cid', 'cat_pid');
 $form->addElement($mytree->makeSelectElement('cat', 'cat_title', '--', $cat, true, 0, '', _AM_TDMDOWNLOADS_FORMINCAT), true);
 
 //recherche champ sup.
-//$fieldHandler = $helper->getHandler('Field', $moduleDirName);
+//$fieldHandler = \XoopsModules\Tdmdownloads\Helper::getInstance()->getHandler('Field');
 $criteria = new \CriteriaCompo();
 $criteria->add(new \Criteria('search', 1));
 $criteria->add(new \Criteria('status', 1));
@@ -160,9 +158,9 @@ foreach (array_keys($downloads_field) as $i) {
 }
 
 //bouton validation
-$button_tray = new \XoopsFormElementTray('', '');
-$button_tray->addElement(new \XoopsFormButton('', 'submit', _MD_TDMDOWNLOADS_SEARCH_BT, 'submit'));
-$form->addElement($button_tray);
+$buttonTray = new \XoopsFormElementTray('', '');
+$buttonTray->addElement(new \XoopsFormButton('', 'submit', _MD_TDMDOWNLOADS_SEARCH_BT, 'submit'));
+$form->addElement($buttonTray);
 
 if ('' !== $title) {
     $criteria_2->add(new \Criteria('title', '%' . $title . '%', 'LIKE'));
@@ -220,7 +218,6 @@ if ($numrows > $limit) {
 } else {
     $pagenav = '';
 }
-//$xoopsTpl->clear_assign('downloads');
 $xoopsTpl->assign('lang_thereare', sprintf(_MD_TDMDOWNLOADS_SEARCH_THEREARE, $downloadsHandler->getCount($criteria_2)));
 $xoopsTpl->assign('pagenav', $pagenav);
 $keywords = '';
@@ -276,14 +273,14 @@ foreach (array_keys($tdmdownloads_arr) as $i) {
 }
 
 $xoopsTpl->assign('searchForm', $form->render());
-// r�f�rencement
+// référencement
 // titre de la page
 $titre = _MD_TDMDOWNLOADS_SEARCH_PAGETITLE . ' - ' . $xoopsModule->name();
 $xoopsTpl->assign('xoops_pagetitle', $titre);
 //description
 $xoTheme->addMeta('meta', 'description', strip_tags($xoopsModule->name()));
 //keywords
-$keywords = substr($keywords, 0, -1);
+$keywords = mb_substr($keywords, 0, -1);
 $xoTheme->addMeta('meta', 'keywords', strip_tags($keywords));
 
-require_once XOOPS_ROOT_PATH . '/footer.php';
+require XOOPS_ROOT_PATH . '/footer.php';

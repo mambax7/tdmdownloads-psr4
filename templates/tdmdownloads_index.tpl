@@ -5,7 +5,7 @@
         <a title="<{$smarty.const._MD_TDMDOWNLOADS_DOWNLOAD}>"
            href="<{$xoops_url}>/modules/<{$mydirname}>/index.php"><img
                     src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/logo-en.gif"
-                    alt="<{$smarty.const._MD_TDMDOWNLOADS_DOWNLOAD}>"/></a>
+                    alt="<{$smarty.const._MD_TDMDOWNLOADS_DOWNLOAD}>"></a>
     </div>
 
     <{if $categories|is_array && count($categories) > 0}>
@@ -33,7 +33,7 @@
                                        href="<{$xoops_url}>/modules/<{$mydirname}>/viewcat.php?cid=<{$category.id}>"><img
                                                 class="<{$img_float}>"
                                                 src="<{$category.image}>"
-                                                alt="<{$category.title}>"/></a>
+                                                alt="<{$category.title}>"></a>
                                 <{/if}>
                                 <{$category.description_main}>
                                 <div class="endline"></div>
@@ -45,7 +45,7 @@
                             <{/if}>
                         </div>
                     </td>
-                    <{if $category.count is div by $nb_catcol}>
+                    <{if $category.count % $nb_catcol == 0}>
                 </tr>
                 <tr>
                     <{/if}>
@@ -60,7 +60,7 @@
             <a title="<{$smarty.const._MD_TDMDOWNLOADS_RSS}>"
                href="<{$xoops_url}>/modules/<{$mydirname}>/rss.php?cid=0"><img
                         src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/rss.gif"
-                        alt="<{$smarty.const._MD_TDMDOWNLOADS_RSS}>"/></a>
+                        alt="<{$smarty.const._MD_TDMDOWNLOADS_RSS}>"></a>
         </div>
         <{if $bl_affichage==1}>
             <!-- Start Summary informations -->
@@ -71,7 +71,7 @@
                         <td class="width33 top">
                             <div class="bold mrag2 pad2">
                                 <img src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/icon/date.png"
-                                     alt="<{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLDATE}>"/><{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLDATE}>
+                                     alt="<{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLDATE}>"><{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLDATE}>
                             </div>
                             <div class="mrag2 pad2">
                                 <ul>
@@ -90,7 +90,7 @@
                         <td class="width33 top">
                             <div class="bold mrag2 pad2">
                                 <img src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/icon/hits.png"
-                                     alt="<{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLPOP}>"/><{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLPOP}>
+                                     alt="<{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLPOP}>"><{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLPOP}>
                             </div>
                             <div class="mrag2 pad2">
                                 <ul>
@@ -109,7 +109,7 @@
                         <td class="width33 top">
                             <div class="bold mrag2 pad2">
                                 <img src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/icon/votes.png"
-                                     alt="<{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLRATING}>"/><{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLRATING}>
+                                     alt="<{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLRATING}>"><{$smarty.const._MD_TDMDOWNLOADS_INDEX_BLRATING}>
                             </div>
                             <div class="mrag2 pad2">
                                 <ul>
@@ -143,7 +143,7 @@
                     <td class="col_width<{$nb_dowcol}> top">
                         <{include file="db:tdmdownloads_download.tpl" down=$file[i]}>
                     </td>
-                    <{if $file[i].count is div by $nb_dowcol}>
+                    <{if $file[i].count % $nb_dowcol == 0}>
                 </tr>
                 <tr>
                     <{/if}>

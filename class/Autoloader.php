@@ -1,9 +1,9 @@
-<?php namespace XoopsModules\Tdmdownloads;
+<?php
+
+namespace XoopsModules\Tdmdownloads;
 
 /**
- *
  * @author  Andrei Alexandru Romila
- *
  */
 class Autoloader
 {
@@ -29,8 +29,7 @@ class Autoloader
     protected $files = [];
 
     /**
-     *
-     * @param boolean $register
+     * @param bool $register
      */
     public function __construct($register = false)
     {
@@ -42,7 +41,7 @@ class Autoloader
     /**
      * Registers a new autoloader funtion
      *
-     * @return boolean Returns true on success or false on failure.
+     * @return bool Returns true on success or false on failure.
      */
     public function registerAutoloader()
     {
@@ -76,7 +75,6 @@ class Autoloader
         if (false === isset($this->files[$class])) {
             $this->files[$class] = $filename;
         } elseif (true === $overwrite) {
-
             // Overwrite the last filename
             $this->files[$class] = $filename;
         }
@@ -104,8 +102,7 @@ class Autoloader
         // If doesnt exist create a new array for the namespace.
         if (false === isset($this->prefixes[$namespace])) {
             $this->prefixes[$namespace] = [];
-        } elseif (in_array($directory, $this->prefixes[$namespace], true)) {
-
+        } elseif (in_array($directory, $this->prefixes[$namespace])) {
             // Already added ...
             return;
         }
@@ -127,7 +124,6 @@ class Autoloader
      */
     public function loadClass($class)
     {
-
         // Check for direct file registration - a bit faster than searching in a sub folder
         if (isset($this->files[$class]) && $this->requireFile($this->files[$class])) {
             return $this->files[$class];
@@ -138,13 +134,12 @@ class Autoloader
 
         // work backwards through the namespace names of the fully-qualified
         // class name to find a mapped file name
-        while (false !== ($position = strrpos($prefix, '\\'))) {
-
+        while (false !== ($position = mb_strrpos($prefix, '\\'))) {
             // retain the trailing namespace separator in the prefix
-            $prefix = substr($class, 0, $position + 1);
+            $prefix = mb_substr($class, 0, $position + 1);
 
             // the rest is the relative class name
-            $relative = substr($class, $position + 1);
+            $relative = mb_substr($class, $position + 1);
 
             // try to load a mapped file for the prefix and relative class
             $filename = $this->loadFile($prefix, $relative);
@@ -171,7 +166,6 @@ class Autoloader
      */
     protected function loadFile($prefix, $relativePath)
     {
-
         // are there any base directories for this namespace prefix?
         if (false === isset($this->prefixes[$prefix])) {
             return false;

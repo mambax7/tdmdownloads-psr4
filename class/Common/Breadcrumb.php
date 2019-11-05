@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Tdmdownloads\Common;
+<?php
+
+namespace XoopsModules\Tdmdownloads\Common;
 
 /*
  You may not change or alter any portion of this comment or credits
@@ -33,12 +35,9 @@ defined('XOOPS_ROOT_PATH') || die('Restricted access');
  */
 class Breadcrumb
 {
-    public $dirname;
+    public  $dirname;
     private $bread = [];
 
-    /**
-     *
-     */
     public function __construct()
     {
         $this->dirname = basename(dirname(dirname(__DIR__)));
@@ -54,13 +53,12 @@ class Breadcrumb
     {
         $this->bread[] = [
             'link'  => $link,
-            'title' => $title
+            'title' => $title,
         ];
     }
 
     /**
      * Render BreadCrumb
-     *
      */
     public function render()
     {

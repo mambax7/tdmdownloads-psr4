@@ -5,7 +5,7 @@
         <a title="<{$smarty.const._MD_TDMDOWNLOADS_DOWNLOAD}>"
            href="<{$xoops_url}>/modules/<{$mydirname}>/index.php"><img
                     src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/logo-en.gif"
-                    alt="<{$smarty.const._MD_TDMDOWNLOADS_DOWNLOAD}>"/></a>
+                    alt="<{$smarty.const._MD_TDMDOWNLOADS_DOWNLOAD}>"></a>
     </div>
 
     <!-- Category path -->
@@ -24,9 +24,9 @@
         <{/if}>
         <div class="itemBody">
             <div class="itemText tdmdownloads-itemText <{$textfloat}>">
-                <{if $show_screenshot == true}>
+                <{if $show_screenshot === true}>
                     <{if $logourl != ''}>
-                        <img class="<{$img_float}>" width="<{$shotwidth}>" src="<{$logourl}>" alt="<{$title}>"/>
+                        <img class="<{$img_float}>" width="<{$shotwidth}>" src="<{$logourl}>" alt="<{$title}>">
                     <{/if}>
                 <{/if}>
                 <{$description}>
@@ -41,7 +41,7 @@
                         <div id="comments"><{$nb_comments}></div>
                     <{/if}>
                 </div>
-                <{if $sup_aff == true}>
+                <{if $sup_aff === true}>
                     <div class="tdmdownloads-box" id="tdmdownloads-box-2">
                         <{foreach item=champ from=$champ_sup}>
                             <div class="champ"
@@ -138,35 +138,35 @@
                 <a rel="nofollow external" title="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_BLINKLIST}>"
                    href="http://www.blinklist.com/index.php?Action=Blink/addblink.php&Description=&Url=<{$xoops_url}>/modules/<{$mydirname}>/singlefile.php?lid=<{$lid}>&Title=<{$downloads.title}>"><img
                             alt="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_BLINKLIST}>"
-                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/blinklist.gif"/></a>
+                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/blinklist.gif"></a>
                 <a rel="nofollow external" title="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_DELICIOUS}>"
                    href="http://del.icio.us/post?url=<{$xoops_url}>/modules/<{$mydirname}>/singlefile.php?lid=<{$lid}>&title=<{$downloads.title}>"><img
                             alt="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_DELICIOUS}>"
-                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/delicious.gif"/></a>
+                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/delicious.gif"></a>
                 <a rel="nofollow external" title="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_DIGG}>"
                    href="http://digg.com/submit?phase=2&url=<{$xoops_url}>/modules/<{$mydirname}>/singlefile.php?lid=<{$lid}>"><img
                             alt="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_DIGG}>"
-                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/diggman.gif"/></a>
+                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/diggman.gif"></a>
                 <a rel="nofollow external" title="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_FARK}>"
                    href="http://cgi.fark.com/cgi/fark/edit.pl?new_url=<{$xoops_url}>/modules/<{$mydirname}>/singlefile.php?lid=<{$lid}>&new_comment=<{$downloads.title}>&new_link_other=<{$downloads.title}>&linktype=Misc"><img
                             alt="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_FARK}>"
-                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/fark.gif"/></a>
+                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/fark.gif"></a>
                 <a rel="nofollow external" title="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_FURL}>"
                    href="http://www.furl.net/storeIt.jsp?t=<{$downloads.title}>&u=<{$xoops_url}>/modules/<{$mydirname}>/singlefile.php?lid=<{$lid}>"><img
                             alt="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_FURL}>"
-                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/furl.gif"/></a>
+                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/furl.gif"></a>
                 <a rel="nofollow external" title="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_NEWSVINE}>"
                    href="http://www.nwvine.com/_tools/seed&save?u=<{$xoops_url}>/modules/<{$mydirname}>/singlefile.php?lid=<{$lid}>&h=<{$downloads.title}>"><img
                             alt="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_NEWSVINE}>"
-                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/newsvine.gif"/></a>
+                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/newsvine.gif"></a>
                 <a rel="nofollow external" title="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_REDDIT}>"
                    href="http://reddit.com/submit?url=<{$xoops_url}>/modules/<{$mydirname}>/singlefile.php?lid=<{$lid}>&title=<{$downloads.title}>"><img
                             alt="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_REDDIT}>"
-                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/reddit.gif"/></a>
+                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/reddit.gif"></a>
                 <a rel="nofollow external" title="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_YAHOO}>"
                    href="http://myweb2.search.yahoo.com/myresults/bookmarklet?t=<{$downloads.title}>&u=<{$xoops_url}>/modules/<{$mydirname}>/singlefile.php?lid=<{$lid}>"><img
                             alt="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_YAHOO}>"
-                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/yahoomyweb.gif"/></a>
+                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/yahoomyweb.gif"></a>
                 <a rel="nofollow external" title="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_BALATARIN}>"
                    href="http://balatarin.com/links/submit?phase=2&amp;url=<{$xoops_url}>/modules/<{$mydirname}>/singlefile.php?lid=<{$lid}>"><img
                             alt="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_BALATARIN}>"
@@ -174,43 +174,43 @@
                 <a rel="nofollow external" title="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_FACEBOOK}>"
                    href="http://www.facebook.com/share.php?u=<{$xoops_url}>/modules/<{$mydirname}>/singlefile.php?lid=<{$lid}>"><img
                             alt="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_FACEBOOK}>"
-                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/facebook_share_icon.gif"/></a>
+                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/facebook_share_icon.gif"></a>
                 <a rel="nofollow external" title="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_TWITTER}>"
                    href="http://twitter.com/home?status=Browsing:%20<{$xoops_url}>/modules/<{$mydirname}>/singlefile.php?lid=<{$lid}>"><img
                             alt="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_TWITTER}>"
-                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/twitter_share_icon.gif"/></a>
+                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/twitter_share_icon.gif"></a>
                 <a rel="nofollow external" title="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_SCRIPSTYLE}>"
                    href="http://scriptandstyle.com/submit?url=<{$xoops_url}>/modules/<{$mydirname}>/singlefile.php?lid=<{$lid}>"><img
                             alt="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_SCRIPSTYLE}>"
-                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/scriptandstyle.png"/></a>
+                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/scriptandstyle.png"></a>
                 <a rel="nofollow external" title="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_STUMBLE}>"
                    href="http://www.stumbleupon.com/submit?url=<{$xoops_url}>/modules/<{$mydirname}>/singlefile.php?lid=<{$lid}>"><img
                             alt="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_STUMBLE}>"
-                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/stumbleupon.png"/></a>
+                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/stumbleupon.png"></a>
                 <a rel="nofollow external" title="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_TECHNORATI}>"
                    href="http://technorati.com/faves?add=<{$xoops_url}>/modules/<{$mydirname}>/singlefile.php?lid=<{$lid}>"><img
                             alt="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_TECHNORATI}>"
-                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/technorati.png"/></a>
+                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/technorati.png"></a>
                 <a rel="nofollow external" title="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_MIXX}>"
                    href="http://www.mixx.com/submit?page_url=<{$xoops_url}>/modules/<{$mydirname}>/singlefile.php?lid=<{$lid}>"><img
                             alt="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_MIXX}>"
-                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/mixx.png"/></a>
+                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/mixx.png"></a>
                 <a rel="nofollow external" title="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_MYSPACE}>"
                    href="http://www.myspace.com/Modules/PostTo/Pages/?u=<{$xoops_url}>/modules/<{$mydirname}>/singlefile.php?lid=<{$lid}>"><img
                             alt="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_MYSPACE}>"
-                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/myspace.jpg"/></a>
+                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/myspace.jpg"></a>
                 <a rel="nofollow external" title="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_DESIGNFLOAT}>"
                    href="http://www.designfloat.com/submit.php?url=<{$xoops_url}>/modules/<{$mydirname}>/singlefile.php?lid=<{$lid}>"><img
                             alt="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_DESIGNFLOAT}>"
-                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/designfloat.png"/></a>
+                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/designfloat.png"></a>
                 <a rel="nofollow external" title="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_GOOGLEPLUS}>"
                    href="https://plusone.google.com/_/+1/confirm?hl=en&url=<{$xoops_url}>/modules/<{$mydirname}>/singlefile.php?lid=<{$lid}>"><img
                             alt="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_GOOGLEPLUS}>"
-                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/google_plus_icon.png"/></a>
+                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/google_plus_icon.png"></a>
                 <a rel="nofollow external" title="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_GOOGLEBOOKMARKS}>"
                    href="https://www.google.com/bookmarks/mark?op=add&amp;bkmk=<{$xoops_url}>/modules/<{$mydirname}>/singlefile.php?lid=<{$lid}>&amp;title=<{$downloads.title}>"><img
                             alt="<{$smarty.const._MD_TDMDOWNLOADS_BOOKMARK_TO_GOOGLEBOOKMARKS}>"
-                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/google-icon.png"/></a>
+                            src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/bookmarks/google-icon.png"></a>
             </div>
         </div>
     <{/if}>

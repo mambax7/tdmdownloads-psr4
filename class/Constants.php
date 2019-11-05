@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Tdmdownloads;
+<?php
+
+namespace XoopsModules\Tdmdownloads;
 
 /*
      * Module: TDMDownloads
@@ -33,9 +35,6 @@ class Constants
     public static $moduleDirName;
     public static $mydirname2; //set in constructor
 
-    /**
-     *
-     */
     public function __construct()
     {
         self::$mydirname2 = basename(dirname(__DIR__));

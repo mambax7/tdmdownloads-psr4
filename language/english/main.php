@@ -59,16 +59,16 @@ define('_MD_TDMDOWNLOADS_SINGLEFILE_LIMITLID', 'You have downloaded this file %s
 define('_MD_TDMDOWNLOADS_SINGLEFILE_MODIFY', 'Modify');
 define('_MD_TDMDOWNLOADS_SINGLEFILE_NBTELECH', 'Downloads: %s');
 define('_MD_TDMDOWNLOADS_SINGLEFILE_NONEXISTENT', 'this download does not exist in our database');
-define('_MD_TDMDOWNLOADS_SINGLEFILE_NOPERMDOWNLOAD', 'You don\'t have the right to download this file');
+define('_MD_TDMDOWNLOADS_SINGLEFILE_NOPERMDOWNLOAD', "You don't have the right to download this file");
 define('_MD_TDMDOWNLOADS_SINGLEFILE_RATING', 'Rating: ');
 define('_MD_TDMDOWNLOADS_SINGLEFILE_RATHFILE', 'Rate this file');
 define('_MD_TDMDOWNLOADS_SINGLEFILE_REPORTBROKEN', 'Report a broken file');
 define('_MD_TDMDOWNLOADS_SINGLEFILE_TELLAFRIEND', 'Send to a friend');
 define('_MD_TDMDOWNLOADS_SINGLEFILE_VOTES', ' (%s votes)');
 define('_MD_TDMDOWNLOADS_SINGLEFILE_PAYPAL', 'Donation for %s');
-define('_MD_TDMDOWNLOADS_SINGLEFILE_NOPERM', 'You don\'t have permission to download');
+define('_MD_TDMDOWNLOADS_SINGLEFILE_NOPERM', "You don't have permission to download");
 // ratefile.php
-define('_MD_TDMDOWNLOADS_RATEFILE_BEOBJECTIVE', 'Please be objective, if everyone receives a 1 or a 10, the ratings aren\'t very useful.');
+define('_MD_TDMDOWNLOADS_RATEFILE_BEOBJECTIVE', "Please be objective, if everyone receives a 1 or a 10, the ratings aren't very useful.");
 define('_MD_TDMDOWNLOADS_RATEFILE_CANTVOTEOWN', 'Do not vote for your own files.<br>All votes are recorded and verified.');
 define('_MD_TDMDOWNLOADS_RATEFILE_DONOTVOTE', 'Do not vote for your own files.');
 define('_MD_TDMDOWNLOADS_RATEFILE_NORATING', 'The vote must be between 0 and 10');
@@ -81,13 +81,13 @@ define('_MD_TDMDOWNLOADS_RATEFILE_VOTEONCE', 'Please do not vote for the same re
 define('_MD_TDMDOWNLOADS_BROKENFILE_ALREADYREPORTED', 'You have already submitted a broken file report to this download.');
 define('_MD_TDMDOWNLOADS_BROKENFILE_FORSECURITY', 'For security reasons your username and IP address will also be temporarily recorded.');
 define('_MD_TDMDOWNLOADS_BROKENFILE_REPORTBROKEN', 'Broken File Reports');
-define('_MD_TDMDOWNLOADS_BROKENFILE_THANKSFORHELP', 'Thank you for helping maintain this directory\'s integrity.');
-define('_MD_TDMDOWNLOADS_BROKENFILE_THANKSFORINFO', 'Thanks for the information. We\'ll look into your request shortly.');
+define('_MD_TDMDOWNLOADS_BROKENFILE_THANKSFORHELP', "Thank you for helping maintain this directory's integrity.");
+define('_MD_TDMDOWNLOADS_BROKENFILE_THANKSFORINFO', "Thanks for the information. We'll look into your request shortly.");
 // modfile.php
-define('_MD_TDMDOWNLOADS_MODFILE_THANKSFORINFO', 'Thanks for the information. We\'ll look into your request shortly.');
+define('_MD_TDMDOWNLOADS_MODFILE_THANKSFORINFO', "Thanks for the information. We'll look into your request shortly.");
 //submit.php
 define('_MD_TDMDOWNLOADS_SUBMIT_ALLPENDING', 'All file/script information are posted pending verification.');
-define('_MD_TDMDOWNLOADS_SUBMIT_DONTABUSE', 'Username and IP are recorded, so please don\'t abuse the system.');
+define('_MD_TDMDOWNLOADS_SUBMIT_DONTABUSE', "Username and IP are recorded, so please don't abuse the system.");
 define('_MD_TDMDOWNLOADS_SUBMIT_ISAPPROVED', 'Your file has been approved');
 define('_MD_TDMDOWNLOADS_SUBMIT_PROPOSER', 'Submit a file');
 define('_MD_TDMDOWNLOADS_SUBMIT_RECEIVED', 'We have received your file info. Thank you!');
@@ -112,10 +112,8 @@ define('_MD_TDMDOWNLOADS_MOREDETAILS', 'more details');
 define('_MD_TDMDOWNLOADS_DOWNLOAD', 'Download');
 define('_MD_TDMDOWNLOADS_RSS', 'RSS Feed');
 //visit.php
-define(
-    '_MD_TDMDOWNLOADS_NOPERMISETOLINK',
-       'This file does not belong to the website from where you are coming.<br><br>thanks for writing an email to the webmaster of the website from where you are coming and tell him: <br><strong>NO OWNERSHIP OF LINKS FROM OTHER SITES! (LEECH)</strong><br><br><strong>Leecher definition: </strong>Someone who is lazy to link to its own server or steals the hard work done by other people <br><br>You are already <strong>registered</strong>.'
-);
+define('_MD_TDMDOWNLOADS_NOPERMISETOLINK',
+       'This file does not belong to the website from where you are coming.<br><br>thanks for writing an email to the webmaster of the website from where you are coming and tell him: <br><strong>NO OWNERSHIP OF LINKS FROM OTHER SITES! (LEECH)</strong><br><br><strong>Leecher definition: </strong>Someone who is lazy to link to its own server or steals the hard work done by other people <br><br>You are already <strong>registered</strong>.');
 //Message d'erreur
 define('_MD_TDMDOWNLOADS_ERREUR_NOCAT', 'You have to choose a category!');
 define('_MD_TDMDOWNLOADS_ERREUR_SIZE', 'File size must be a number');

@@ -5,7 +5,7 @@
         <a title="<{$smarty.const._MD_TDMDOWNLOADS_DOWNLOAD}>"
            href="<{$xoops_url}>/modules/<{$mydirname}>/index.php"><img
                     src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/logo-en.gif"
-                    alt="<{$smarty.const._MD_TDMDOWNLOADS_DOWNLOAD}>"/></a>
+                    alt="<{$smarty.const._MD_TDMDOWNLOADS_DOWNLOAD}>"></a>
     </div>
 
     <!-- Download searchform -->
@@ -38,7 +38,7 @@
                             target="_blank"><img
                                 src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/download.png"
                                 alt="<{$smarty.const._MD_TDMDOWNLOADS_SEARCH_DOWNLOAD}><{$downloads.title}>"
-                                title="<{$smarty.const._MD_TDMDOWNLOADS_SEARCH_DOWNLOAD}><{$downloads.title}>"/></a>
+                                title="<{$smarty.const._MD_TDMDOWNLOADS_SEARCH_DOWNLOAD}><{$downloads.title}>"></a>
                 </td>
                 <td align="left" style="vertical-align: middle;"><a
                             href="<{$xoops_url}>/modules/<{$mydirname}>/singlefile.php?cid=<{$downloads.cid}>&amp;lid=<{$downloads.lid}>"
@@ -46,7 +46,7 @@
                 <td align="center" style="width: 32px; vertical-align: middle;"><img src="<{$downloads.imgurl}>"
                                                                                      alt="<{$downloads.cat}>"
                                                                                      title="<{$downloads.cat}>"
-                                                                                     width="30"/></td>
+                                                                                     width="30"></td>
                 <td align="left" style="vertical-align: middle;"><a
                             href="<{$xoops_url}>/modules/<{$mydirname}>/viewcat.php?cid=<{$downloads.cid}>"
                             target="_blank" title="<{$downloads.cat}>"><{$downloads.cat}></a></td>

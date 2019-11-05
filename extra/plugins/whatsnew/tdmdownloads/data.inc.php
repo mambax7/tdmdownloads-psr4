@@ -18,7 +18,6 @@
  *
  * @return array
  */
-
 function tdmdownloads_new($limit = 0, $offset = 0)
 {
     global $xoopsDB;

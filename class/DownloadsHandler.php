@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Tdmdownloads;
+<?php
+
+namespace XoopsModules\Tdmdownloads;
 
 /**
  * TDMDownload
@@ -14,20 +16,17 @@
  * @license     GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Gregory Mage (Aka Mage)
  */
-
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
-
-//class TDMDownloads_downloads extends XoopsObject
+defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
- * Class TDMDownloadstdmdownloads_downloadsHandler
+ * Class DownloadsHandler
+ * @package XoopsModules\Tdmdownloads
  */
-
 class DownloadsHandler extends \XoopsPersistableObjectHandler
 {
     /**
      * DownloadsHandler constructor.
-     * @param null|mixed $db
+     * @param \XoopsDatabase|null $db
      */
     public function __construct(\XoopsDatabase $db = null)
     {

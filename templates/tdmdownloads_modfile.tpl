@@ -5,7 +5,7 @@
         <a title="<{$smarty.const._MD_TDMDOWNLOADS_DOWNLOAD}>"
            href="<{$xoops_url}>/modules/<{$mydirname}>/index.php"><img
                     src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/logo-en.gif"
-                    alt="<{$smarty.const._MD_TDMDOWNLOADS_DOWNLOAD}>"/></a>
+                    alt="<{$smarty.const._MD_TDMDOWNLOADS_DOWNLOAD}>"></a>
     </div>
 
     <!-- Category path -->

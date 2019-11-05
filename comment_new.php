@@ -3,7 +3,7 @@
 //  ------------------------------------------------------------------------ //
 //                XOOPS - PHP Content Management System                      //
 //                  Copyright (c) 2000-2016 XOOPS.org                        //
-//                       <https://xoops.org/>                             //
+//                       <https://xoops.org>                             //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
 //  it under the terms of the GNU General Public License as published by     //
@@ -25,22 +25,22 @@
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA //
 //  ------------------------------------------------------------------------ //
 
-require_once __DIR__   . '/header.php';
+require __DIR__ . '/header.php';
 $com_itemid = \Xmf\Request::getInt('com_itemid', 0, 'GET');
 //mb   if ($com_itemid > 0) {
-    // Get file title
-    //-------------------------------
+// Get file title
+//-------------------------------
 
 $sql    = 'SELECT title, cid FROM ' . $xoopsDB->prefix('tdmdownloads_downloads') . ' WHERE lid=' . $com_itemid;
 $result = $xoopsDB->query($sql);
 if ($result) {
-    $categories = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);
+    $categories = $utility->getItemIds('tdmdownloads_view', $moduleDirName);
     $row        = $xoopsDB->fetchArray($result);
     if (!in_array($row['cid'], $categories)) {
         redirect_header(XOOPS_URL, 2, _NOPERM);
     }
     $com_replytitle = $row['title'];
-    require_once XOOPS_ROOT_PATH . '/include/comment_new.php';
+    require XOOPS_ROOT_PATH . '/include/comment_new.php';
 }
 
 //-------------------------------
@@ -70,7 +70,7 @@ $sql2    = 'SELECT title, cid FROM ' . $xoopsDB->prefix('tdmdownloads_downloads'
 $result2 = $xoopsDB->query($sql2);
 $row2    = $xoopsDB->fetchArray($result);
 
-$categories = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);
+$categories = $utility->getItemIds('tdmdownloads_view', $moduleDirName);
 
 //    if (!in_array($row['cid'], $categories)) {
 //        redirect_header(XOOPS_URL, 2, _NOPERM);

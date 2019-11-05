@@ -22,15 +22,15 @@
                                           href="<{$xoops_url}>/modules/<{$mydirname}>/visit.php?cid=<{$down.cid}>&amp;lid=<{$down.id}>"
                                           rel="directory external"><img
                             src="<{$xoops_url}>/modules/<{$mydirname}>/assets/images/icon/download-now.png"
-                            alt="<{$smarty.const._MD_TDMDOWNLOADS_INDEX_DLNOW}>"/></a></span>
+                            alt="<{$smarty.const._MD_TDMDOWNLOADS_INDEX_DLNOW}>"></a></span>
         <{/if}>
         <span class="itemPoster"><{$smarty.const._MD_TDMDOWNLOADS_INDEX_SUBMITDATE}><{$down.updated}></span>
         <span class="itemPostDate"><{$smarty.const._MD_TDMDOWNLOADS_INDEX_SUBMITTER}><{$down.submitter}></span><br>
         <{$down.description_short}>
         <div class="itemText justify">
-            <{if $show_screenshot == true}>
+            <{if $show_screenshot === true}>
                 <{if $down.logourl != ''}>
-                    <img class="<{$img_float}>" width="<{$shotwidth}>" src="<{$down.logourl}>" alt="<{$down.title}>"/>
+                    <img class="<{$img_float}>" width="<{$shotwidth}>" src="<{$down.logourl}>" alt="<{$down.title}>">
                 <{/if}>
             <{/if}>
         </div>

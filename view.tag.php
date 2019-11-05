@@ -13,6 +13,5 @@
  * @license     GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Hossein Azizabadi (Aka Voltan)
  */
-
-require_once __DIR__   . '/header.php';
+require __DIR__ . '/header.php';
 require_once XOOPS_ROOT_PATH . '/modules/tag/view.tag.php';

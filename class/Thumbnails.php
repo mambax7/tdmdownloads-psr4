@@ -1,11 +1,13 @@
-<?php namespace XoopsModules\Tdmdownloads;
+<?php
+
+namespace XoopsModules\Tdmdownloads;
 
 //
 //  ------------------------------------------------------------------------ //
 //  Author: Andrew Mills                                                     //
 //  Email:  ajmills@sirium.net                                               //
 //  About:                                                                   //
-//  Copyright:  Copyright � 2003-2006 Andrew Mills.                          //
+//  Copyright:  Copyright 2003-2006 Andrew Mills.                          //
 //                                                                           //
 //  ------------------------------------------------------------------------ //
 //  This program is free software; you can redistribute it and/or modify     //
@@ -60,7 +62,7 @@ class Thumbnails
         // create path and filename for the thumbnail
         $thumbfilenamepart = explode('.', $filename);
         if (1 == $extention) {
-            $thumbfilename = $thumbfilenamepart[0] . '_tn';// . $thumbfilenamepart[1];
+            $thumbfilename = $thumbfilenamepart[0] . '_tn'; // . $thumbfilenamepart[1];
         } else {
             $thumbfilename = $thumbfilenamepart[0];
         }
@@ -106,7 +108,7 @@ class Thumbnails
         // send to file or browser http://uk.php.net/manual/en/function.imagejpeg.php
         if (is_writable($thumbnailpath)) {
             if (file_exists($thumbnail . '.jpg')) {
-                $rand          = substr(md5(time()), 0, 5);
+                $rand          = mb_substr(md5(time()), 0, 5);
                 $thumbfilename = $thumbfilename . '_' . $rand . '.jpg';
                 $thumbfile     = $thumbnailpath . $thumbfilename;
                 imagejpeg($newimage, $thumbfile, 75);
@@ -131,7 +133,9 @@ class Thumbnails
 
         //print_r($thumbinfo);
         return $thumbinfo;
-    } // end create()
+    }
+
+    // end create()
 
     /**
      * @param $error
@@ -143,9 +147,12 @@ class Thumbnails
 
         //return(array('error' => '1', 'thumbnail' => ''));
         return false;
-    } // end function
+    }
+
+    // end function
 
     // function to check GD version
+
     /**
      * @return string
      */
@@ -157,13 +164,15 @@ class Thumbnails
         $phpinfo = ob_get_contents();
         ob_end_clean();
         $phpinfo = strip_tags($phpinfo);
-        $phpinfo = stristr($phpinfo, 'gd version');
-        $phpinfo = stristr($phpinfo, 'version');
+        $phpinfo = mb_stristr($phpinfo, 'gd version');
+        $phpinfo = mb_stristr($phpinfo, 'version');
         preg_match('/\d/', $phpinfo, $gd);
         if ('2' === $gd[0]) {
             $gd2 = '1';
         }
 
         return $gd2;
-    } // end checkgd()
+    }
+
+    // end checkgd()
 } // end class

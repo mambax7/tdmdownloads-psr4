@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Tdmdownloads;
+<?php
+
+namespace XoopsModules\Tdmdownloads;
 
 /**
  * TDMDownload
@@ -17,7 +19,7 @@
 
 use XoopsModules\Tdmdownloads;
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
+defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
 /**
  * Class Category
@@ -26,8 +28,9 @@ use XoopsModules\Tdmdownloads;
 class Category extends \XoopsObject
 {
     // constructor
+
     /**
-     *
+     * Category constructor.
      */
     public function __construct()
     {
@@ -43,13 +46,16 @@ class Category extends \XoopsObject
     }
 
     /**
-     * @param null $db
+     * @param null|\XoopsDatabase $db
      * @return mixed
      */
     public function getNewEnreg($db = null)
     {
+        $newEnreg = 0;
         /** @var \XoopsMySQLDatabase $db */
-        $newEnreg = $db->getInsertId();
+        if (null !== $db) {
+            $newEnreg = $db->getInsertId();
+        }
 
         return $newEnreg;
     }
@@ -100,29 +106,28 @@ class Category extends \XoopsObject
         }
         $imageselect->setExtra("onchange='showImgSelected(\"image3\", \"downloadscat_img\", \"" . $uploadirectory . '", "", "' . XOOPS_URL . "\")'");
         $imgtray->addElement($imageselect, false);
-        $imgtray->addElement(new \XoopsFormLabel('', "<br><img src='" . XOOPS_URL . '/' . $uploadirectory . '/' . $downloadscat_img . "' name='image3' id='image3' alt='' />"));
+        $imgtray->addElement(new \XoopsFormLabel('', "<br><img src='" . XOOPS_URL . '/' . $uploadirectory . '/' . $downloadscat_img . "' name='image3' id='image3' alt=''>"));
         $fileseltray = new \XoopsFormElementTray('', '<br>');
         $fileseltray->addElement(new \XoopsFormFile(_AM_TDMDOWNLOADS_FORMUPLOAD, 'attachedfile', $helper->getConfig('maxuploadsize')), false);
         $fileseltray->addElement(new \XoopsFormLabel(''), false);
         $imgtray->addElement($fileseltray);
         $form->addElement($imgtray);
         // Pour faire une sous-catégorie
-        $categoryHandler = Tdmdownloads\Helper::getInstance()->getHandler('Category');//  xoops_getModuleHandler('Category', $moduleDirName);
+        $categoryHandler = \XoopsModules\Tdmdownloads\Helper::getInstance()->getHandler('Category');
         $criteria        = new \CriteriaCompo();
         $criteria->setSort('cat_weight ASC, cat_title');
         $criteria->setOrder('ASC');
         $downloadscatArray = $categoryHandler->getAll($criteria);
-        $mytree           = new TdmObjectTree($downloadscatArray, 'cat_cid', 'cat_pid');
-        //$form->addElement(new \XoopsFormLabel(_AM_TDMDOWNLOADS_FORMINCAT, $mytree->makeSelBox('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true)));
+        $mytree            = new \XoopsModules\Tdmdownloads\Tree($downloadscatArray, 'cat_cid', 'cat_pid');
         $form->addElement($mytree->makeSelectElement('cat_pid', 'cat_title', '--', $this->getVar('cat_pid'), true, 0, '', _AM_TDMDOWNLOADS_FORMINCAT), true);
         //poids de la catégorie
         $form->addElement(new \XoopsFormText(_AM_TDMDOWNLOADS_FORMWEIGHT, 'cat_weight', 5, 5, $this->getVar('cat_weight', 'e')), false);
 
         //permissions
-        $memberHandler = xoops_getHandler('member');
-        $group_list    = $memberHandler->getGroupList();
-        $grouppermHandler  = xoops_getHandler('groupperm');
-        $full_list     = array_keys($group_list);
+        $memberHandler    = xoops_getHandler('member');
+        $group_list       = $memberHandler->getGroupList();
+        $grouppermHandler = xoops_getHandler('groupperm');
+        $full_list        = array_keys($group_list);
         global $xoopsModule;
         if (!$this->isNew()) {
             $groups_ids_view                   = $grouppermHandler->getGroupIds('tdmdownloads_view', $this->getVar('cat_cid'), $xoopsModule->getVar('mid'));
@@ -164,17 +169,3 @@ class Category extends \XoopsObject
         return $form;
     }
 }
-
-/**
- * Class TDMDownloadsCategoryHandler
- */
-//class TDMDownloadsCategoryHandler extends \XoopsPersistableObjectHandler
-//{
-//    /**
-//     * @param null|object $db
-//     */
-//    public function __construct(\XoopsDatabase $db = null)
-//    {
-//        parent::__construct($db, "tdmdownloads_cat", 'Category', 'cat_cid', 'cat_title');
-//    }
-//}

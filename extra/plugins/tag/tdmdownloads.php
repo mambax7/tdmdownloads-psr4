@@ -50,7 +50,7 @@ function TDMDownloads_tag_iteminfo(&$items)
                     'link'    => "singlefile.php?cid={$item_obj->getVar('cid')}&lid={$item_id}",
                     'time'    => $item_obj->getVar('date'),
                     'tags'    => '',
-                    'content' => ''
+                    'content' => '',
                 ];
             }
         }
@@ -80,7 +80,8 @@ function TDMDownloads_tag_synchronization($mid)
                . "                FROM {$itemHandler->table} "
                . "                WHERE {$itemHandler->table}.status > 0"
                . '            ) '
-               . '        )'; else:
+               . '        )';
+    else:
         $sql = "    DELETE {$linkHandler->table} FROM {$linkHandler->table}"
                . "    LEFT JOIN {$itemHandler->table} AS aa ON {$linkHandler->table}.tag_itemid = aa.{$itemHandler->keyName} "
                . '    WHERE '

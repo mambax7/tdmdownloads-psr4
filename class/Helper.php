@@ -1,22 +1,23 @@
-<?php namespace XoopsModules\Tdmdownloads;
+<?php
+
+namespace XoopsModules\Tdmdownloads;
 
 /*
-     You may not change or alter any portion of this comment or credits
-     of supporting developers from this source code or any supporting source code
-     which is considered copyrighted (c) material of the original comment or credit authors.
-
-     This program is distributed in the hope that it will be useful,
-     but WITHOUT ANY WARRANTY; without even the implied warranty of
-     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-    */
-/**
- * xoalbum module for xoops
+ * You may not change or alter any portion of this comment or credits
+ * of supporting developers from this source code or any supporting source code
+ * which is considered copyrighted (c) material of the original comment or credit authors.
  *
- * @copyright       XOOPS Project (https://xoops.org)
- * @license         GPL 2.0 or later
- * @package         xoalbum
- * @since           2.0.0
- * @author          XOOPS Development Team <https://xoops.org>
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ */
+
+/**
+ * @copyright    XOOPS Project https://xoops.org/
+ * @license      GNU GPL 2 or later (http://www.gnu.org/licenses/gpl-2.0.html)
+ * @package
+ * @since
+ * @author       XOOPS Development Team
  */
 
 //defined('XOOPS_ROOT_PATH') || die('Restricted access');
@@ -33,12 +34,11 @@ class Helper extends \Xmf\Module\Helper
      *
      * @param bool $debug
      */
-
     public function __construct($debug = false)
     {
         $this->debug   = $debug;
-       $moduleDirName = basename(dirname(__DIR__));
-       parent::__construct($moduleDirName);
+        $moduleDirName = basename(dirname(__DIR__));
+        parent::__construct($moduleDirName);
     }
 
     /**
@@ -71,49 +71,19 @@ class Helper extends \Xmf\Module\Helper
      *
      * @return bool|\XoopsObjectHandler|\XoopsPersistableObjectHandler
      */
-
     public function getHandler($name)
     {
         $ret   = false;
-        $db    = \XoopsDatabaseFactory::getDatabaseConnection();
-        $class = '\\XoopsModules\\' . ucfirst(strtolower(basename(dirname(__DIR__)))) . '\\' . $name . 'Handler';
-        $ret   = new $class($db);
+
+        $class = __NAMESPACE__ . '\\' . ucfirst($name) . 'Handler';
+        if (!class_exists($class)) {
+            throw new \RuntimeException("Class '$class' not found");
+        }
+        /** @var \XoopsMySQLDatabase $db */
+        $db     = \XoopsDatabaseFactory::getDatabaseConnection();
+        $helper = self::getInstance();
+        $ret    = new $class($db, $helper);
+        $this->addLog("Getting handler '{$name}'");
         return $ret;
-    }
-
-    /**
-     * Get modules
-     *
-     * @param array $dirnames
-     * @param null  $otherCriteria
-     * @param bool  $asObj
-     *
-     * @return array objects
-     */
-    public function getModules(array $dirnames = null, $otherCriteria = null, $asObj = false)
-    {
-        // get all dirnames
-        /** @var \XoopsModuleHandler $moduleHandler */
-        $moduleHandler = xoops_getHandler('module');
-        $criteria      = new \CriteriaCompo();
-        if (count($dirnames) > 0) {
-            foreach ($dirnames as $mDir) {
-                $criteria->add(new \Criteria('dirname', $mDir), 'OR');
-            }
-        }
-        if (!empty($otherCriteria)) {
-            $criteria->add($otherCriteria);
-        }
-        $criteria->add(new \Criteria('isactive', 1), 'AND');
-        $modules = $moduleHandler->getObjects($criteria, true);
-        if ($asObj) {
-            return $modules;
-        }
-        $dirs['system-root'] = _YOURHOME;
-        foreach ($modules as $module) {
-            $dirs[$module->dirname()] = $module->name();
-        }
-
-        return $dirs;
     }
 }

@@ -1,6 +1,6 @@
 <h5>2.0 Alpha 1         [NOT RELEASED, WORK IN PROGRESS]</h5>
 <hr>
-- moved functions to Utilities class (mamba)
+- moved functions to Utility class (mamba)
 - started with conversion to XoopsRequest (mamba)
 - made check for upload folders easier (mamba)
 - some cosmetic changes related to PSR-2 (mamba)
@@ -15,11 +15,6 @@
     &nbsp;&nbsp;- updated addInfoBoxLine entries (mamba)
     &nbsp;&nbsp;- displayNavigation(basename(__FILE__))  (mamba)
     &nbsp;&nbsp;- changed to ->displayButton('left') (mamba)
-
-
-
-<h5>1.63 Beta 3         [NOT RELEASED]</h5>
-<hr>
 - some cosmetic changes related to PSR-2 (mamba)
 - changed: size of logo in category (mamba)
 - changed: button for files for approval only visible if there are actual files to approve (mamba)
@@ -35,13 +30,23 @@ TODO:
 - convert to use XoopsRequest
 
 
+<h5>1.65 Final [2017/02/02]</h5>
+<hr>
+
+- fix error with tree.php (Mage)
+- fix error by ref (Mage)
+- update class method (Mage)
+- fix error with search.php (Mage)
+- fix error xoops load (Mage)
+- fix makeSelBox() is deprecated (Mage)
+
+
 <h5>1.63 Beta 2             [2013/08/24]</h5>
 <hr>
 - fix: Typos (cesagonchu)
 - Correcting English language files (cesagonchu)
 - removing obsolete bookmarks : Google Reader, Simpy, Spurl (cesagonchu)
 - Standardization of syntax in the language folder (cesagonchu)
-
 
 <h5>1.63 Beta 1           [2012/12/23]</h5>
 <hr>
@@ -98,7 +103,7 @@ List of improvements:
 
 Informations
 
- - See the file "lang_diff.txt" for changes in language.
+ - See the file "lang_diff.txt" for changes in language. 
 
 Installation:
 
@@ -146,7 +151,7 @@ List of improvements:
 Informations:
 
  - Adding the suffix "cat_" in all fields of the table "tdmdownloads_cat.
- - See the file "lang_diff.txt" for changes in language.
+ - See the file "lang_diff.txt" for changes in language. 
 
 
 <h5>1.10                [11.11.2009]</h5>

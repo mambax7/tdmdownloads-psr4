@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Tdmdownloads;
+<?php
+
+namespace XoopsModules\Tdmdownloads;
 
 /**
  * TDMDownload
@@ -14,15 +16,16 @@
  * @license     GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Gregory Mage (Aka Mage) and Hossein Azizabadi (Aka voltan)
  */
+defined('XOOPS_ROOT_PATH') || die('Restricted access');
 
-// defined('XOOPS_ROOT_PATH') || die('Restricted access');
-
+/**
+ * Class Downlimit
+ * @package XoopsModules\Tdmdownloads
+ */
 class Downlimit extends \XoopsObject
 {
     // constructor
-    /**
-     *
-     */
+
     public function __construct()
     {
         parent::__construct();

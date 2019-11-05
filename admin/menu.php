@@ -13,19 +13,19 @@
  * @license     GNU GPL 2 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
  * @author      Gregory Mage (Aka Mage)
  */
-// // defined('XOOPS_ROOT_PATH') || die('Restricted access');
+include dirname(__DIR__) . '/preloads/autoloader.php';
 
-use XoopsModules\Tdmdownloads;
+$moduleDirName      = basename(dirname(__DIR__));
+$moduleDirNameUpper = mb_strtoupper($moduleDirName);
 
-//require_once  dirname(__DIR__) . '/include/common.php';
 /** @var \XoopsModules\Tdmdownloads\Helper $helper */
 $helper = \XoopsModules\Tdmdownloads\Helper::getInstance();
+$helper->loadLanguage('common');
 
 $pathIcon32 = \Xmf\Module\Admin::menuIconPath('');
 if (is_object($helper->getModule())) {
     $pathModIcon32 = $helper->getModule()->getInfo('modicons32');
 }
-
 
 $adminmenu[] = [
     'title' => _MI_TDMDOWNLOADS_ADMENU1,
@@ -81,6 +81,21 @@ $adminmenu[] = [
     'icon'  => 'assets/images/admin/permissions.png',
     //'menu' =>  'assets/images/admin/menu_permissions.png',
 ];
+
+// Blocks Admin
+$adminmenu[] = [
+    'title' => constant('CO_' . $moduleDirNameUpper . '_' . 'BLOCKS'),
+    'link'  => 'admin/blocksadmin.php',
+    'icon'  => $pathIcon32 . '/block.png',
+];
+
+if ($helper->getConfig('displayDeveloperTools')) {
+    $adminmenu[] = [
+        'title' => constant('CO_' . $moduleDirNameUpper . '_' . 'ADMENU_MIGRATE'),
+        'link'  => 'admin/migrate.php',
+        'icon'  => $pathIcon32 . '/database_go.png',
+    ];
+}
 
 $adminmenu[] = [
     'title' => _MI_TDMDOWNLOADS_ADMENU9,

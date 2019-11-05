@@ -36,7 +36,7 @@ $moduleDirName = basename(__DIR__);
 $tpl          = new \XoopsTpl();
 $tpl->caching = 2; //1 = Cache global, 2 = Cache individuel (par template)
 $tpl->xoops_setCacheTime($helper->getConfig('timecacherss') * 60); // Temps de cache en secondes
-$categories = $utilities->getItemIds('tdmdownloads_view', $moduleDirName);
+$categories = $utility->getItemIds('tdmdownloads_view', $moduleDirName);
 $criteria   = new \CriteriaCompo();
 $criteria->add(new \Criteria('status', 0, '!='));
 $criteria->add(new \Criteria('cid', '(' . implode(',', $categories) . ')', 'IN'));
@@ -85,17 +85,17 @@ if (!$tpl->is_cached('db:tdmdownloads_rss.tpl', $cid)) {
     foreach (array_keys($downloads_arr) as $i) {
         $description = $downloads_arr[$i]->getVar('description');
         //permet d'afficher uniquement la description courte
-        if (false === strpos($description, '[pagebreak]')) {
+        if (false === mb_strpos($description, '[pagebreak]')) {
             $description_short = $description;
         } else {
-            $description_short = substr($description, 0, strpos($description, '[pagebreak]'));
+            $description_short = mb_substr($description, 0, mb_strpos($description, '[pagebreak]'));
         }
         $tpl->append('items', [
             'title'       => htmlspecialchars($downloads_arr[$i]->getVar('title'), ENT_QUOTES),
             'link'        => XOOPS_URL . '/modules/' . $moduleDirName . '/singlefile.php?cid=' . $downloads_arr[$i]->getVar('cid') . '&amp;lid=' . $downloads_arr[$i]->getVar('lid'),
             'guid'        => XOOPS_URL . '/modules/' . $moduleDirName . '/singlefile.php?cid=' . $downloads_arr[$i]->getVar('cid') . '&amp;lid=' . $downloads_arr[$i]->getVar('lid'),
             'pubdate'     => formatTimestamp($downloads_arr[$i]->getVar('date'), 'rss'),
-            'description' => htmlspecialchars($description_short, ENT_QUOTES)
+            'description' => htmlspecialchars($description_short, ENT_QUOTES),
         ]);
     }
 }

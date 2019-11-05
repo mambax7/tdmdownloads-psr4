@@ -1,4 +1,6 @@
-<?php namespace XoopsModules\Tdmdownloads;
+<?php
+
+namespace XoopsModules\Tdmdownloads;
 
 /**
  * Created by PhpStorm.
@@ -20,13 +22,15 @@ class Utilities
 
     /**
      * @param \XoopsDatabase|null $db
-     * @param                $helper
+     * @param                     $helper
+     * @param mixed               $permtype
+     * @param mixed               $dirname
      */
-//    public static function __construct(\XoopsDatabase $db = null, $helper = null)
-//    {
-//        $this->db     = $db;
-//        $this->helper = $helper;
-//    }
+    //    public static function __construct(\XoopsDatabase $db = null, $helper = null)
+    //    {
+    //        $this->db     = $db;
+    //        $this->helper = $helper;
+    //    }
 
     /**
      * @param $permtype
@@ -40,11 +44,11 @@ class Utilities
         if (is_array($permissions) && array_key_exists($permtype, $permissions)) {
             return $permissions[$permtype];
         }
-        $moduleHandler = xoops_getHandler('module');
-        $tdmModule     = $moduleHandler->getByDirname($dirname);
-        $groups        = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
-        $grouppermHandler  = xoops_getHandler('groupperm');
-        $categories    = $grouppermHandler->getItemIds($permtype, $groups, $tdmModule->getVar('mid'));
+        $moduleHandler    = xoops_getHandler('module');
+        $tdmModule        = $moduleHandler->getByDirname($dirname);
+        $groups           = is_object($xoopsUser) ? $xoopsUser->getGroups() : XOOPS_GROUP_ANONYMOUS;
+        $grouppermHandler = xoops_getHandler('groupperm');
+        $categories       = $grouppermHandler->getItemIds($permtype, $groups, $tdmModule->getVar('mid'));
 
         return $categories;
     }
@@ -59,7 +63,6 @@ class Utilities
      *
      * @return int
      */
-
     public static function getNumbersOfEntries($mytree, $categories, $entries, $cid)
     {
         $count     = 0;
@@ -87,7 +90,6 @@ class Utilities
      * @param $status
      * @return string
      */
-
     public static function getStatusImage($time, $status)
     {
         $moduleDirName = basename(dirname(__DIR__));
@@ -107,15 +109,15 @@ class Utilities
                 $img_url  = XOOPS_URL . "/modules/$moduleDirName/language/" . $language . '/';
                 if (1 == $status) {
                     if (is_readable($img_path . 'new.png')) {
-                        $new = '&nbsp;<img src="' . $img_url . 'new.png" alt="' . _MD_TDMDOWNLOADS_INDEX_NEWTHISWEEK . '" title="' . _MD_TDMDOWNLOADS_INDEX_NEWTHISWEEK . '"/>';
+                        $new = '&nbsp;<img src="' . $img_url . 'new.png" alt="' . _MD_TDMDOWNLOADS_INDEX_NEWTHISWEEK . '" title="' . _MD_TDMDOWNLOADS_INDEX_NEWTHISWEEK . '">';
                     } else {
-                        $new = '&nbsp;<img src="' . XOOPS_URL . '/modules/' . $moduleDirName . '/language/english/new.png" alt="' . _MD_TDMDOWNLOADS_INDEX_NEWTHISWEEK . '" title="' . _MD_TDMDOWNLOADS_INDEX_NEWTHISWEEK . '"/>';
+                        $new = '&nbsp;<img src="' . XOOPS_URL . '/modules/' . $moduleDirName . '/language/english/new.png" alt="' . _MD_TDMDOWNLOADS_INDEX_NEWTHISWEEK . '" title="' . _MD_TDMDOWNLOADS_INDEX_NEWTHISWEEK . '">';
                     }
                 } elseif (2 == $status) {
                     if (is_readable($img_path . 'updated.png')) {
-                        $new = '&nbsp;<img src="' . $img_url . 'updated.png" alt="' . _MD_TDMDOWNLOADS_INDEX_UPTHISWEEK . '" title="' . _MD_TDMDOWNLOADS_INDEX_UPTHISWEEK . '"/>';
+                        $new = '&nbsp;<img src="' . $img_url . 'updated.png" alt="' . _MD_TDMDOWNLOADS_INDEX_UPTHISWEEK . '" title="' . _MD_TDMDOWNLOADS_INDEX_UPTHISWEEK . '">';
                     } else {
-                        $new = '&nbsp;<img src="' . XOOPS_URL . '/modules/' . $moduleDirName . '/language/english/updated.png" alt="' . _MD_TDMDOWNLOADS_INDEX_UPTHISWEEK . '" title="' . _MD_TDMDOWNLOADS_INDEX_UPTHISWEEK . '"/>';
+                        $new = '&nbsp;<img src="' . XOOPS_URL . '/modules/' . $moduleDirName . '/language/english/updated.png" alt="' . _MD_TDMDOWNLOADS_INDEX_UPTHISWEEK . '" title="' . _MD_TDMDOWNLOADS_INDEX_UPTHISWEEK . '">';
                     }
                 }
             }
@@ -129,7 +131,6 @@ class Utilities
      * @param $hits
      * @return string
      */
-
     public static function getPopularImage($hits)
     {
         /** @var Tdmdownloads\Helper $helper */
@@ -145,9 +146,9 @@ class Utilities
             $img_path = XOOPS_ROOT_PATH . "/modules/$moduleDirName/language/" . $language . '/';
             $img_url  = XOOPS_URL . "/modules/$moduleDirName/language/" . $language . '/';
             if (is_readable($img_path . 'popular.png')) {
-                $pop = '&nbsp;<img src="' . $img_url . 'popular.png" alt="' . _MD_TDMDOWNLOADS_INDEX_POPULAR . '" title="' . _MD_TDMDOWNLOADS_INDEX_POPULAR . '"/>';
+                $pop = '&nbsp;<img src="' . $img_url . 'popular.png" alt="' . _MD_TDMDOWNLOADS_INDEX_POPULAR . '" title="' . _MD_TDMDOWNLOADS_INDEX_POPULAR . '">';
             } else {
-                $pop = '&nbsp;<img src ="' . XOOPS_URL . '/modules/' . $moduleDirName . '/language/english/popular.png" alt="' . _MD_TDMDOWNLOADS_INDEX_POPULAR . '" title="' . _MD_TDMDOWNLOADS_INDEX_POPULAR . '"/>';
+                $pop = '&nbsp;<img src ="' . XOOPS_URL . '/modules/' . $moduleDirName . '/language/english/popular.png" alt="' . _MD_TDMDOWNLOADS_INDEX_POPULAR . '" title="' . _MD_TDMDOWNLOADS_INDEX_POPULAR . '">';
             }
         }
 
@@ -155,7 +156,11 @@ class Utilities
     }
 
     /**
-     * @param $size
+     * @param       $size
+     * @param mixed $global
+     * @param mixed $key
+     * @param mixed $default
+     * @param mixed $type
      *
      * @return string
      */
@@ -189,7 +194,11 @@ class Utilities
     {
         switch ($type) {
             case 'string':
+                            if(defined('FILTER_SANITIZE_ADD_SLASHES')){
+                $ret = isset($global[$key]) ? filter_var($global[$key], FILTER_SANITIZE_ADD_SLASHES) : $default;
+            } else {
                 $ret = isset($global[$key]) ? filter_var($global[$key], FILTER_SANITIZE_MAGIC_QUOTES) : $default;
+            }
                 break;
             case 'int':
             default:
@@ -249,8 +258,8 @@ class Utilities
         $prefix = '',
         $link = false,
         $order = 'ASC',
-        $lasturl = false
-    ) {
+        $lasturl = false)
+    {
         global $xoopsModule;
         $category_parent = $mytree->getAllParent($key);
         if ('ASC' === $order) {
@@ -303,7 +312,7 @@ class Utilities
      * @param null $fileTarget
      * @throws \RuntimeException
      */
-    public static function createFolder($path, $mode = 0777, $fileSource, $fileTarget = null)
+    public static function createFolder($path, $mode, $fileSource, $fileTarget = null)
     {
         if (!@mkdir($path, $mode) && !is_dir($path)) {
             throw new \RuntimeException(sprintf('Unable to create the %s directory', $path));
@@ -348,7 +357,6 @@ class Utilities
      *
      * @param string $folder Le chemin complet du répertoire à vérifier
      *
-     * @return void
      * @throws \RuntimeException
      */
     public static function prepareFolder($folder)
